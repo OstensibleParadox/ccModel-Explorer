@@ -1,80 +1,120 @@
-import { SLIDER_KEYS, SLIDER_META } from '../utils/matchEngine';
+import { getMidpoints, SLIDER_KEYS, SLIDER_META } from '../utils/matchEngine';
+
+const RESET_VALUES = Object.fromEntries(SLIDER_KEYS.map((key) => [key, 50]));
+
+function getCivilPresetLabel(estate) {
+  return (
+    estate.names.de ??
+    estate.names.tw ??
+    estate.names.prc ??
+    estate.names.jp ??
+    estate.id
+  );
+}
 
 export default function SliderPanel({
-  sliderValues,
-  lockedSliders,
-  onSliderChange,
-  onLockToggle,
-  estates,
-  onPresetClick,
-  onReset,
+  values,
+  onChange,
+  commonLawEstates,
+  civilLawEstates,
 }) {
   return (
-    <div className="slider-panel">
-      <div className="presets-row">
-        <button
-          className="preset-pill preset-reset"
-          onClick={onReset}
-        >
-          Reset All
-        </button>
-        {estates.map((estate) => (
-          <button
-            key={estate.id}
-            className="preset-pill"
-            onClick={() => onPresetClick(estate)}
-          >
-            {estate.name}
-          </button>
-        ))}
+    <section className="slider-panel">
+      <div className="panel-heading">
+        <p className="panel-kicker">Bundle Controls</p>
+        <h2 className="track-title">Seven-Dimension Slider Matrix</h2>
+        <p className="panel-copy">
+          Move the bundle directly, or snap to a preset estate and compare
+          how both traditions classify the same profile.
+        </p>
+      </div>
+
+      <div className="preset-stack">
+        <div className="preset-section">
+          <div className="preset-section-header">
+            <span className="preset-title">Common Law</span>
+            <button
+              type="button"
+              className="reset-button"
+              onClick={() => onChange(RESET_VALUES)}
+            >
+              Reset All
+            </button>
+          </div>
+          <div className="preset-pill-row">
+            {commonLawEstates.map((estate) => (
+              <button
+                key={estate.id}
+                type="button"
+                className="preset-pill"
+                onClick={() => onChange(getMidpoints(estate))}
+              >
+                {estate.name}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <div className="preset-section">
+          <div className="preset-section-header">
+            <span className="preset-title">Civil Law</span>
+          </div>
+          <div className="preset-pill-row">
+            {civilLawEstates.map((estate) => (
+              <button
+                key={estate.id}
+                type="button"
+                className="preset-pill civil"
+                onClick={() => onChange(getMidpoints(estate))}
+              >
+                {getCivilPresetLabel(estate)}
+              </button>
+            ))}
+          </div>
+        </div>
       </div>
 
       <div className="sliders">
-        {SLIDER_KEYS.map((key) => {
-          const meta = SLIDER_META[key];
-          const value = sliderValues[key];
-          const locked = lockedSliders[key];
-          const pct = value;
+        {SLIDER_META.map(({ key, label, lowLabel, highLabel }) => {
+          const value = values[key];
 
           return (
-            <div key={key} className={`slider-row ${locked ? 'locked' : ''}`}>
-              <button
-                className="lock-toggle"
-                onClick={() => onLockToggle(key)}
-                title={locked ? 'Unlock' : 'Lock'}
-                aria-label={`${locked ? 'Unlock' : 'Lock'} ${meta.label}`}
-              >
-                {locked ? '\u{1F512}' : '\u{1F513}'}
-              </button>
-
-              <div className="slider-label">
-                <span className="label-name">{meta.label}</span>
-              </div>
-
-              <div className="slider-track-wrapper">
-                <input
-                  type="range"
-                  min={0}
-                  max={100}
-                  value={value}
-                  disabled={locked}
-                  onChange={(e) => onSliderChange(key, Number(e.target.value))}
-                  className="slider-input"
-                  style={{
-                    '--fill-pct': `${pct}%`,
-                  }}
-                />
-                <div className="slider-endpoints">
-                  <span className="endpoint-low">{meta.low}</span>
-                  <span className="endpoint-high">{meta.high}</span>
+            <div key={key} className="slider-row">
+              <div className="slider-header">
+                <div>
+                  <label className="slider-label" htmlFor={`slider-${key}`}>
+                    {label}
+                  </label>
                 </div>
+                <output className="slider-value" htmlFor={`slider-${key}`}>
+                  {value}
+                </output>
               </div>
 
-              <span className="slider-value">{value}</span>
+              <input
+                id={`slider-${key}`}
+                type="range"
+                min="0"
+                max="100"
+                value={value}
+                className="slider-input"
+                style={{ '--fill-pct': `${value}%` }}
+                onChange={(event) =>
+                  onChange({
+                    ...values,
+                    [key]: Number(event.target.value),
+                  })
+                }
+              />
+
+              <div className="slider-endpoints">
+                <span>{lowLabel}</span>
+                <span>{highLabel}</span>
+              </div>
             </div>
           );
         })}
       </div>
-    </div>
+    </section>
   );
 }

@@ -1,1 +1,218 @@
-[]
+[
+  {
+    "id": "eigentum",
+    "names": {
+      "de": "Eigentum",
+      "jp": "所有権",
+      "tw": "所有權",
+      "prc": "所有权"
+    },
+    "description": "The full civilian ownership form: broad dominion, exclusion, alienation, duration, and descent across the major codified systems.",
+    "ranges": {
+      "possession": [90, 100],
+      "use": [90, 100],
+      "income": [85, 100],
+      "alienation": [90, 100],
+      "exclusion": [90, 100],
+      "duration": [95, 100],
+      "inheritability": [95, 100]
+    },
+    "authorities": {
+      "de": "§ 903 BGB",
+      "jp": "民法206条",
+      "tw": "民法765條",
+      "prc": "民法典240条"
+    },
+    "common_law_equivalent": "fee_simple_absolute",
+    "notes": "This is the nearest civilian anchor to the common-law fee simple absolute, while still sitting inside a codified numerus clausus."
+  },
+  {
+    "id": "erbbaurecht",
+    "names": {
+      "de": "Erbbaurecht",
+      "jp": "地上権",
+      "tw": "地上權",
+      "prc": "建设用地使用权"
+    },
+    "description": "A long-duration building or superficies right carved out of ownership: strongly usable and transferable, but still term-bound rather than fully perpetual.",
+    "ranges": {
+      "possession": [60, 85],
+      "use": [60, 85],
+      "income": [40, 70],
+      "alienation": [60, 85],
+      "exclusion": [55, 80],
+      "duration": [70, 90],
+      "inheritability": [75, 95]
+    },
+    "authorities": {
+      "de": "§ 1 ErbbauRG",
+      "jp": "民法265条",
+      "tw": "民法832條",
+      "prc": "民法典344条"
+    },
+    "common_law_equivalent": "leasehold",
+    "notes": "The long-term, inheritable building right often looks leasehold-like from a common-law angle, but it is structurally treated as a named real right."
+  },
+  {
+    "id": "niessbrauch",
+    "names": {
+      "de": "Nießbrauch",
+      "jp": "用益権",
+      "tw": "用益權",
+      "prc": "用益物权"
+    },
+    "description": "A usufruct-style right focused on use and fruits rather than alienable ownership: rich in enjoyment and income, but personal and typically non-descendible.",
+    "ranges": {
+      "possession": [60, 85],
+      "use": [70, 90],
+      "income": [75, 95],
+      "alienation": [0, 10],
+      "exclusion": [50, 75],
+      "duration": [20, 45],
+      "inheritability": [0, 5]
+    },
+    "authorities": {
+      "de": "§§ 1030 ff. BGB",
+      "jp": null,
+      "tw": null,
+      "prc": null
+    },
+    "common_law_equivalent": "life_estate",
+    "notes": "Common law tends to split this profile across life estates, trusts, and occupation rights rather than maintain a single canonical usufruct category."
+  },
+  {
+    "id": "grunddienstbarkeit",
+    "names": {
+      "de": "Grunddienstbarkeit",
+      "jp": "地役権",
+      "tw": "地役權",
+      "prc": "地役权"
+    },
+    "description": "A land-serving real right comparable to a servitude or easement: narrow in possession, enduring in duration, and usually tied to another parcel’s use.",
+    "ranges": {
+      "possession": [0, 10],
+      "use": [25, 55],
+      "income": [0, 10],
+      "alienation": [20, 45],
+      "exclusion": [0, 15],
+      "duration": [75, 95],
+      "inheritability": [75, 95]
+    },
+    "authorities": {
+      "de": "§ 1018 BGB",
+      "jp": "民法280条",
+      "tw": "民法851條",
+      "prc": "民法典372条"
+    },
+    "common_law_equivalent": "easement",
+    "notes": "This is one of the cleanest cross-system mappings because both traditions accept a durable, non-possessory burden for limited use."
+  },
+  {
+    "id": "hypothek",
+    "names": {
+      "de": "Hypothek",
+      "jp": "抵当権",
+      "tw": "抵押權",
+      "prc": "抵押权"
+    },
+    "description": "An accessory mortgage right geared toward secured value, not ordinary occupation or use: weak in possession, but durable enough to back credit and enforcement.",
+    "ranges": {
+      "possession": [0, 10],
+      "use": [0, 10],
+      "income": [0, 15],
+      "alienation": [25, 50],
+      "exclusion": [0, 10],
+      "duration": [20, 60],
+      "inheritability": [20, 45]
+    },
+    "authorities": {
+      "de": "§ 1113 BGB",
+      "jp": "民法369条",
+      "tw": "民法860條",
+      "prc": "民法典395条"
+    },
+    "common_law_equivalent": "mortgage",
+    "notes": "The civilian mortgage remains closer to an accessory real security than the layered equitable devices familiar to common-law lawyers."
+  },
+  {
+    "id": "pfandrecht",
+    "names": {
+      "de": "Pfandrecht",
+      "jp": "質権",
+      "tw": "質權",
+      "prc": "质权"
+    },
+    "description": "A pledge-style security right with a stronger possessory flavor than a mortgage, but still focused on collateral value rather than beneficial use.",
+    "ranges": {
+      "possession": [10, 35],
+      "use": [0, 10],
+      "income": [0, 10],
+      "alienation": [15, 35],
+      "exclusion": [15, 35],
+      "duration": [15, 50],
+      "inheritability": [20, 40]
+    },
+    "authorities": {
+      "de": "§ 1204 BGB",
+      "jp": "民法342条",
+      "tw": "民法873條",
+      "prc": "民法典425条"
+    },
+    "common_law_equivalent": "mortgage",
+    "notes": "The match with common-law mortgage doctrine is partial at best because possession and accessory structure do more work here."
+  },
+  {
+    "id": "dian_quan",
+    "names": {
+      "de": null,
+      "jp": null,
+      "tw": "典權",
+      "prc": null
+    },
+    "description": "A historically distinctive Taiwanese right combining possession, use, and redemption-oriented structure in a way that does not stabilize into a familiar common-law estate.",
+    "ranges": {
+      "possession": [70, 90],
+      "use": [65, 90],
+      "income": [35, 60],
+      "alienation": [20, 40],
+      "exclusion": [55, 80],
+      "duration": [55, 80],
+      "inheritability": [35, 60]
+    },
+    "authorities": {
+      "de": null,
+      "jp": null,
+      "tw": "民法911條",
+      "prc": null
+    },
+    "common_law_equivalent": null,
+    "notes": "Useful precisely because it exposes where the common-law estate menu runs out of clean analogues."
+  },
+  {
+    "id": "juzhuquan",
+    "names": {
+      "de": null,
+      "jp": null,
+      "tw": "居住權",
+      "prc": "居住权"
+    },
+    "description": "A habitation right centered on residence rather than exchange: meaningful occupation and use, but little income, transfer, or descent.",
+    "ranges": {
+      "possession": [35, 60],
+      "use": [65, 90],
+      "income": [0, 5],
+      "alienation": [0, 5],
+      "exclusion": [30, 55],
+      "duration": [30, 70],
+      "inheritability": [0, 10]
+    },
+    "authorities": {
+      "de": null,
+      "jp": null,
+      "tw": null,
+      "prc": "民法典366条"
+    },
+    "common_law_equivalent": "licence",
+    "notes": "Common law tends to fragment this space into licenses, occupation rights, and specialized statutory protections rather than one named real right."
+  }
+]

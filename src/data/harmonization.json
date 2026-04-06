@@ -1,1 +1,50 @@
-{}
+{
+  "eigentum": {
+    "common_law_id": "fee_simple_absolute",
+    "convergence_level": "high",
+    "message": "Civilian ownership and fee simple absolute converge strongly as each system’s broad default ownership form.",
+    "divergence": "The fit is not perfect because civilian ownership remains anchored in a codified menu of rights rather than common-law estates and equity."
+  },
+  "erbbaurecht": {
+    "common_law_id": "leasehold",
+    "convergence_level": "medium",
+    "message": "The long, inheritable building right often behaves like an institutionalized long lease from a common-law viewpoint.",
+    "divergence": "Civil law treats it as a named real right in its own standing, whereas common law usually channels the pattern through leasehold and covenant structure."
+  },
+  "niessbrauch": {
+    "common_law_id": "life_estate",
+    "convergence_level": "medium",
+    "message": "Usufruct-like enjoyment maps most closely to life-estate logic when the focus is present use and fruits rather than title.",
+    "divergence": "Common law spreads the same economic profile across life estates, trusts, and contractual occupation devices rather than a single unitary usufruct."
+  },
+  "grunddienstbarkeit": {
+    "common_law_id": "easement",
+    "convergence_level": "very_high",
+    "message": "Servitude and easement doctrine line up closely as durable, non-possessory rights over another parcel.",
+    "divergence": "Residual divergence comes from doctrinal packaging and registration architecture rather than the functional bundle itself."
+  },
+  "hypothek": {
+    "common_law_id": "mortgage",
+    "convergence_level": "medium",
+    "message": "Both systems recognize a durable security right aimed at collateral value rather than ordinary occupation.",
+    "divergence": "The civilian mortgage stays more explicitly accessory and codified, while common law layers legal and equitable foreclosure traditions over the same terrain."
+  },
+  "pfandrecht": {
+    "common_law_id": "mortgage",
+    "convergence_level": "low",
+    "message": "There is some convergence at the level of secured credit, but the fit to common-law mortgage categories is loose.",
+    "divergence": "Possession-sensitive pledge structure and accessory logic do not translate cleanly into the standard common-law land-security template."
+  },
+  "dian_quan": {
+    "common_law_id": null,
+    "convergence_level": "none",
+    "message": "No stable common-law estate captures the redemption-centered structure of dian quan without distortion.",
+    "divergence": "The right combines possession, use, time, and redemption logic in a way that falls between leasehold, security, and limited ownership categories."
+  },
+  "juzhuquan": {
+    "common_law_id": "licence",
+    "convergence_level": "low",
+    "message": "A habitation right partially resembles a protected occupation licence in common-law terms.",
+    "divergence": "Civil law can package residence as a named real right, while common law typically disperses the same social function across weaker, more situational devices."
+  }
+}

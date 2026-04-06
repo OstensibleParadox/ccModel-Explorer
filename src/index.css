@@ -1,41 +1,77 @@
 :root {
-  --bg-primary: #0a0a0f;
-  --bg-secondary: #12121a;
-  --bg-card: #16161f;
-  --bg-input: #1a1a25;
-
-  --text-primary: #e8e6ef;
-  --text-secondary: #9a96a6;
-  --text-muted: #6b6775;
-
-  --accent: #c9a96e;
-  --accent-dim: rgba(201, 169, 110, 0.15);
-  --accent-border: rgba(201, 169, 110, 0.4);
+  --page-background:
+    radial-gradient(circle at top left, rgba(139, 77, 46, 0.16), transparent 30%),
+    radial-gradient(circle at top right, rgba(33, 92, 101, 0.16), transparent 32%),
+    linear-gradient(180deg, #f8f0df 0%, #ecdfcb 100%);
+  --surface-panel: rgba(255, 251, 245, 0.88);
+  --surface-raised: #fffdf8;
+  --surface-strong: #162234;
+  --surface-soft: rgba(29, 34, 48, 0.06);
+  --text-primary: #1d2230;
+  --text-secondary: #576272;
+  --text-muted: #7a8493;
+  --text-inverse: #f8f3e7;
+  --accent: #8b4d2e;
+  --accent-strong: #6b351b;
+  --accent-soft: rgba(139, 77, 46, 0.14);
+  --civil: #215c65;
+  --civil-soft: rgba(33, 92, 101, 0.14);
+  --line: rgba(29, 34, 48, 0.12);
+  --line-strong: rgba(29, 34, 48, 0.22);
+  --shadow-lg: 0 24px 60px rgba(31, 36, 50, 0.14);
+  --shadow-sm: 0 10px 24px rgba(31, 36, 50, 0.08);
 
   --error: #e74c3c;
   --error-bg: rgba(231, 76, 60, 0.1);
-  --error-border: rgba(231, 76, 60, 0.3);
+  --error-border: rgba(231, 76, 60, 0.28);
+  --warning: #f39c12;
+  --warning-bg: rgba(243, 156, 18, 0.12);
+  --warning-border: rgba(243, 156, 18, 0.28);
+  --info: #5bc0de;
+  --info-bg: rgba(91, 192, 222, 0.12);
+  --info-border: rgba(91, 192, 222, 0.3);
 
-  --warning: #f0a500;
-  --warning-bg: rgba(240, 165, 0, 0.1);
-  --warning-border: rgba(240, 165, 0, 0.3);
+  --convergence-very-high: #15803d;
+  --convergence-high: #2563eb;
+  --convergence-medium: #d97706;
+  --convergence-low: #ea580c;
+  --convergence-none: #6b7280;
 
-  --border: #2a2a35;
-  --border-light: #1e1e28;
+  --font-display: 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', Georgia, serif;
+  --font-body: 'Avenir Next', 'Segoe UI', 'Helvetica Neue', sans-serif;
+  --font-mono: 'SFMono-Regular', 'SF Mono', ui-monospace, monospace;
 
-  --font-serif: 'Cormorant Garamond', 'Georgia', serif;
-  --font-sans: system-ui, -apple-system, 'Segoe UI', sans-serif;
-  --font-mono: ui-monospace, 'Cascadia Code', 'Fira Code', Consolas, monospace;
-
-  font-family: var(--font-sans);
-  font-size: 15px;
-  line-height: 1.5;
   color: var(--text-primary);
-  background: var(--bg-primary);
+  background: var(--page-background);
+  font-family: var(--font-body);
   font-synthesis: none;
+  line-height: 1.5;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --page-background:
+      radial-gradient(circle at top left, rgba(139, 77, 46, 0.18), transparent 30%),
+      radial-gradient(circle at top right, rgba(33, 92, 101, 0.18), transparent 32%),
+      linear-gradient(180deg, #10151d 0%, #151c26 100%);
+    --surface-panel: rgba(20, 27, 39, 0.84);
+    --surface-raised: #1a2331;
+    --surface-strong: #0f1621;
+    --surface-soft: rgba(255, 255, 255, 0.06);
+    --text-primary: #eef2f5;
+    --text-secondary: #bcc4ce;
+    --text-muted: #8a93a0;
+    --text-inverse: #f8f3e7;
+    --line: rgba(255, 255, 255, 0.1);
+    --line-strong: rgba(255, 255, 255, 0.2);
+    --shadow-lg: 0 28px 70px rgba(0, 0, 0, 0.3);
+    --shadow-sm: 0 12px 28px rgba(0, 0, 0, 0.2);
+    color: var(--text-primary);
+    background: var(--page-background);
+  }
 }
 
 *,
@@ -44,38 +80,39 @@
   box-sizing: border-box;
 }
 
+html {
+  min-height: 100%;
+}
+
 body {
   margin: 0;
   min-height: 100vh;
+  background: var(--page-background);
+  color: var(--text-primary);
 }
 
 #root {
   min-height: 100vh;
-  display: flex;
-  flex-direction: column;
 }
 
-h1, h2, h3 {
-  font-family: var(--font-serif);
-  color: var(--text-primary);
-  margin: 0;
+button,
+input,
+textarea,
+select {
+  font: inherit;
 }
 
+h1,
+h2,
+h3,
 p {
   margin: 0;
 }
 
-code {
-  font-family: var(--font-mono);
-  font-size: 0.85em;
-}
-
 button {
-  font-family: inherit;
   cursor: pointer;
 }
 
 ::selection {
-  background: var(--accent-dim);
-  color: var(--accent);
+  background: var(--accent-soft);
 }

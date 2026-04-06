@@ -1,28 +1,40 @@
+const ICONS = {
+  error: '⚠',
+  warning: '⚠',
+  info: 'ℹ',
+};
+
 export default function ViolationAlert({ violations }) {
-  if (!violations || violations.length === 0) return null;
+  if (!violations.length) {
+    return null;
+  }
 
   return (
-    <div className="violation-alerts">
-      <h2 className="section-title">Doctrinal Violations</h2>
-      {violations.map((v) => (
-        <div
-          key={v.id}
-          className={`violation-alert ${v.severity}`}
-        >
-          <div className="violation-header">
-            <span className="violation-icon">
-              {v.severity === 'error' ? '\u2716' : '\u26A0'}
+    <section className="violations-panel">
+      <div className="track-heading">
+        <p className="track-kicker">Doctrinal Checks</p>
+        <h2 className="track-title">Violation Alerts</h2>
+      </div>
+
+      <div className="violations-list">
+        {violations.map((violation) => (
+          <article
+            key={violation.id}
+            className={`violation-alert ${violation.severity}`}
+          >
+            <span className="violation-icon" aria-hidden="true">
+              {ICONS[violation.severity]}
             </span>
-            <span className="violation-message">{v.message}</span>
-            <span className="violation-severity">{v.severity}</span>
-          </div>
-          <details className="violation-details">
-            <summary>Details</summary>
-            <p className="violation-explanation">{v.explanation}</p>
-            <code className="violation-authority">{v.authority}</code>
-          </details>
-        </div>
-      ))}
-    </div>
+            <div className="violation-content">
+              <p className="violation-title">{violation.message}</p>
+              {violation.detail ? (
+                <p className="violation-detail">{violation.detail}</p>
+              ) : null}
+            </div>
+            <span className="violation-badge">{violation.severity}</span>
+          </article>
+        ))}
+      </div>
+    </section>
   );
 }

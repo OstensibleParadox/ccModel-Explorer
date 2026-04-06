@@ -1,86 +1,90 @@
 export const SLIDER_KEYS = [
   'possession',
   'use',
-  'management',
   'income',
-  'capital',
   'alienation',
   'exclusion',
+  'duration',
+  'inheritability',
 ];
 
-export const SLIDER_META = {
-  possession: {
+export const SLIDER_META = [
+  {
+    key: 'possession',
     label: 'Possession',
-    low: 'No physical control',
-    high: 'Exclusive physical control',
+    lowLabel: 'No factual control',
+    highLabel: 'Exclusive physical control',
   },
-  use: {
+  {
+    key: 'use',
     label: 'Use',
-    low: 'No personal enjoyment',
-    high: 'Unrestricted personal enjoyment',
+    lowLabel: 'No beneficial use',
+    highLabel: 'Broad beneficial use',
   },
-  management: {
-    label: 'Management',
-    low: 'No decision authority',
-    high: 'Full decision authority',
-  },
-  income: {
+  {
+    key: 'income',
     label: 'Income',
-    low: 'No right to profit',
-    high: 'Full right to profit',
+    lowLabel: 'No fruits or revenue',
+    highLabel: 'Full income capture',
   },
-  capital: {
-    label: 'Capital',
-    low: 'Cannot consume or destroy',
-    high: 'May consume, waste, or destroy',
-  },
-  alienation: {
+  {
+    key: 'alienation',
     label: 'Alienation',
-    low: 'Cannot transfer',
-    high: 'Freely transferable',
+    lowLabel: 'Non-transferable',
+    highLabel: 'Freely transferable',
   },
-  exclusion: {
+  {
+    key: 'exclusion',
     label: 'Exclusion',
-    low: 'Cannot exclude others',
-    high: 'Full right to exclude',
+    lowLabel: 'Cannot exclude others',
+    highLabel: 'Strong exclusion power',
   },
-};
+  {
+    key: 'duration',
+    label: 'Duration',
+    lowLabel: 'Ephemeral or revocable',
+    highLabel: 'Perpetual or near-perpetual',
+  },
+  {
+    key: 'inheritability',
+    label: 'Inheritability',
+    lowLabel: 'Dies with holder',
+    highLabel: 'Fully descendible',
+  },
+];
 
-/**
- * Score how well a slider value fits an estate's range for one dimension.
- * 1.0 if within range, decaying with distance outside.
- */
-function scoreDimension(value, [lo, hi]) {
-  if (value >= lo && value <= hi) return 1.0;
-  const distance = value < lo ? lo - value : value - hi;
-  const rangeSpan = Math.max(hi - lo, 1);
-  return Math.max(0, 1 - (distance / rangeSpan) * 0.8);
+export function scoreDimension(value, [min, max]) {
+  if (value >= min && value <= max) {
+    return 1;
+  }
+
+  const distance = value < min ? min - value : value - max;
+  const rangeWidth = Math.max(max - min, 10);
+  const tolerance = rangeWidth + 20;
+
+  return Math.max(0, 1 - distance / tolerance);
 }
 
-/**
- * Compute match scores for all estates against current slider values.
- * Returns sorted array of { estate, score } (descending), all entries.
- */
 export function computeMatches(sliderValues, estates) {
   return estates
     .map((estate) => {
-      const total = SLIDER_KEYS.reduce(
-        (sum, key) => sum + scoreDimension(sliderValues[key], estate.ranges[key]),
-        0
-      );
-      return { estate, score: total / SLIDER_KEYS.length };
+      const totalScore = SLIDER_KEYS.reduce((sum, key) => {
+        return sum + scoreDimension(sliderValues[key], estate.ranges[key]);
+      }, 0);
+
+      return {
+        estate,
+        score: totalScore / SLIDER_KEYS.length,
+      };
     })
-    .sort((a, b) => b.score - a.score);
+    .sort((left, right) => right.score - left.score);
 }
 
-/**
- * Get the midpoint of each range for an estate (used for preset snapping).
- */
 export function getMidpoints(estate) {
-  const midpoints = {};
-  for (const key of SLIDER_KEYS) {
-    const [lo, hi] = estate.ranges[key];
-    midpoints[key] = Math.round((lo + hi) / 2);
-  }
-  return midpoints;
+  return Object.fromEntries(
+    SLIDER_KEYS.map((key) => {
+      const [min, max] = estate.ranges[key];
+      return [key, Math.round((min + max) / 2)];
+    })
+  );
 }

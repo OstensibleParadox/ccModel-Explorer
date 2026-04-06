@@ -1,101 +1,86 @@
-import { useState, useMemo, useCallback } from 'react';
-import estates from './data/commonLawEstates.json';
-import { computeMatches, getMidpoints, SLIDER_KEYS } from './utils/matchEngine';
-import { checkViolations } from './utils/violationRules';
+import { useMemo, useState } from 'react';
+import commonLawEstates from './data/commonLawEstates.json';
+import civilLawEstates from './data/civilLawEstates.json';
+import harmonizationData from './data/harmonization.json';
 import SliderPanel from './components/SliderPanel';
-import EstateEngine from './components/EstateEngine';
+import DualTrackView from './components/DualTrackView';
 import ViolationAlert from './components/ViolationAlert';
+import { computeConvergence } from './utils/convergenceEngine';
+import { computeMatches, SLIDER_KEYS } from './utils/matchEngine';
+import { checkViolations } from './utils/violationRules';
 import './App.css';
 
-const INITIAL_VALUES = Object.fromEntries(SLIDER_KEYS.map((k) => [k, 50]));
-const INITIAL_LOCKS = Object.fromEntries(SLIDER_KEYS.map((k) => [k, false]));
+const INITIAL_VALUES = Object.fromEntries(SLIDER_KEYS.map((key) => [key, 50]));
 
 function App() {
   const [sliderValues, setSliderValues] = useState(INITIAL_VALUES);
-  const [lockedSliders, setLockedSliders] = useState(INITIAL_LOCKS);
 
-  const matches = useMemo(
-    () => computeMatches(sliderValues, estates),
-    [sliderValues]
-  );
+  const commonLawMatches = useMemo(() => {
+    return computeMatches(sliderValues, commonLawEstates);
+  }, [sliderValues]);
 
-  const violations = useMemo(
-    () => checkViolations(sliderValues),
-    [sliderValues]
-  );
+  const civilLawMatches = useMemo(() => {
+    return computeMatches(sliderValues, civilLawEstates);
+  }, [sliderValues]);
 
-  const handleSliderChange = useCallback((key, value) => {
-    setSliderValues((prev) => ({ ...prev, [key]: value }));
-  }, []);
+  const convergenceResults = useMemo(() => {
+    return computeConvergence(
+      commonLawMatches,
+      civilLawMatches,
+      harmonizationData
+    );
+  }, [commonLawMatches, civilLawMatches]);
 
-  const handleLockToggle = useCallback((key) => {
-    setLockedSliders((prev) => ({ ...prev, [key]: !prev[key] }));
-  }, []);
-
-  const handlePresetClick = useCallback(
-    (estate) => {
-      const midpoints = getMidpoints(estate);
-      setSliderValues((prev) => {
-        const next = { ...prev };
-        for (const key of SLIDER_KEYS) {
-          if (!lockedSliders[key]) {
-            next[key] = midpoints[key];
-          }
-        }
-        return next;
-      });
-    },
-    [lockedSliders]
-  );
-
-  const handleReset = useCallback(() => {
-    setSliderValues((prev) => {
-      const next = { ...prev };
-      for (const key of SLIDER_KEYS) {
-        if (!lockedSliders[key]) {
-          next[key] = 50;
-        }
-      }
-      return next;
+  const violations = useMemo(() => {
+    return checkViolations(sliderValues, {
+      commonLawMatches,
+      civilLawMatches,
     });
-    setLockedSliders(INITIAL_LOCKS);
-  }, [lockedSliders]);
+  }, [sliderValues, commonLawMatches, civilLawMatches]);
 
   return (
-    <div className="app">
-      <header className="app-header">
-        <h1>ccModel Explorer</h1>
-        <p className="app-subtitle">
-          Interactive property rights visualisation based on the Constraint Cascade Method
-        </p>
+    <div className="app-layout">
+      <header className="app-hero">
+        <div className="hero-shell">
+          <div className="hero-copy">
+            <p className="hero-kicker">Common Law + Civil Law Dual Track</p>
+            <h1>ccModel Explorer</h1>
+            <p className="hero-text">
+              Tune possession, use, income, alienation, exclusion, duration,
+              and inheritability, then compare how the same bundle resolves in
+              two property-law traditions.
+            </p>
+          </div>
+
+          <div className="hero-metrics">
+            <span className="metric-chip">11 common-law estates</span>
+            <span className="metric-chip">8 civil-law forms</span>
+            <span className="metric-chip">Top-3 convergence scan</span>
+          </div>
+        </div>
       </header>
 
-      <main className="app-main">
-        <section className="panel-left">
-          <SliderPanel
-            sliderValues={sliderValues}
-            lockedSliders={lockedSliders}
-            onSliderChange={handleSliderChange}
-            onLockToggle={handleLockToggle}
-            estates={estates}
-            onPresetClick={handlePresetClick}
-            onReset={handleReset}
-          />
-        </section>
+      <section className="panel-sliders">
+        <SliderPanel
+          values={sliderValues}
+          onChange={setSliderValues}
+          commonLawEstates={commonLawEstates}
+          civilLawEstates={civilLawEstates}
+        />
+      </section>
 
-        <section className="panel-right">
-          <EstateEngine matches={matches} />
-          <ViolationAlert violations={violations} />
-        </section>
+      <main className="app-main">
+        <DualTrackView
+          commonLawMatches={commonLawMatches}
+          civilLawMatches={civilLawMatches}
+          convergenceResults={convergenceResults}
+        />
       </main>
 
+      <ViolationAlert violations={violations} />
+
       <footer className="app-footer">
-        <p>
-          Based on the Constraint Cascade Method (Zhang, FAccT 2026)
-        </p>
-        <p className="license">
-          CC BY-SA 4.0
-        </p>
+        Constraint Cascade Method explorer with cross-tradition estate matching.
       </footer>
     </div>
   );

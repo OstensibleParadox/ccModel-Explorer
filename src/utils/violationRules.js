@@ -2,80 +2,75 @@ const RULES = [
   {
     id: 'alienation_without_possession',
     severity: 'error',
-    message: 'Alienation without possession',
-    explanation:
-      'Nemo dat quod non habet — one cannot transfer what one does not have. High alienability without a possessory basis lacks doctrinal foundation.',
-    authority: 'Nemo dat quod non habet; Sale of Goods Act 1979, s.21',
-    condition: (v) => v.alienation > 70 && v.possession < 20,
-  },
-  {
-    id: 'income_without_use_or_management',
-    severity: 'error',
-    message: 'Income without use or management',
-    explanation:
-      'Deriving income requires either direct use of the property or management authority over it. Income ex nihilo has no property-law basis.',
-    authority: "Honore, 'Ownership' (1961); cf. Street v Mountford [1985]",
-    condition: (v) => v.income > 70 && v.use < 20 && v.management < 20,
-  },
-  {
-    id: 'capital_without_possession',
-    severity: 'error',
-    message: 'Capital disposal without possession',
-    explanation:
-      'The right to consume, waste, or destroy presupposes physical control over the thing. Capital disposal without possession is doctrinally incoherent.',
-    authority: "Honore, 'Ownership' (1961); Merry v Green (1841)",
-    condition: (v) => v.capital > 70 && v.possession < 20,
+    message: 'High alienation without a possessory base is unstable.',
+    detail: 'Transfer power is outrunning the holder’s actual control of the thing.',
+    condition: (values) => values.alienation > 70 && values.possession < 15,
   },
   {
     id: 'exclusion_without_possession',
     severity: 'warning',
-    message: 'High exclusion without possession',
-    explanation:
-      'The right to exclude typically presupposes some possessory interest, though equitable interests may allow limited exclusion.',
-    authority: 'Bernstein v Skyviews [1978]; Kelsen v Imperial Tobacco [1957]',
-    condition: (v) => v.exclusion > 70 && v.possession < 25,
+    message: 'Strong exclusion with almost no possession is hard to sustain.',
+    detail: 'The bundle suggests gatekeeping power without corresponding factual control.',
+    condition: (values) => values.exclusion > 70 && values.possession < 15,
   },
   {
-    id: 'management_without_use',
+    id: 'income_without_use',
     severity: 'warning',
-    message: 'Management authority divorced from use',
-    explanation:
-      'Management authority without any use right is unusual and typically seen only in bare trusteeship arrangements.',
-    authority: 'Saunders v Vautier (1841); Trustee Act 2000',
-    condition: (v) => v.management > 70 && v.use < 15,
+    message: 'Income claims without meaningful use rights look under-specified.',
+    detail: 'The bundle extracts fruits while leaving the underlying use relation thin.',
+    condition: (values) => values.income > 70 && values.use < 20,
   },
   {
     id: 'full_bundle_without_alienation',
     severity: 'warning',
-    message: 'Near-complete ownership without alienability',
-    explanation:
-      'An estate carrying nearly all Honore incidents but lacking transferability resembles historical restraints on alienation, which are generally disfavoured in English law.',
-    authority: 'Quia Emptores 1290; Re Holliday [1981]',
-    condition: (v) =>
-      v.possession > 80 &&
-      v.use > 80 &&
-      v.management > 80 &&
-      v.income > 80 &&
-      v.capital > 80 &&
-      v.alienation < 20,
+    message: 'The bundle is near-perpetual and inheritable, but alienation is blocked.',
+    detail: 'That pattern resembles ownership stripped of one of its core market incidents.',
+    condition: (values) =>
+      values.duration > 80 &&
+      values.inheritability > 80 &&
+      values.alienation < 20,
   },
   {
-    id: 'alienation_without_capital',
-    severity: 'warning',
-    message: 'Alienation without capital rights',
-    explanation:
-      'Transferring an interest without underlying capital rights creates fragmented title — the transferee inherits a constrained bundle that may not reflect the transfer price.',
-    authority: 'LPA 1925, s.1; Tulk v Moxhay (1848)',
-    condition: (v) => v.alienation > 80 && v.capital < 15,
+    id: 'alienation_without_duration',
+    severity: 'error',
+    message: 'High alienation with almost no duration is incoherent.',
+    detail: 'A right that expires immediately cannot support broad transfer power.',
+    condition: (values) => values.alienation > 80 && values.duration < 15,
+  },
+  {
+    id: 'inheritability_without_duration',
+    severity: 'error',
+    message: 'Inheritance without durable duration is internally inconsistent.',
+    detail: 'The bundle purports to descend even though it barely survives the present holder.',
+    condition: (values) => values.inheritability > 70 && values.duration < 15,
+  },
+  {
+    id: 'numerus_clausus_violation',
+    severity: 'info',
+    message: 'The bundle is legible to common law but resists civil-law numerus clausus categories.',
+    detail: 'Civil law matching is weak even though common law still finds a comparatively stable estate form.',
+    condition: (values, context) => {
+      const topCivil = context.civilLawMatches?.[0]?.score ?? 0;
+      const topCommon = context.commonLawMatches?.[0]?.score ?? 0;
+      return topCivil < 0.5 && topCommon > 0.7;
+    },
+  },
+  {
+    id: 'abstraktionsprinzip_note',
+    severity: 'info',
+    message: 'The bundle hints at an abstraction-style separation of transfer and possession.',
+    detail: 'Alienation is high while possession remains materially lower than the transfer signal.',
+    condition: (values) => values.alienation > 60 && values.possession < 40,
   },
 ];
 
-/**
- * Check current slider values against property law violation rules.
- * Returns array of triggered violations (may be empty).
- */
-export function checkViolations(sliderValues) {
-  return RULES.filter((rule) => rule.condition(sliderValues)).map(
-    ({ condition, ...rest }) => rest
+export function checkViolations(
+  sliderValues,
+  { commonLawMatches, civilLawMatches } = {}
+) {
+  const context = { commonLawMatches, civilLawMatches };
+
+  return RULES.filter((rule) => rule.condition(sliderValues, context)).map(
+    ({ condition, ...rule }) => rule
   );
 }

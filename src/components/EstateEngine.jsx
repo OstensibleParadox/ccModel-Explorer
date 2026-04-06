@@ -1,52 +1,46 @@
-export default function EstateEngine({ matches }) {
-  const top3 = matches.slice(0, 3);
+export default function EstateEngine({
+  matches,
+  title = 'Common Law Track',
+  limit = 5,
+}) {
+  const visibleMatches = matches.slice(0, limit);
 
   return (
-    <div className="estate-engine">
-      <h2 className="section-title">Matching Estates</h2>
-      <div className="match-cards">
-        {top3.map(({ estate, score }, i) => {
-          const pct = Math.round(score * 100);
-          const isTop = i === 0;
+    <section className="track-panel">
+      <div className="track-heading">
+        <p className="track-kicker">Ranked Matches</p>
+        <h2 className="track-title">{title}</h2>
+      </div>
+
+      <div className="match-card-list">
+        {visibleMatches.map(({ estate, score }, index) => {
+          const percentage = Math.round(score * 100);
 
           return (
-            <div
+            <article
               key={estate.id}
-              className={`match-card ${isTop ? 'top-match' : ''}`}
+              className={`match-card ${index === 0 ? 'top-match' : ''}`}
             >
               <div className="match-header">
-                <h3 className="estate-name">{estate.name}</h3>
-                <span className="match-pct">{pct}%</span>
+                <div>
+                  <p className="match-rank">#{index + 1} common-law fit</p>
+                  <h3 className="estate-name">{estate.name}</h3>
+                </div>
+                <span className="match-pct">{percentage}%</span>
               </div>
 
-              <div className="match-bar-track">
+              <div className="match-bar">
                 <div
-                  className="match-bar-fill"
-                  style={{ width: `${pct}%` }}
+                  className="match-fill"
+                  style={{ width: `${percentage}%` }}
                 />
               </div>
 
               <p className="estate-description">{estate.description}</p>
-
-              {estate.subtypes && (
-                <div className="estate-subtypes">
-                  {estate.subtypes.map((st) => (
-                    <span key={st} className="subtype-tag">{st}</span>
-                  ))}
-                </div>
-              )}
-
-              <div className="estate-authority">
-                <code>{estate.key_authority}</code>
-              </div>
-
-              {estate.notes && (
-                <p className="estate-notes">{estate.notes}</p>
-              )}
-            </div>
+            </article>
           );
         })}
       </div>
-    </div>
+    </section>
   );
 }
