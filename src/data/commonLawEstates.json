@@ -1,1 +1,182 @@
-[]
+[
+  {
+    "id": "fee_simple_absolute",
+    "name": "Fee Simple Absolute",
+    "description": "The most complete form of ownership recognised in English law. The holder possesses the full bundle of Honore incidents with no temporal or conditional limitations.",
+    "ranges": {
+      "possession": [90, 100],
+      "use": [90, 100],
+      "management": [85, 100],
+      "income": [85, 100],
+      "capital": [85, 100],
+      "alienation": [90, 100],
+      "exclusion": [90, 100]
+    },
+    "key_authority": "LPA 1925, s.1(1)(a)",
+    "notes": "The baseline against which all lesser estates are measured. Nearest approximation to absolute dominion."
+  },
+  {
+    "id": "fee_simple_defeasible",
+    "name": "Fee Simple Defeasible",
+    "description": "Ownership subject to a condition subsequent or determinable limitation. The estate may be cut short upon the occurrence of a specified event.",
+    "ranges": {
+      "possession": [70, 95],
+      "use": [65, 90],
+      "management": [60, 90],
+      "income": [60, 90],
+      "capital": [40, 75],
+      "alienation": [35, 70],
+      "exclusion": [65, 90]
+    },
+    "subtypes": ["Fee simple determinable", "Fee simple subject to condition subsequent", "Fee simple subject to executory limitation"],
+    "key_authority": "Re Holliday [1981]; Littleton, Tenures, s.1",
+    "notes": "Capital and alienation are constrained because the defeasibility clouds the holder's ability to dispose freely."
+  },
+  {
+    "id": "life_estate",
+    "name": "Life Estate",
+    "description": "An estate measured by the duration of a natural life. The tenant has full possessory rights but must not commit waste, as the property will pass to the remainderman.",
+    "ranges": {
+      "possession": [75, 95],
+      "use": [65, 90],
+      "management": [50, 80],
+      "income": [50, 80],
+      "capital": [5, 25],
+      "alienation": [5, 30],
+      "exclusion": [60, 85]
+    },
+    "key_authority": "LPA 1925, s.149(6); Re Cartwright [1889]",
+    "notes": "The doctrine of waste constrains capital rights. Alienation is limited to the remaining life interest — the transferee gets no more than the original life tenant's duration."
+  },
+  {
+    "id": "leasehold",
+    "name": "Leasehold",
+    "description": "A possessory estate for a fixed term or periodic tenancy. The lessee has exclusive possession but is bound by the lease covenants and the landlord's reversionary interest.",
+    "ranges": {
+      "possession": [55, 85],
+      "use": [50, 80],
+      "management": [20, 55],
+      "income": [20, 60],
+      "capital": [0, 15],
+      "alienation": [10, 45],
+      "exclusion": [45, 75]
+    },
+    "subtypes": ["Fixed-term tenancy", "Periodic tenancy", "Tenancy at will"],
+    "key_authority": "Street v Mountford [1985]; LPA 1925, s.1(1)(b)",
+    "notes": "Alienation depends on assignment/subletting covenants. Capital rights are minimal — the tenant cannot destroy the landlord's reversion."
+  },
+  {
+    "id": "licence",
+    "name": "Licence",
+    "description": "A bare permission to enter or use land. Does not create a proprietary interest and is generally revocable at will, though contractual and estoppel licences may be irrevocable.",
+    "ranges": {
+      "possession": [5, 30],
+      "use": [20, 55],
+      "management": [0, 10],
+      "income": [0, 15],
+      "capital": [0, 5],
+      "alienation": [0, 5],
+      "exclusion": [0, 10]
+    },
+    "subtypes": ["Bare licence", "Contractual licence", "Licence coupled with interest", "Estoppel licence"],
+    "key_authority": "Thomas v Sorrell (1673); Ashburn Anstalt v Arnold [1989]",
+    "notes": "The critical distinction from a lease is the absence of exclusive possession. A licence binds only the parties and does not run with the land."
+  },
+  {
+    "id": "easement",
+    "name": "Easement",
+    "description": "A right to use another's land for a specific purpose (e.g., right of way, light, drainage). Requires a dominant and servient tenement and must accommodate the dominant land.",
+    "ranges": {
+      "possession": [0, 20],
+      "use": [25, 60],
+      "management": [0, 15],
+      "income": [0, 15],
+      "capital": [0, 5],
+      "alienation": [20, 50],
+      "exclusion": [0, 15]
+    },
+    "key_authority": "Re Ellenborough Park [1956]; LPA 1925, s.1(2)(a)",
+    "notes": "Must satisfy the Ellenborough Park criteria. Cannot amount to exclusive possession of the servient land or a right to take the natural produce."
+  },
+  {
+    "id": "restrictive_covenant",
+    "name": "Restrictive Covenant",
+    "description": "A negative obligation restricting the use of land, enforceable in equity against successors in title. The covenant must touch and concern the dominant land.",
+    "ranges": {
+      "possession": [0, 5],
+      "use": [0, 10],
+      "management": [30, 60],
+      "income": [0, 10],
+      "capital": [0, 5],
+      "alienation": [15, 40],
+      "exclusion": [20, 50]
+    },
+    "key_authority": "Tulk v Moxhay (1848); LPA 1925, s.56",
+    "notes": "A purely negative right — the holder cannot do anything on the burdened land but can prevent the burdened owner from specified acts. Positive covenants do not run in equity."
+  },
+  {
+    "id": "mortgage",
+    "name": "Mortgage",
+    "description": "A security interest in land. The mortgagee holds a charge over the property entitling them to possession and sale upon default, but the mortgagor retains the equity of redemption.",
+    "ranges": {
+      "possession": [0, 15],
+      "use": [0, 10],
+      "management": [5, 30],
+      "income": [10, 40],
+      "capital": [30, 70],
+      "alienation": [20, 50],
+      "exclusion": [0, 15]
+    },
+    "key_authority": "LPA 1925, s.85-87; Four-Maids Ltd v Dudley Marshall [1957]",
+    "notes": "Before default, most incidents remain with the mortgagor. Upon default, the mortgagee's capital and income rights activate dramatically. Ranges reflect the dormant-to-active spectrum."
+  },
+  {
+    "id": "trust_beneficial",
+    "name": "Trust (Beneficial Interest)",
+    "description": "The equitable interest of a beneficiary under a trust. Legal title vests in the trustee, but the beneficiary holds the economic substance — income, capital expectations, and beneficial enjoyment.",
+    "ranges": {
+      "possession": [10, 40],
+      "use": [25, 60],
+      "management": [5, 25],
+      "income": [55, 90],
+      "capital": [20, 55],
+      "alienation": [30, 60],
+      "exclusion": [10, 35]
+    },
+    "key_authority": "Saunders v Vautier (1841); Trustee Act 2000",
+    "notes": "Management is delegated to the trustee. Under Saunders v Vautier, an absolutely entitled adult beneficiary can collapse the trust and recover full incidents."
+  },
+  {
+    "id": "adverse_possession",
+    "name": "Adverse Possession",
+    "description": "Possessory title acquired through continuous, open, and adverse occupation for the limitation period. The squatter's rights crystallise progressively against the paper owner.",
+    "ranges": {
+      "possession": [75, 100],
+      "use": [65, 95],
+      "management": [45, 75],
+      "income": [30, 65],
+      "capital": [10, 40],
+      "alienation": [0, 20],
+      "exclusion": [55, 85]
+    },
+    "key_authority": "Limitation Act 1980, s.15; JA Pye v Graham [2003]",
+    "notes": "Possession is paramount — the squatter must demonstrate factual possession and intention to possess. Full alienation rights require registration under the Land Registration Act 2002."
+  },
+  {
+    "id": "profit_a_prendre",
+    "name": "Profit \u00e0 Prendre",
+    "description": "A right to take something from another's land — natural produce, soil, minerals, fish, or game. Unlike an easement, it involves removal of part of the servient land's substance.",
+    "ranges": {
+      "possession": [5, 25],
+      "use": [30, 65],
+      "management": [0, 15],
+      "income": [40, 75],
+      "capital": [10, 35],
+      "alienation": [20, 50],
+      "exclusion": [5, 25]
+    },
+    "subtypes": ["Profit appurtenant", "Profit in gross", "Profit pur cause de vicinage"],
+    "key_authority": "LPA 1925, s.1(2)(a); Bettison v Langton [2001]",
+    "notes": "Distinguished from easement by the right of severance — taking part of the land or its produce. Can exist in gross (without a dominant tenement) unlike easements."
+  }
+]
