@@ -3,6 +3,7 @@ import {
   getMidpointsWithContext,
   SLIDER_KEYS,
 } from '../utils/matchEngine';
+import { getMidpoints as getFrameworkMidpoints } from '../utils/aiMatchEngine';
 
 const RESET_VALUES = Object.fromEntries(SLIDER_KEYS.map((key) => [key, 50]));
 const JURISDICTION_OPTIONS = [
@@ -53,6 +54,9 @@ export default function SliderPanel({
   panelNote = null,
   sliderMeta = [],
   ui,
+  mode = 'property',
+  aiFrameworks = [],
+  onSliderPreset,
 }) {
   const annotationsByDimension = sliderAnnotations.reduce(
     (dimensionMap, annotation) => {
@@ -82,110 +86,145 @@ export default function SliderPanel({
         ) : null}
       </div>
 
-      <div className="context-stack">
-        <div className="context-selector">
-          <span className="preset-title">{ui.sliderPanel.jurisdictionContext}</span>
-          <div className="preset-pill-row context-pill-row">
-            {JURISDICTION_OPTIONS.map(({ value, code, civil }) => {
-              const isActive = activeJurisdiction === value;
-              const label =
-                code === 'none' ? ui.jurisdictionOptions.none : code;
-
-              return (
-                <button
-                  key={value ?? 'none'}
-                  type="button"
-                  className={`preset-pill context-pill ${civil ? 'civil' : ''} ${
-                    isActive ? 'is-active' : ''
-                  }`}
-                  aria-pressed={isActive}
-                  onClick={() => onJurisdictionChange(value)}
-                >
-                  {label}
-                </button>
-              );
-            })}
-          </div>
-        </div>
-
-        {activeJurisdiction === 'prc' ? (
+      {mode === 'property' && (
+        <div className="context-stack">
           <div className="context-selector">
-            <span className="preset-title">{ui.sliderPanel.prcAssetType}</span>
+            <span className="preset-title">{ui.sliderPanel.jurisdictionContext}</span>
             <div className="preset-pill-row context-pill-row">
-              {ASSET_TYPE_OPTIONS.map(({ value }) => {
-                const isActive = activeAssetType === value;
+              {JURISDICTION_OPTIONS.map(({ value, code, civil }) => {
+                const isActive = activeJurisdiction === value;
+                const label =
+                  code === 'none' ? ui.jurisdictionOptions.none : code;
 
                 return (
                   <button
-                    key={value}
+                    key={value ?? 'none'}
                     type="button"
-                    className={`preset-pill civil context-pill ${
+                    className={`preset-pill context-pill ${civil ? 'civil' : ''} ${
                       isActive ? 'is-active' : ''
                     }`}
                     aria-pressed={isActive}
-                    onClick={() => onAssetTypeChange(value)}
+                    onClick={() => onJurisdictionChange(value)}
                   >
-                    {ui.assetTypes[value]}
+                    {label}
                   </button>
                 );
               })}
             </div>
           </div>
-        ) : null}
-      </div>
 
-      <div className="preset-stack">
-        <div className="preset-section">
-          <div className="preset-section-header">
-            <span className="preset-title">{ui.sliderPanel.commonLaw}</span>
-            <button
-              type="button"
-              className="reset-button"
-              onClick={() => onChange(RESET_VALUES)}
-            >
-              {ui.sliderPanel.resetAll}
-            </button>
-          </div>
-          <div className="preset-pill-row">
-            {commonLawEstates.map((estate) => (
-              <button
-                key={estate.id}
-                type="button"
-                className="preset-pill"
-                onClick={() => onChange(getMidpoints(estate))}
-              >
-                {estate.name}
-              </button>
-            ))}
-          </div>
+          {activeJurisdiction === 'prc' ? (
+            <div className="context-selector">
+              <span className="preset-title">{ui.sliderPanel.prcAssetType}</span>
+              <div className="preset-pill-row context-pill-row">
+                {ASSET_TYPE_OPTIONS.map(({ value }) => {
+                  const isActive = activeAssetType === value;
+
+                  return (
+                    <button
+                      key={value}
+                      type="button"
+                      className={`preset-pill civil context-pill ${
+                        isActive ? 'is-active' : ''
+                      }`}
+                      aria-pressed={isActive}
+                      onClick={() => onAssetTypeChange(value)}
+                    >
+                      {ui.assetTypes[value]}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          ) : null}
         </div>
+      )}
 
-        <div className="preset-section">
-          <div className="preset-section-header">
-            <span className="preset-title">{ui.sliderPanel.civilLaw}</span>
-          </div>
-          <div className="preset-pill-row">
-            {civilLawEstates.map((estate) => (
+      {mode === 'property' && (
+        <div className="preset-stack">
+          <div className="preset-section">
+            <div className="preset-section-header">
+              <span className="preset-title">{ui.sliderPanel.commonLaw}</span>
               <button
-                key={estate.id}
                 type="button"
-                className="preset-pill civil"
-                onClick={() =>
-                  onChange(
-                    getMidpointsWithContext(
-                      estate,
-                      activeJurisdiction,
-                      activeAssetType
+                className="reset-button"
+                onClick={() => onChange(RESET_VALUES)}
+              >
+                {ui.sliderPanel.resetAll}
+              </button>
+            </div>
+            <div className="preset-pill-row">
+              {commonLawEstates.map((estate) => (
+                <button
+                  key={estate.id}
+                  type="button"
+                  className="preset-pill"
+                  onClick={() => onChange(getMidpoints(estate))}
+                >
+                  {estate.name}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="preset-section">
+            <div className="preset-section-header">
+              <span className="preset-title">{ui.sliderPanel.civilLaw}</span>
+            </div>
+            <div className="preset-pill-row">
+              {civilLawEstates.map((estate) => (
+                <button
+                  key={estate.id}
+                  type="button"
+                  className="preset-pill civil"
+                  onClick={() =>
+                    onChange(
+                      getMidpointsWithContext(
+                        estate,
+                        activeJurisdiction,
+                        activeAssetType
+                      )
                     )
-                  )
-                }
-              >
-                {getCivilPresetLabel(estate)}
-              </button>
-            ))}
+                  }
+                >
+                  {getCivilPresetLabel(estate)}
+                </button>
+              ))}
+            </div>
           </div>
         </div>
-      </div>
+      )}
+
+      {mode === 'ai' && (
+        <div className="preset-stack">
+          <div className="preset-section">
+            <div className="preset-section-header">
+              <span className="preset-title">Framework Presets</span>
+              <button
+                type="button"
+                className="reset-button"
+                onClick={() => onChange(RESET_VALUES)}
+              >
+                {ui.sliderPanel.resetAll}
+              </button>
+            </div>
+            <div className="preset-pill-row">
+              {aiFrameworks
+                .filter((f) => !f.special)
+                .map((framework) => (
+                  <button
+                    key={framework.id}
+                    type="button"
+                    className="preset-pill preset-pill--ai"
+                    onClick={() => onChange(getFrameworkMidpoints(framework))}
+                  >
+                    {framework.name}
+                  </button>
+                ))}
+            </div>
+          </div>
+        </div>
+      )}
 
       <div className="sliders">
         {sliderMeta.map(({ key, label, lowLabel, highLabel }) => {

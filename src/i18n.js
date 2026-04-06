@@ -1447,6 +1447,53 @@ export function getSliderMeta(locale) {
   }));
 }
 
+// AI governance dimension labels. Uses the same underlying slider keys but
+// relabels each dimension to its AI governance analogue.
+const AI_SLIDER_META_COPY = {
+  possession: {
+    label: 'Autonomy',
+    lowLabel: 'Fully human-controlled',
+    highLabel: 'Fully autonomous',
+  },
+  use: {
+    label: 'Capability Scope',
+    lowLabel: 'Narrow / restricted use',
+    highLabel: 'General-purpose, unrestricted',
+  },
+  income: {
+    label: 'Value Capture',
+    lowLabel: 'All value to users',
+    highLabel: 'All value to deployer',
+  },
+  alienation: {
+    label: 'Transferability',
+    lowLabel: 'Model locked to one context',
+    highLabel: 'Freely redistributable / open-source',
+  },
+  exclusion: {
+    label: 'Access Control',
+    lowLabel: 'Open to all',
+    highLabel: 'Restricted / gated access',
+  },
+  duration: {
+    label: 'Deployment Persistence',
+    lowLabel: 'Ephemeral / session-based',
+    highLabel: 'Permanent / always-on',
+  },
+  inheritability: {
+    label: 'Replicability',
+    lowLabel: 'Cannot be copied or distilled',
+    highLabel: 'Freely reproducible',
+  },
+};
+
+export function getAISliderMeta() {
+  return SLIDER_KEYS.map((key) => ({
+    key,
+    ...AI_SLIDER_META_COPY[key],
+  }));
+}
+
 export function getLocaleTag(locale) {
   return LOCALE_TAGS[locale] ?? LOCALE_TAGS.en;
 }

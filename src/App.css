@@ -1139,3 +1139,190 @@
     margin: -0.1rem 0 1rem;
   }
 }
+
+/* ─── Phase 4: Mode Switcher ─────────────────────────────────────────────── */
+
+.mode-switcher {
+  display: flex;
+  border: 1px solid rgba(248, 243, 231, 0.2);
+  border-radius: 999px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.mode-tab {
+  padding: 0.45rem 1.1rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  color: rgba(248, 243, 231, 0.65);
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  transition:
+    background-color 160ms ease,
+    color 160ms ease;
+  white-space: nowrap;
+}
+
+.mode-tab:hover {
+  color: var(--text-inverse);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.mode-tab.is-active {
+  color: var(--text-inverse);
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.mode-ai .mode-tab.is-active {
+  background: rgba(33, 92, 101, 0.55);
+}
+
+/* ─── Phase 4: AI Framework Presets ─────────────────────────────────────── */
+
+.preset-pill--ai {
+  border-color: rgba(33, 92, 101, 0.35);
+  color: var(--civil);
+  font-size: 0.8rem;
+}
+
+.preset-pill--ai:hover {
+  border-color: var(--civil);
+  background: var(--civil-soft);
+}
+
+/* ─── Phase 4: AI Framework Panel ───────────────────────────────────────── */
+
+.ai-framework-panel {
+  flex: 1;
+  min-width: 0;
+}
+
+.ai-panel-subtitle {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  margin-top: 0.25rem;
+}
+
+.ai-violation-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin: 1rem 0;
+}
+
+.ai-violation-chip {
+  display: flex;
+  gap: 0.75rem;
+  padding: 0.85rem 1rem;
+  border-radius: 12px;
+  border: 1px solid transparent;
+}
+
+.ai-violation-chip--error {
+  background: var(--error-bg);
+  border-color: var(--error-border);
+}
+
+.ai-violation-chip--warning {
+  background: var(--warning-bg);
+  border-color: var(--warning-border);
+}
+
+.ai-violation-icon {
+  flex-shrink: 0;
+  width: 1.4rem;
+  height: 1.4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  font-size: 0.75rem;
+  font-weight: 800;
+  margin-top: 0.1rem;
+}
+
+.ai-violation-chip--error .ai-violation-icon {
+  background: var(--error);
+  color: white;
+}
+
+.ai-violation-chip--warning .ai-violation-icon {
+  background: var(--warning);
+  color: white;
+}
+
+.ai-violation-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.ai-violation-message {
+  font-size: 0.9rem;
+  color: var(--text-primary);
+}
+
+.ai-violation-detail {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  line-height: 1.45;
+}
+
+.ai-violation-authority {
+  font-size: 0.76rem;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+.ai-framework-notes {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  margin-top: 0.35rem;
+  line-height: 1.45;
+}
+
+.ai-framework-authority {
+  font-size: 0.76rem;
+  color: var(--civil);
+  font-weight: 600;
+  margin-top: 0.2rem;
+}
+
+.ai-no-governance-note {
+  display: flex;
+  gap: 0.75rem;
+  align-items: flex-start;
+  margin-top: 1.5rem;
+  padding: 0.85rem 1rem;
+  border-radius: 12px;
+  border: 1px dashed var(--line-strong);
+  background: var(--surface-soft);
+  color: var(--text-muted);
+}
+
+.ai-no-governance-icon {
+  flex-shrink: 0;
+  font-size: 1.1rem;
+  margin-top: 0.1rem;
+  opacity: 0.7;
+}
+
+.ai-no-governance-note strong {
+  display: block;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  margin-bottom: 0.2rem;
+}
+
+.ai-no-governance-note p {
+  font-size: 0.8rem;
+  line-height: 1.45;
+}
+
+/* In AI mode, use the full width for the single panel */
+.mode-ai .app-main .ai-framework-panel .track-panel {
+  max-width: 860px;
+  margin: 0 auto;
+}

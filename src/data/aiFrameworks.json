@@ -1,0 +1,131 @@
+[
+  {
+    "id": "eu_ai_act_high_risk",
+    "name": "EU AI Act — High-Risk System",
+    "description": "Systems listed in Annex III requiring mandatory conformity assessment, registration in the EU database, and post-market monitoring.",
+    "ranges": {
+      "possession": [30, 70],
+      "use": [50, 90],
+      "income": [40, 80],
+      "alienation": [20, 60],
+      "exclusion": [60, 100],
+      "duration": [60, 100],
+      "inheritability": [10, 50]
+    },
+    "authority": "EU AI Act, Annex III",
+    "notes": "Mandatory conformity assessment, registration in EU database, post-market monitoring. Applies to AI in critical infrastructure, education, employment, essential services, law enforcement, migration, justice."
+  },
+  {
+    "id": "eu_ai_act_prohibited",
+    "name": "EU AI Act — Prohibited Practice",
+    "description": "Systems whose deployment is absolutely prohibited regardless of safeguards: social scoring, real-time biometric surveillance, manipulation of vulnerable groups.",
+    "ranges": {
+      "possession": [75, 100],
+      "use": [75, 100],
+      "income": [50, 100],
+      "alienation": [0, 50],
+      "exclusion": [60, 100],
+      "duration": [70, 100],
+      "inheritability": [0, 50]
+    },
+    "authority": "EU AI Act, Art. 5",
+    "notes": "Absolute prohibition. No conformity assessment path exists. Includes: subliminal manipulation, exploitation of vulnerabilities, real-time remote biometric identification in public spaces, social scoring by public authorities."
+  },
+  {
+    "id": "open_source_model",
+    "name": "Open-Source Model (e.g., Llama, Mistral)",
+    "description": "Publicly released model weights with permissive or open licences, freely downloadable and redistributable.",
+    "ranges": {
+      "possession": [20, 80],
+      "use": [40, 100],
+      "income": [0, 30],
+      "alienation": [85, 100],
+      "exclusion": [0, 20],
+      "duration": [20, 100],
+      "inheritability": [85, 100]
+    },
+    "authority": null,
+    "notes": "High transferability + high replicability + low access control = open-source profile. Value capture flows to downstream deployers, not model owners. Governance gap: open release forecloses post-deployment control."
+  },
+  {
+    "id": "closed_api_model",
+    "name": "Closed API Model (e.g., GPT, Claude)",
+    "description": "Model weights are proprietary; access is gated through a commercial API with usage terms. Deployer captures near-total value.",
+    "ranges": {
+      "possession": [30, 80],
+      "use": [60, 100],
+      "income": [60, 100],
+      "alienation": [0, 15],
+      "exclusion": [70, 100],
+      "duration": [80, 100],
+      "inheritability": [0, 10]
+    },
+    "authority": null,
+    "notes": "High value capture + low transferability + high access control = walled garden. Deployer retains full rents while disclaiming liability for downstream harms. This is the dominant commercial configuration globally."
+  },
+  {
+    "id": "frontier_model_pre_release",
+    "name": "Frontier Model — Safety Evaluation Stage",
+    "description": "Exists; capabilities confirmed; not publicly available. Undergoing internal or third-party safety evaluation before any release decision.",
+    "ranges": {
+      "possession": [70, 100],
+      "use": [80, 100],
+      "income": [0, 30],
+      "alienation": [0, 5],
+      "exclusion": [95, 100],
+      "duration": [50, 80],
+      "inheritability": [0, 5]
+    },
+    "authority": null,
+    "notes": "Maximum capability + maximum restriction. The safety testing paradox: you need to deploy to test, but deployment creates risk. No governance framework currently mandates pre-release evaluation before capabilities reach this level."
+  },
+  {
+    "id": "uk_framework",
+    "name": "UK Pro-Innovation AI Regulation",
+    "description": "Principles-based, sector-specific framework with no single AI regulator and no mandatory pre-deployment approval pathway.",
+    "ranges": {
+      "possession": [30, 90],
+      "use": [30, 100],
+      "income": [30, 90],
+      "alienation": [30, 80],
+      "exclusion": [20, 80],
+      "duration": [30, 100],
+      "inheritability": [20, 80]
+    },
+    "authority": "DSIT AI White Paper (2023); Bletchley Declaration (2023)",
+    "notes": "Wide ranges = deliberately flexible. Five cross-sector principles (safety, transparency, fairness, accountability, contestability) applied by existing sector regulators. No mandatory registration. Contrast with EU's prescriptive approach."
+  },
+  {
+    "id": "china_ai_regulation",
+    "name": "PRC AI Governance (Algorithm / GenAI / Deep Synthesis)",
+    "description": "Three overlapping regulations covering algorithmic recommendations, generative AI services, and synthetic media, all requiring security assessment before deployment.",
+    "ranges": {
+      "possession": [20, 60],
+      "use": [30, 80],
+      "income": [40, 80],
+      "alienation": [10, 40],
+      "exclusion": [60, 100],
+      "duration": [50, 90],
+      "inheritability": [5, 30]
+    },
+    "authority": "Algorithm Recommendation Regulation (2022); GenAI Measures (2023); Deep Synthesis Provisions (2023)",
+    "notes": "Low autonomy ceiling reflects mandatory content control and socialist core values alignment. Pre-launch security assessment required for GenAI services with public-facing outputs. ICP licence required for online deployment."
+  },
+  {
+    "id": "no_governance",
+    "name": "Unregulated Deployment",
+    "description": "No governance framework applies. All dimensions unconstrained. This is the current default for most AI deployments globally.",
+    "special": true,
+    "ranges": {
+      "possession": [0, 100],
+      "use": [0, 100],
+      "income": [0, 100],
+      "alienation": [0, 100],
+      "exclusion": [0, 100],
+      "duration": [0, 100],
+      "inheritability": [0, 100]
+    },
+    "authority": null,
+    "notes": "All sliders unconstrained. No framework matches because no framework exists. This is the current default for most AI deployments globally — including most closed API models operating outside the EU."
+  }
+]
