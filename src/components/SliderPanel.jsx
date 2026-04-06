@@ -1,6 +1,23 @@
-import { getMidpoints, SLIDER_KEYS, SLIDER_META } from '../utils/matchEngine';
+import {
+  getMidpoints,
+  getMidpointsWithContext,
+  SLIDER_KEYS,
+  SLIDER_META,
+} from '../utils/matchEngine';
 
 const RESET_VALUES = Object.fromEntries(SLIDER_KEYS.map((key) => [key, 50]));
+const JURISDICTION_OPTIONS = [
+  { value: null, label: 'None' },
+  { value: 'de', label: 'DE' },
+  { value: 'jp', label: 'JP' },
+  { value: 'tw', label: 'TW' },
+  { value: 'prc', label: 'PRC', civil: true },
+];
+const ASSET_TYPE_OPTIONS = [
+  { value: 'land', label: 'Land' },
+  { value: 'movables', label: 'Movables' },
+  { value: 'intangibles', label: 'Intangibles' },
+];
 
 function getCivilPresetLabel(estate) {
   return (
@@ -17,7 +34,21 @@ export default function SliderPanel({
   onChange,
   commonLawEstates,
   civilLawEstates,
+  activeJurisdiction,
+  onJurisdictionChange,
+  activeAssetType,
+  onAssetTypeChange,
+  sliderAnnotations = [],
 }) {
+  const annotationsByDimension = sliderAnnotations.reduce(
+    (dimensionMap, annotation) => {
+      dimensionMap[annotation.dimension] ??= [];
+      dimensionMap[annotation.dimension].push(annotation);
+      return dimensionMap;
+    },
+    {}
+  );
+
   return (
     <section className="slider-panel">
       <div className="panel-heading">
@@ -27,6 +58,56 @@ export default function SliderPanel({
           Move the bundle directly, or snap to a preset estate and compare
           how both traditions classify the same profile.
         </p>
+      </div>
+
+      <div className="context-stack">
+        <div className="context-selector">
+          <span className="preset-title">Jurisdiction Context</span>
+          <div className="preset-pill-row context-pill-row">
+            {JURISDICTION_OPTIONS.map(({ value, label, civil }) => {
+              const isActive = activeJurisdiction === value;
+
+              return (
+                <button
+                  key={value ?? 'none'}
+                  type="button"
+                  className={`preset-pill context-pill ${civil ? 'civil' : ''} ${
+                    isActive ? 'is-active' : ''
+                  }`}
+                  aria-pressed={isActive}
+                  onClick={() => onJurisdictionChange(value)}
+                >
+                  {label}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        {activeJurisdiction === 'prc' ? (
+          <div className="context-selector">
+            <span className="preset-title">PRC Asset Type</span>
+            <div className="preset-pill-row context-pill-row">
+              {ASSET_TYPE_OPTIONS.map(({ value, label }) => {
+                const isActive = activeAssetType === value;
+
+                return (
+                  <button
+                    key={value}
+                    type="button"
+                    className={`preset-pill civil context-pill ${
+                      isActive ? 'is-active' : ''
+                    }`}
+                    aria-pressed={isActive}
+                    onClick={() => onAssetTypeChange(value)}
+                  >
+                    {label}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        ) : null}
       </div>
 
       <div className="preset-stack">
@@ -65,7 +146,15 @@ export default function SliderPanel({
                 key={estate.id}
                 type="button"
                 className="preset-pill civil"
-                onClick={() => onChange(getMidpoints(estate))}
+                onClick={() =>
+                  onChange(
+                    getMidpointsWithContext(
+                      estate,
+                      activeJurisdiction,
+                      activeAssetType
+                    )
+                  )
+                }
               >
                 {getCivilPresetLabel(estate)}
               </button>
@@ -77,9 +166,19 @@ export default function SliderPanel({
       <div className="sliders">
         {SLIDER_META.map(({ key, label, lowLabel, highLabel }) => {
           const value = values[key];
+          const rowAnnotations = annotationsByDimension[key] ?? [];
+          const lockedAnnotation = rowAnnotations.find(
+            ({ severity }) => severity === 'locked'
+          );
+          const infoAnnotations = rowAnnotations.filter(
+            ({ severity }) => severity !== 'locked'
+          );
 
           return (
-            <div key={key} className="slider-row">
+            <div
+              key={key}
+              className={`slider-row ${lockedAnnotation ? 'slider-row--locked' : ''}`}
+            >
               <div className="slider-header">
                 <div>
                   <label className="slider-label" htmlFor={`slider-${key}`}>
@@ -111,6 +210,26 @@ export default function SliderPanel({
                 <span>{lowLabel}</span>
                 <span>{highLabel}</span>
               </div>
+
+              {lockedAnnotation ? (
+                <div className="slider-lock-note">
+                  <span className="slider-lock-indicator" aria-hidden="true" />
+                  <span>{lockedAnnotation.message}</span>
+                </div>
+              ) : null}
+
+              {infoAnnotations.length > 0 ? (
+                <div className="slider-annotation-list">
+                  {infoAnnotations.map(({ message, severity }, index) => (
+                    <div
+                      key={`${key}-${index}-${message}`}
+                      className={`slider-annotation-chip slider-annotation-chip--${severity}`}
+                    >
+                      {message}
+                    </div>
+                  ))}
+                </div>
+              ) : null}
             </div>
           );
         })}

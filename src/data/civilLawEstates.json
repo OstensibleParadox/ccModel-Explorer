@@ -17,6 +17,14 @@
       "duration": [95, 100],
       "inheritability": [95, 100]
     },
+    "jurisdictionOverrides": {
+      "prc": {
+        "land": {
+          "alienation": [0, 0],
+          "inheritability": [0, 0]
+        }
+      }
+    },
     "authorities": {
       "de": "§ 903 BGB",
       "jp": "民法206条",
@@ -43,6 +51,13 @@
       "exclusion": [55, 80],
       "duration": [70, 90],
       "inheritability": [75, 95]
+    },
+    "jurisdictionOverrides": {
+      "prc": {
+        "land": {
+          "duration": [35, 70]
+        }
+      }
     },
     "authorities": {
       "de": "§ 1 ErbbauRG",
@@ -124,6 +139,13 @@
       "exclusion": [0, 10],
       "duration": [20, 60],
       "inheritability": [20, 45]
+    },
+    "jurisdictionOverrides": {
+      "prc": {
+        "land": {
+          "_note": "PRC mortgages attach to the use right (建设用地使用权), not ownership."
+        }
+      }
     },
     "authorities": {
       "de": "§ 1113 BGB",
@@ -233,6 +255,13 @@
       "duration": [50, 75],
       "inheritability": [25, 50]
     },
+    "jurisdictionOverrides": {
+      "prc": {
+        "land": {
+          "alienation": [20, 60]
+        }
+      }
+    },
     "authorities": {
       "de": null,
       "jp": null,
@@ -259,6 +288,14 @@
       "exclusion": [60, 80],
       "duration": [65, 85],
       "inheritability": [15, 40]
+    },
+    "jurisdictionOverrides": {
+      "prc": {
+        "land": {
+          "alienation": [0, 5],
+          "exclusion": [80, 100]
+        }
+      }
     },
     "authorities": {
       "de": null,

@@ -45,6 +45,18 @@ const RULES = [
     condition: (values) => values.inheritability > 70 && values.duration < 15,
   },
   {
+    id: 'art_359_renewal',
+    severity: 'info',
+    message: 'PRC land-use duration is approaching the Art. 359 renewal zone.',
+    detail:
+      'Residential renewal is contemplated around the 70-year mark, but the renewal conditions remain unsettled.',
+    condition: (values, context) =>
+      context.jurisdiction === 'prc' &&
+      context.assetType === 'land' &&
+      values.duration >= 65 &&
+      values.duration <= 75,
+  },
+  {
     id: 'numerus_clausus_violation',
     severity: 'info',
     message: 'The bundle is legible to common law but resists civil-law numerus clausus categories.',
@@ -66,11 +78,20 @@ const RULES = [
 
 export function checkViolations(
   sliderValues,
-  { commonLawMatches, civilLawMatches } = {}
+  { commonLawMatches, civilLawMatches, jurisdiction, assetType } = {}
 ) {
-  const context = { commonLawMatches, civilLawMatches };
+  const context = {
+    commonLawMatches,
+    civilLawMatches,
+    jurisdiction,
+    assetType,
+  };
 
   return RULES.filter((rule) => rule.condition(sliderValues, context)).map(
-    ({ condition, ...rule }) => rule
+    (rule) => {
+      const sanitizedRule = { ...rule };
+      delete sanitizedRule.condition;
+      return sanitizedRule;
+    }
   );
 }

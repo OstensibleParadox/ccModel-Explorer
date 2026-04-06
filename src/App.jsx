@@ -6,7 +6,12 @@ import SliderPanel from './components/SliderPanel';
 import DualTrackView from './components/DualTrackView';
 import ViolationAlert from './components/ViolationAlert';
 import { computeConvergence } from './utils/convergenceEngine';
-import { computeMatches, SLIDER_KEYS } from './utils/matchEngine';
+import {
+  computeCivilMatches,
+  computeMatches,
+  SLIDER_KEYS,
+} from './utils/matchEngine';
+import { getSliderAnnotations } from './utils/jurisdictionResolver';
 import { checkViolations } from './utils/violationRules';
 import './App.css';
 
@@ -14,14 +19,47 @@ const INITIAL_VALUES = Object.fromEntries(SLIDER_KEYS.map((key) => [key, 50]));
 
 function App() {
   const [sliderValues, setSliderValues] = useState(INITIAL_VALUES);
+  const [activeJurisdiction, setActiveJurisdiction] = useState(null);
+  const [activeAssetType, setActiveAssetType] = useState(null);
+
+  function handleJurisdictionChange(jurisdiction) {
+    const nextJurisdiction =
+      activeJurisdiction === jurisdiction ? null : jurisdiction;
+
+    setActiveJurisdiction(nextJurisdiction);
+
+    if (nextJurisdiction !== 'prc') {
+      setActiveAssetType(null);
+    }
+  }
+
+  function handleAssetTypeChange(assetType) {
+    setActiveAssetType((currentAssetType) =>
+      currentAssetType === assetType ? null : assetType
+    );
+  }
 
   const commonLawMatches = useMemo(() => {
     return computeMatches(sliderValues, commonLawEstates);
   }, [sliderValues]);
 
   const civilLawMatches = useMemo(() => {
-    return computeMatches(sliderValues, civilLawEstates);
-  }, [sliderValues]);
+    return computeCivilMatches(
+      sliderValues,
+      civilLawEstates,
+      activeJurisdiction,
+      activeAssetType
+    );
+  }, [sliderValues, activeJurisdiction, activeAssetType]);
+
+  const sliderAnnotations = useMemo(() => {
+    return getSliderAnnotations(
+      civilLawMatches[0]?.estate,
+      activeJurisdiction,
+      activeAssetType,
+      sliderValues
+    );
+  }, [civilLawMatches, activeJurisdiction, activeAssetType, sliderValues]);
 
   const convergenceResults = useMemo(() => {
     return computeConvergence(
@@ -35,8 +73,16 @@ function App() {
     return checkViolations(sliderValues, {
       commonLawMatches,
       civilLawMatches,
+      jurisdiction: activeJurisdiction,
+      assetType: activeAssetType,
     });
-  }, [sliderValues, commonLawMatches, civilLawMatches]);
+  }, [
+    sliderValues,
+    commonLawMatches,
+    civilLawMatches,
+    activeJurisdiction,
+    activeAssetType,
+  ]);
 
   return (
     <div className="app-layout">
@@ -66,6 +112,11 @@ function App() {
           onChange={setSliderValues}
           commonLawEstates={commonLawEstates}
           civilLawEstates={civilLawEstates}
+          activeJurisdiction={activeJurisdiction}
+          onJurisdictionChange={handleJurisdictionChange}
+          activeAssetType={activeAssetType}
+          onAssetTypeChange={handleAssetTypeChange}
+          sliderAnnotations={sliderAnnotations}
         />
       </section>
 
@@ -74,6 +125,7 @@ function App() {
           commonLawMatches={commonLawMatches}
           civilLawMatches={civilLawMatches}
           convergenceResults={convergenceResults}
+          activeJurisdiction={activeJurisdiction}
         />
       </main>
 

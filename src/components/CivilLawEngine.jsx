@@ -17,13 +17,13 @@ function getCivilDisplayName(estate) {
   );
 }
 
-function CivilLawCard({ estate, score, index }) {
+function CivilLawCard({ estate, score, index, activeJurisdiction }) {
   const defaultJurisdiction =
     JURISDICTIONS.find(({ key }) => estate.names[key])?.key ?? 'de';
-  const [activeJurisdiction, setActiveJurisdiction] =
+  const [mobileJurisdiction, setMobileJurisdiction] =
     useState(defaultJurisdiction);
   const activeLabel = JURISDICTIONS.find(
-    ({ key }) => key === activeJurisdiction
+    ({ key }) => key === mobileJurisdiction
   );
   const percentage = Math.round(score * 100);
 
@@ -45,7 +45,11 @@ function CivilLawCard({ estate, score, index }) {
         {JURISDICTIONS.map(({ key, label }) => (
           <div
             key={key}
-            className={`jurisdiction-cell ${estate.names[key] ? '' : 'empty'}`}
+            className={`jurisdiction-cell ${estate.names[key] ? '' : 'empty'} ${
+              activeJurisdiction === key && estate.names[key]
+                ? 'active-context'
+                : ''
+            }`}
           >
             <span className="jurisdiction-code">{label}</span>
             <span className="jurisdiction-name">{estate.names[key] ?? '---'}</span>
@@ -64,9 +68,9 @@ function CivilLawCard({ estate, score, index }) {
             key={key}
             type="button"
             className={`civil-tab ${
-              activeJurisdiction === key ? 'active' : ''
+              mobileJurisdiction === key ? 'active' : ''
             } ${estate.names[key] ? '' : 'empty'}`}
-            onClick={() => setActiveJurisdiction(key)}
+            onClick={() => setMobileJurisdiction(key)}
           >
             {label}
           </button>
@@ -77,12 +81,12 @@ function CivilLawCard({ estate, score, index }) {
         <div className="mobile-jurisdiction-header">
           <span className="jurisdiction-code">{activeLabel?.label ?? '---'}</span>
           <span className="jurisdiction-name">
-            {estate.names[activeJurisdiction] ?? '---'}
+            {estate.names[mobileJurisdiction] ?? '---'}
           </span>
         </div>
-        {estate.authorities[activeJurisdiction] ? (
+        {estate.authorities[mobileJurisdiction] ? (
           <p className="jurisdiction-authority">
-            {estate.authorities[activeJurisdiction]}
+            {estate.authorities[mobileJurisdiction]}
           </p>
         ) : null}
       </div>
@@ -117,6 +121,7 @@ export default function CivilLawEngine({
   matches,
   title = 'Civil Law Track',
   limit = 5,
+  activeJurisdiction = null,
 }) {
   const visibleMatches = matches.slice(0, limit);
 
@@ -134,6 +139,7 @@ export default function CivilLawEngine({
             estate={estate}
             score={score}
             index={index}
+            activeJurisdiction={activeJurisdiction}
           />
         ))}
       </div>

@@ -23,12 +23,17 @@ export default function DualTrackView({
   commonLawMatches,
   civilLawMatches,
   convergenceResults,
+  activeJurisdiction,
 }) {
   return (
     <section className="dual-track-view">
       <div className="dual-track-columns">
         <EstateEngine matches={commonLawMatches} title="Common Law Track" />
-        <CivilLawEngine matches={civilLawMatches} title="Civil Law Track" />
+        <CivilLawEngine
+          matches={civilLawMatches}
+          title="Civil Law Track"
+          activeJurisdiction={activeJurisdiction}
+        />
       </div>
 
       <section className="convergence-panel">
