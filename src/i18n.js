@@ -281,6 +281,158 @@ const UI_COPY = {
     },
   },
 };
+function isPlainObject(value) {
+  return value != null && typeof value === "object" && !Array.isArray(value);
+}
+
+function mergeDeep(base, overrides) {
+  if (!isPlainObject(base)) {
+    return overrides ?? base;
+  }
+
+  const result = { ...base };
+
+  Object.entries(overrides ?? {}).forEach(([key, value]) => {
+    const existing = result[key];
+
+    if (isPlainObject(existing) && isPlainObject(value)) {
+      result[key] = mergeDeep(existing, value);
+      return;
+    }
+
+    result[key] = value;
+  });
+
+  return result;
+}
+
+const UI_ENHANCEMENTS = {
+  en: {
+    sliderPanel: {
+      copyIntl:
+        "Switch to the international economic law lens to relabel the seven dimensions and compare each term's eigenvalue share inside the current bundle. Match-card percentages remain match scores.",
+      commonLawContext: "Common-Law Context",
+      civilLawContext: "Civil-Law Context",
+      eigenvalueShare: "Eigenvalue Share",
+      lockButton: "Configure threshold lock",
+      lockEnable: "Enforce cap",
+      lockThreshold: "Threshold",
+      lockedAt: (threshold) =>
+        `Manual cap enabled: this term cannot exceed ${threshold}.`,
+      commonLawContextHints: {
+        uk: "UK context narrows registered-land adverse possession after the Land Registration Act 2002 and treats fee tail as effectively historical.",
+        us: "US context keeps adverse possession more operational and fee tail mostly historical, with limited survival in a few states.",
+      },
+    },
+    termModes: {
+      aria: "Terminology lens",
+      property: "Property Law",
+      internationalEconomic: "International Economic Law",
+    },
+    harmonisation: {
+      kicker: "Harmonisation",
+      title: "International Instruments",
+      idle:
+        "Move sliders until both tracks match to see which international instruments have operationalised this configuration.",
+      empty:
+        "No international instruments are triggered by the current configuration.",
+      overshoot: "Harmonisation Overshoot",
+    },
+  },
+  zh: {
+    sliderPanel: {
+      copyIntl:
+        "切换到国际经济法术语镜头后，七维会改用国际经济法术语，并显示各术语在当前权利束中的 eigenvalue 占比。结果卡片上的百分比仍然是匹配分数，不是 eigenvalue。",
+      commonLawContext: "普通法上下文",
+      civilLawContext: "大陆法上下文",
+      eigenvalueShare: "eigenvalue 占比",
+      lockButton: "设置阈值锁定",
+      lockEnable: "启用上限",
+      lockThreshold: "阈值",
+      lockedAt: (threshold) => `手动锁定已启用：该术语不得超过 ${threshold}。`,
+      commonLawContextHints: {
+        uk: "英国法语境会明显收紧登记土地上的逆权占有，并把 fee tail 视为基本只剩历史意义的类别。",
+        us: "美国法语境下，逆权占有仍更具操作性；fee tail 在绝大多数州已历史化，但少数州仍留有残迹。",
+      },
+    },
+    termModes: {
+      aria: "术语镜头",
+      property: "财产法术语",
+      internationalEconomic: "国际经济法术语",
+    },
+    harmonisation: {
+      kicker: "协调化",
+      title: "国际法文书",
+      idle: "把滑块继续推到普通法和大陆法两轨同时稳定匹配时，再看哪些国际文书已经把这种结构操作化。",
+      empty: "当前配置尚未触发任何国际法文书。",
+      overshoot: "协调化超调",
+    },
+  },
+  de: {
+    sliderPanel: {
+      copyIntl:
+        "Der begriffliche Layer des internationalen Wirtschaftsrechts benennt die sieben Dimensionen um und zeigt den Eigenwertanteil jedes Terms im aktuellen Bündel. Die Prozentwerte in den Trefferkarten bleiben Match-Scores.",
+      commonLawContext: "Common-Law-Kontext",
+      civilLawContext: "Zivilrechtskontext",
+      eigenvalueShare: "Eigenwertanteil",
+      lockButton: "Schwellensperre konfigurieren",
+      lockEnable: "Obergrenze erzwingen",
+      lockThreshold: "Schwelle",
+      lockedAt: (threshold) =>
+        `Manuelle Sperre aktiv: Dieser Term darf ${threshold} nicht überschreiten.`,
+      commonLawContextHints: {
+        uk: "Der UK-Kontext verengt adverse possession bei registriertem Land nach dem Land Registration Act 2002 deutlich und behandelt fee tail praktisch nur noch historisch.",
+        us: "Der US-Kontext hält adverse possession operativer; fee tail ist meist historisch, lebt aber in wenigen Staaten in Restformen fort.",
+      },
+    },
+    termModes: {
+      aria: "Begriffslinse",
+      property: "Eigentumsrecht",
+      internationalEconomic: "Internationales Wirtschaftsrecht",
+    },
+    harmonisation: {
+      kicker: "Harmonisierung",
+      title: "Internationale Instrumente",
+      idle:
+        "Verschiebe die Slider, bis beide Spuren tragfähig matchen, um zu sehen, welche internationalen Instrumente diese Konfiguration bereits operationalisiert haben.",
+      empty:
+        "Die aktuelle Konfiguration löst keine internationalen Instrumente aus.",
+      overshoot: "Harmonisierungsüberschuss",
+    },
+  },
+  ja: {
+    sliderPanel: {
+      copyIntl:
+        "国際経済法の術語レンズに切り替えると、七次元が国際経済法の語彙に置き換わり、各術語の eigenvalue 比率も表示されます。カード上の百分率は引き続き一致スコアであり、eigenvalue ではありません。",
+      commonLawContext: "コモンロー文脈",
+      civilLawContext: "大陸法文脈",
+      eigenvalueShare: "eigenvalue 比率",
+      lockButton: "閾値ロックを設定",
+      lockEnable: "上限を適用",
+      lockThreshold: "閾値",
+      lockedAt: (threshold) =>
+        `手動ロックが有効です。この術語は ${threshold} を超えられません。`,
+      commonLawContextHints: {
+        uk: "UK 文脈では Land Registration Act 2002 以後、登録土地での adverse possession がかなり狭まり、fee tail もほぼ歴史的分類として扱われます。",
+        us: "US 文脈では adverse possession がなお実務的で、fee tail は大半の州で歴史化していますが一部には残滓があります。",
+      },
+    },
+    termModes: {
+      aria: "術語レンズ",
+      property: "財産法術語",
+      internationalEconomic: "国際経済法術語",
+    },
+    harmonisation: {
+      kicker: "調和化",
+      title: "国際文書",
+      idle:
+        "両トラックが安定して一致するまでスライダーを動かすと、この構成をすでに実装している国際文書が見えてきます。",
+      empty:
+        "現在の構成では、該当する国際文書はまだ起動していません。",
+      overshoot: "調和化オーバーシュート",
+    },
+  },
+};
 
 const SLIDER_META_COPY = {
   en: {
@@ -1435,7 +1587,13 @@ export function getLanguageOption(locale) {
 }
 
 export function getUiCopy(locale) {
-  return UI_COPY[locale] ?? UI_COPY.en;
+  const baseCopy = mergeDeep(UI_COPY.en, UI_COPY[locale] ?? {});
+  const enhancementCopy = mergeDeep(
+    UI_ENHANCEMENTS.en,
+    UI_ENHANCEMENTS[locale] ?? {}
+  );
+
+  return mergeDeep(baseCopy, enhancementCopy);
 }
 
 export function getSliderMeta(locale) {

@@ -37,6 +37,7 @@ export default function DualTrackView({
         <HarmonisationPanel
           bothTracksMatch={bothTracksMatch}
           instruments={filteredInstruments}
+          ui={ui}
         />
         <CivilLawEngine
           matches={civilLawMatches}

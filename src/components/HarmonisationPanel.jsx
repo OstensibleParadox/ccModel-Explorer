@@ -1,15 +1,15 @@
 const INSTRUMENT_ORDER = ['CISG', 'UNCITRAL', 'UNIDROIT', 'Cape Town'];
 
-export default function HarmonisationPanel({ bothTracksMatch, instruments }) {
+export default function HarmonisationPanel({ bothTracksMatch, instruments, ui }) {
   if (!bothTracksMatch) {
     return (
       <section className="harmonisation-panel harmonisation-panel--idle track-panel">
         <div className="track-heading">
-          <p className="track-kicker">Harmonisation</p>
-          <h2 className="track-title">International Instruments</h2>
+          <p className="track-kicker">{ui.harmonisation.kicker}</p>
+          <h2 className="track-title">{ui.harmonisation.title}</h2>
         </div>
         <p className="harmonisation-placeholder">
-          Move sliders until both tracks match to see which international instruments have operationalised this configuration.
+          {ui.harmonisation.idle}
         </p>
       </section>
     );
@@ -26,8 +26,8 @@ export default function HarmonisationPanel({ bothTracksMatch, instruments }) {
   return (
     <section className="harmonisation-panel track-panel">
       <div className="track-heading">
-        <p className="track-kicker">Harmonisation</p>
-        <h2 className="track-title">International Instruments</h2>
+        <p className="track-kicker">{ui.harmonisation.kicker}</p>
+        <h2 className="track-title">{ui.harmonisation.title}</h2>
       </div>
 
       {hasAny ? (
@@ -41,7 +41,7 @@ export default function HarmonisationPanel({ bothTracksMatch, instruments }) {
                   className={`instrument-card${entry.isOvershoot ? ' instrument-card--overshoot' : ''}`}
                 >
                   {entry.isOvershoot ? (
-                    <span className="overshoot-label">Harmonisation Overshoot</span>
+                    <span className="overshoot-label">{ui.harmonisation.overshoot}</span>
                   ) : null}
                   <div className="instrument-header">
                     <span className="article-badge">{entry.article}</span>
@@ -60,7 +60,7 @@ export default function HarmonisationPanel({ bothTracksMatch, instruments }) {
         </div>
       ) : (
         <p className="harmonisation-placeholder">
-          No international instruments are triggered by the current configuration.
+          {ui.harmonisation.empty}
         </p>
       )}
     </section>

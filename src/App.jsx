@@ -35,6 +35,7 @@ import { computeFrameworkMatches, getMidpoints as getFrameworkMidpoints } from '
 import { getSliderAnnotations } from './utils/jurisdictionResolver';
 import { checkViolations, computeSliderBounds } from './utils/violationRules';
 import { checkAIViolations, computeAISliderBounds } from './utils/aiViolationRules';
+import { localizeInstrument } from './utils/instrumentLocalization';
 import { filterInstruments } from './utils/instrumentEngine';
 import './App.css';
 
@@ -275,9 +276,14 @@ function App() {
   }, [commonLawMatches, civilLawMatches]);
 
   const filteredInstruments = useMemo(() => {
-    if (!bothTracksMatch) return [];
-    return filterInstruments(sliderValues, harmonizationInstruments);
-  }, [bothTracksMatch, sliderValues]);
+    if (!bothTracksMatch) {
+      return [];
+    }
+
+    return filterInstruments(sliderValues, harmonizationInstruments).map((entry) =>
+      localizeInstrument(entry, locale)
+    );
+  }, [bothTracksMatch, locale, sliderValues]);
 
   return (
     <div className={`app-layout ${mode === 'ai' ? 'mode-ai' : 'mode-property'}`}>
