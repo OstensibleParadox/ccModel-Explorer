@@ -281,7 +281,6 @@ const UI_COPY = {
     },
   },
 };
-
 function isPlainObject(value) {
   return value != null && typeof value === "object" && !Array.isArray(value);
 }
@@ -1606,165 +1605,50 @@ export function getSliderMeta(locale) {
   }));
 }
 
-const INTL_ECONOMIC_SLIDER_META_COPY = {
-  en: {
-    possession: {
-      label: "Jurisdictional Control",
-      lowLabel: "Diffuse or weak control",
-      highLabel: "Exclusive regulatory control",
-    },
-    use: {
-      label: "Market Access",
-      lowLabel: "No protected access",
-      highLabel: "Broad protected access",
-    },
-    income: {
-      label: "Revenue Capture",
-      lowLabel: "No protected returns",
-      highLabel: "Full protected returns",
-    },
-    alienation: {
-      label: "Assignment Capacity",
-      lowLabel: "Non-assignable position",
-      highLabel: "Freely assignable position",
-    },
-    exclusion: {
-      label: "Exclusivity",
-      lowLabel: "Open or non-exclusive",
-      highLabel: "Exclusive or fenced position",
-    },
-    duration: {
-      label: "Stability Horizon",
-      lowLabel: "Revocable or short-term",
-      highLabel: "Long-term or stabilised",
-    },
-    inheritability: {
-      label: "Successor Continuity",
-      lowLabel: "Ends with current holder",
-      highLabel: "Fully successor-protected",
-    },
+// AI governance dimension labels. Uses the same underlying slider keys but
+// relabels each dimension to its AI governance analogue.
+const AI_SLIDER_META_COPY = {
+  possession: {
+    label: 'Autonomy',
+    lowLabel: 'Fully human-controlled',
+    highLabel: 'Fully autonomous',
   },
-  zh: {
-    possession: {
-      label: "法域控制",
-      lowLabel: "控制分散或薄弱",
-      highLabel: "排他的规制控制",
-    },
-    use: {
-      label: "市场准入",
-      lowLabel: "没有受保护的准入",
-      highLabel: "广泛受保护的准入",
-    },
-    income: {
-      label: "收益捕获",
-      lowLabel: "没有受保护的回报",
-      highLabel: "完整受保护的回报",
-    },
-    alienation: {
-      label: "让与能力",
-      lowLabel: "地位不可让与",
-      highLabel: "地位可自由让与",
-    },
-    exclusion: {
-      label: "排除性",
-      lowLabel: "开放或非排他",
-      highLabel: "排他或围栏式控制",
-    },
-    duration: {
-      label: "稳定期",
-      lowLabel: "可撤销或短期",
-      highLabel: "长期或稳定化",
-    },
-    inheritability: {
-      label: "继受连续性",
-      lowLabel: "随现持有人终止",
-      highLabel: "对继受人充分保护",
-    },
+  use: {
+    label: 'Capability Scope',
+    lowLabel: 'Narrow / restricted use',
+    highLabel: 'General-purpose, unrestricted',
   },
-  de: {
-    possession: {
-      label: "Jurisdiktionskontrolle",
-      lowLabel: "Diffuse oder schwache Kontrolle",
-      highLabel: "Exklusive Regulierungskontrolle",
-    },
-    use: {
-      label: "Marktzugang",
-      lowLabel: "Kein geschützter Zugang",
-      highLabel: "Breiter geschützter Zugang",
-    },
-    income: {
-      label: "Ertragsabschöpfung",
-      lowLabel: "Keine geschützten Erträge",
-      highLabel: "Volle geschützte Erträge",
-    },
-    alienation: {
-      label: "Abtretungsfähigkeit",
-      lowLabel: "Nicht abtretbare Position",
-      highLabel: "Frei abtretbare Position",
-    },
-    exclusion: {
-      label: "Exklusivität",
-      lowLabel: "Offen oder nicht exklusiv",
-      highLabel: "Exklusiv oder eingehegt",
-    },
-    duration: {
-      label: "Stabilitätshorizont",
-      lowLabel: "Widerruflich oder kurzfristig",
-      highLabel: "Langfristig oder stabilisiert",
-    },
-    inheritability: {
-      label: "Nachfolgerkontinuität",
-      lowLabel: "Endet mit dem aktuellen Inhaber",
-      highLabel: "Voll nachfolgergeschützt",
-    },
+  income: {
+    label: 'Value Capture',
+    lowLabel: 'All value to users',
+    highLabel: 'All value to deployer',
   },
-  ja: {
-    possession: {
-      label: "法域支配",
-      lowLabel: "支配が分散または希薄",
-      highLabel: "排他的な規制支配",
-    },
-    use: {
-      label: "市場アクセス",
-      lowLabel: "保護されたアクセスなし",
-      highLabel: "広く保護されたアクセス",
-    },
-    income: {
-      label: "収益捕捉",
-      lowLabel: "保護された収益なし",
-      highLabel: "完全に保護された収益",
-    },
-    alienation: {
-      label: "譲渡可能性",
-      lowLabel: "譲渡不能な地位",
-      highLabel: "自由に譲渡できる地位",
-    },
-    exclusion: {
-      label: "排他性",
-      lowLabel: "開放的または非排他的",
-      highLabel: "排他的または囲い込み型",
-    },
-    duration: {
-      label: "安定期間",
-      lowLabel: "取消可能または短期",
-      highLabel: "長期または安定化済み",
-    },
-    inheritability: {
-      label: "承継連続性",
-      lowLabel: "現保有者で終了",
-      highLabel: "承継人まで十分保護",
-    },
+  alienation: {
+    label: 'Transferability',
+    lowLabel: 'Model locked to one context',
+    highLabel: 'Freely redistributable / open-source',
+  },
+  exclusion: {
+    label: 'Access Control',
+    lowLabel: 'Open to all',
+    highLabel: 'Restricted / gated access',
+  },
+  duration: {
+    label: 'Deployment Persistence',
+    lowLabel: 'Ephemeral / session-based',
+    highLabel: 'Permanent / always-on',
+  },
+  inheritability: {
+    label: 'Replicability',
+    lowLabel: 'Cannot be copied or distilled',
+    highLabel: 'Freely reproducible',
   },
 };
 
-export function getIntlEconomicSliderMeta(locale) {
-  const copy =
-    INTL_ECONOMIC_SLIDER_META_COPY[locale] ??
-    INTL_ECONOMIC_SLIDER_META_COPY.en;
-
+export function getAISliderMeta() {
   return SLIDER_KEYS.map((key) => ({
     key,
-    ...copy[key],
+    ...AI_SLIDER_META_COPY[key],
   }));
 }
 

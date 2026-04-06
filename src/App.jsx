@@ -3,18 +3,20 @@ import commonLawEstates from './data/commonLawEstates.json';
 import civilLawEstates from './data/civilLawEstates.json';
 import harmonizationData from './data/harmonization.json';
 import harmonizationInstruments from './data/harmonizationInstruments.json';
+import aiFrameworks from './data/aiFrameworks.json';
 import LanguageSwitcher from './components/LanguageSwitcher';
 import ModeSwitcher from './components/ModeSwitcher';
 import SliderPanel from './components/SliderPanel';
 import DualTrackView from './components/DualTrackView';
+import AIFrameworkPanel from './components/AIFrameworkPanel';
 import ViolationAlert from './components/ViolationAlert';
 import {
   DEFAULT_LOCALE,
   LOCALE_STORAGE_KEY,
   detectLocale,
-  getIntlEconomicSliderMeta,
   getLanguageOption,
   getSliderMeta,
+  getAISliderMeta,
   getUiCopy,
   isSupportedLocale,
   localizeCommonLawEstate,
@@ -24,22 +26,37 @@ import {
   localizeViolation,
 } from './i18n';
 import { computeConvergence } from './utils/convergenceEngine';
-import { computeCivilMatches, SLIDER_KEYS } from './utils/matchEngine';
 import {
-  computeCommonLawMatches,
-} from './utils/commonLawResolver';
-import { localizeInstrument } from './utils/instrumentLocalization';
+  computeCivilMatches,
+  SLIDER_KEYS,
+} from './utils/matchEngine';
+import { computeCommonLawMatches } from './utils/commonLawResolver';
+import { computeFrameworkMatches, getMidpoints as getFrameworkMidpoints } from './utils/aiMatchEngine';
 import { getSliderAnnotations } from './utils/jurisdictionResolver';
 import { checkViolations, computeSliderBounds } from './utils/violationRules';
+import { checkAIViolations, computeAISliderBounds } from './utils/aiViolationRules';
+import { localizeInstrument } from './utils/instrumentLocalization';
 import { filterInstruments } from './utils/instrumentEngine';
 import './App.css';
 
 const MATCH_THRESHOLD = 0.5;
+
 const INITIAL_VALUES = Object.fromEntries(SLIDER_KEYS.map((key) => [key, 50]));
 const INITIAL_SLIDER_LOCKS = Object.fromEntries(
   SLIDER_KEYS.map((key) => [key, { enabled: false, threshold: null }])
 );
 
+// Default slider configuration for AI Governance mode: Closed API Model midpoints.
+// Triggers value_capture_without_accountability immediately to demonstrate the demo.
+const AI_DEFAULT_VALUES = {
+  possession: 55,    // autonomy — moderate
+  use: 80,           // capability scope — high
+  income: 80,        // value capture — high
+  alienation: 7,     // transferability — locked
+  exclusion: 85,     // access control — gated
+  duration: 90,      // deployment persistence — always-on
+  inheritability: 5, // replicability — proprietary
+};
 const DOCUMENT_TITLES = {
   en: 'ccModel Explorer',
   zh: 'ccModel Explorer | 简体中文',
@@ -80,7 +97,7 @@ function normalizeThreshold(value, fallbackValue) {
 
 function App() {
   const [locale, setLocale] = useState(resolveInitialLocale);
-  const [mode, setMode] = useState('property');
+  const [mode, setMode] = useState('property'); // 'property' | 'ai'
   const [sliderValues, setSliderValues] = useState(INITIAL_VALUES);
   const [sliderLocks, setSliderLocks] = useState(INITIAL_SLIDER_LOCKS);
   const [activeCommonLawJurisdiction, setActiveCommonLawJurisdiction] =
@@ -90,12 +107,8 @@ function App() {
 
   const ui = useMemo(() => getUiCopy(locale), [locale]);
   const propertySliderMeta = useMemo(() => getSliderMeta(locale), [locale]);
-  const intlEconomicSliderMeta = useMemo(
-    () => getIntlEconomicSliderMeta(locale),
-    [locale]
-  );
-  const sliderMeta =
-    mode === 'intl' ? intlEconomicSliderMeta : propertySliderMeta;
+  const aiSliderMetaMemo = useMemo(() => getAISliderMeta(), []);
+  const sliderMeta = mode === 'ai' ? aiSliderMetaMemo : propertySliderMeta;
   const languageOption = useMemo(() => getLanguageOption(locale), [locale]);
 
   useEffect(() => {
@@ -137,7 +150,7 @@ function App() {
 
     setActiveCivilJurisdiction(nextJurisdiction);
 
-    if (nextJurisdiction !== 'prc') {
+    if (nextJurisdiction != 'prc') {
       setActiveAssetType(null);
     }
   }
@@ -150,13 +163,29 @@ function App() {
 
   function handleModeChange(nextMode) {
     setMode(nextMode);
+    if (nextMode === 'ai') {
+      setSliderValues(AI_DEFAULT_VALUES);
+      setActiveCommonLawJurisdiction(null);
+      setActiveCivilJurisdiction(null);
+      setActiveAssetType(null);
+    } else {
+      setSliderValues(
+        clampSliderValues(
+          INITIAL_VALUES,
+          computeSliderBounds(INITIAL_VALUES, sliderLocks)
+        )
+      );
+    }
   }
 
   function handleSliderChange(nextValues) {
     setSliderValues((currentValues) => {
       const resolvedValues =
         typeof nextValues === 'function' ? nextValues(currentValues) : nextValues;
-      const nextBounds = computeSliderBounds(resolvedValues, sliderLocks);
+      const nextBounds =
+        mode === 'ai'
+          ? computeAISliderBounds()
+          : computeSliderBounds(resolvedValues, sliderLocks);
 
       return clampSliderValues(resolvedValues, nextBounds);
     });
@@ -181,7 +210,12 @@ function App() {
       };
 
       setSliderValues((currentValues) =>
-        clampSliderValues(currentValues, computeSliderBounds(currentValues, nextLocks))
+        clampSliderValues(
+          currentValues,
+          mode === 'ai'
+            ? computeAISliderBounds()
+            : computeSliderBounds(currentValues, nextLocks)
+        )
       );
 
       return nextLocks;
@@ -203,7 +237,12 @@ function App() {
       };
 
       setSliderValues((currentValues) =>
-        clampSliderValues(currentValues, computeSliderBounds(currentValues, nextLocks))
+        clampSliderValues(
+          currentValues,
+          mode === 'ai'
+            ? computeAISliderBounds()
+            : computeSliderBounds(currentValues, nextLocks)
+        )
       );
 
       return nextLocks;
@@ -211,8 +250,20 @@ function App() {
   }
 
   const sliderBounds = useMemo(() => {
-    return computeSliderBounds(sliderValues, sliderLocks);
-  }, [sliderValues, sliderLocks]);
+    return mode === 'ai'
+      ? computeAISliderBounds()
+      : computeSliderBounds(sliderValues, sliderLocks);
+  }, [mode, sliderLocks, sliderValues]);
+
+  const frameworkMatches = useMemo(() => {
+    if (mode !== 'ai') return [];
+    return computeFrameworkMatches(sliderValues, aiFrameworks);
+  }, [mode, sliderValues]);
+
+  const aiViolations = useMemo(() => {
+    if (mode !== 'ai') return [];
+    return checkAIViolations(sliderValues);
+  }, [mode, sliderValues]);
 
   const commonLawMatches = useMemo(() => {
     return computeCommonLawMatches(
@@ -273,30 +324,36 @@ function App() {
   }, [rawViolations, locale]);
 
   const sliderAnnotations = useMemo(() => {
-    const localizedAnnotations = baseSliderAnnotations.map((annotation) =>
+    const annotations = baseSliderAnnotations.map((annotation) =>
       localizeSliderAnnotation(annotation, locale)
     );
-    const manualLockAnnotations = SLIDER_KEYS.flatMap((key) => {
-      const sliderLock = sliderLocks[key];
+    const manualLockAnnotations =
+      mode === 'property'
+        ? SLIDER_KEYS.flatMap((key) => {
+            const sliderLock = sliderLocks[key];
 
-      if (!sliderLock?.enabled) {
-        return [];
-      }
+            if (!sliderLock?.enabled) {
+              return [];
+            }
 
-      const threshold = normalizeThreshold(sliderLock.threshold, sliderValues[key]);
+            const threshold = normalizeThreshold(
+              sliderLock.threshold,
+              sliderValues[key]
+            );
 
-      return [
-        {
-          dimension: key,
-          message: ui.sliderPanel.lockedAt(threshold),
-          severity: 'locked',
-        },
-      ];
-    });
+            return [
+              {
+                dimension: key,
+                message: ui.sliderPanel.lockedAt(threshold),
+                severity: 'locked',
+              },
+            ];
+          })
+        : [];
 
     violations.forEach((violation) => {
       if (violation.id === 'abstraktionsprinzip_note') {
-        localizedAnnotations.push({
+        annotations.push({
           dimension: 'alienation',
           message: violation.message,
           severity: 'info',
@@ -304,12 +361,15 @@ function App() {
       }
     });
 
-    return [...manualLockAnnotations, ...localizedAnnotations];
-  }, [baseSliderAnnotations, locale, sliderLocks, sliderValues, ui, violations]);
+    return [...manualLockAnnotations, ...annotations];
+  }, [baseSliderAnnotations, locale, mode, sliderLocks, sliderValues, ui, violations]);
 
   const toastViolations = useMemo(() => {
+    if (mode === 'ai') {
+      return aiViolations.filter(({ severity }) => severity !== 'info');
+    }
     return violations.filter(({ severity }) => severity !== 'info');
-  }, [violations]);
+  }, [mode, aiViolations, violations]);
 
   const sliderPanelNote = useMemo(() => {
     return (
@@ -334,20 +394,20 @@ function App() {
     );
   }, [bothTracksMatch, locale, sliderValues]);
 
-  const commonLawContextHint =
-    activeCommonLawJurisdiction == null
-      ? null
-      : ui.sliderPanel.commonLawContextHints?.[activeCommonLawJurisdiction] ??
-        null;
-
   return (
-    <div className={`app-layout ${mode === 'intl' ? 'mode-intl' : 'mode-property'}`}>
+    <div className={`app-layout ${mode === 'ai' ? 'mode-ai' : 'mode-property'}`}>
       <header className="app-hero">
         <div className="hero-shell">
           <div className="hero-copy">
-            <p className="hero-kicker">{ui.heroKicker}</p>
+            <p className="hero-kicker">
+              {mode === 'ai' ? 'AI Governance — Constraint Cascade' : ui.heroKicker}
+            </p>
             <h1>ccModel Explorer</h1>
-            <p className="hero-text">{ui.heroText}</p>
+            <p className="hero-text">
+              {mode === 'ai'
+                ? 'The same seven-dimension constraint cascade logic maps any AI system configuration to known governance frameworks. Adjust the sliders and watch violations fire in real time.'
+                : ui.heroText}
+            </p>
           </div>
 
           <div className="hero-aside">
@@ -355,13 +415,23 @@ function App() {
               <LanguageSwitcher locale={locale} onChange={setLocale} ui={ui} />
             </div>
 
-            <ModeSwitcher mode={mode} onChange={handleModeChange} ui={ui} />
+            <ModeSwitcher mode={mode} onChange={handleModeChange} />
 
-            <div className="hero-metrics">
-              <span className="metric-chip">{ui.heroMetrics.commonLaw}</span>
-              <span className="metric-chip">{ui.heroMetrics.civilLaw}</span>
-              <span className="metric-chip">{ui.heroMetrics.convergence}</span>
-            </div>
+            {mode === 'property' && (
+              <div className="hero-metrics">
+                <span className="metric-chip">{ui.heroMetrics.commonLaw}</span>
+                <span className="metric-chip">{ui.heroMetrics.civilLaw}</span>
+                <span className="metric-chip">{ui.heroMetrics.convergence}</span>
+              </div>
+            )}
+
+            {mode === 'ai' && (
+              <div className="hero-metrics">
+                <span className="metric-chip">7 governance frameworks</span>
+                <span className="metric-chip">3 violation rules</span>
+                <span className="metric-chip">FAccT 2026 demo</span>
+              </div>
+            )}
           </div>
         </div>
       </header>
@@ -370,43 +440,57 @@ function App() {
         <SliderPanel
           values={sliderValues}
           onChange={handleSliderChange}
-          commonLawEstates={localizedCommonLawEstates}
-          civilLawEstates={localizedCivilLawEstates}
-          activeCommonLawJurisdiction={activeCommonLawJurisdiction}
-          onCommonLawJurisdictionChange={handleCommonLawJurisdictionChange}
-          activeCivilJurisdiction={activeCivilJurisdiction}
-          onCivilLawJurisdictionChange={handleCivilJurisdictionChange}
-          activeAssetType={activeAssetType}
-          onAssetTypeChange={handleAssetTypeChange}
-          sliderAnnotations={sliderAnnotations}
+          commonLawEstates={mode === 'property' ? localizedCommonLawEstates : []}
+          civilLawEstates={mode === 'property' ? localizedCivilLawEstates : []}
+          activeCommonLawJurisdiction={
+            mode === 'property' ? activeCommonLawJurisdiction : null
+          }
+          onCommonLawJurisdictionChange={
+            mode === 'property' ? handleCommonLawJurisdictionChange : () => {}
+          }
+          activeCivilJurisdiction={mode === 'property' ? activeCivilJurisdiction : null}
+          onCivilLawJurisdictionChange={
+            mode === 'property' ? handleCivilLawJurisdictionChange : () => {}
+          }
+          activeAssetType={mode === 'property' ? activeAssetType : null}
+          onAssetTypeChange={mode === 'property' ? handleAssetTypeChange : () => {}}
+          sliderAnnotations={mode === 'property' ? sliderAnnotations : []}
           sliderBounds={sliderBounds}
-          panelNote={sliderPanelNote}
+          panelNote={mode === 'property' ? sliderPanelNote : null}
           sliderMeta={sliderMeta}
-          sliderLocks={sliderLocks}
+          sliderLocks={mode === 'property' ? sliderLocks : {}}
           onSliderLockToggle={handleSliderLockToggle}
           onSliderLockThresholdChange={handleSliderLockThresholdChange}
           ui={ui}
-          locale={locale}
           mode={mode}
-          commonLawContextHint={commonLawContextHint}
+          aiFrameworks={aiFrameworks}
+          onSliderPreset={handleSliderChange}
         />
       </section>
 
       <ViolationAlert violations={toastViolations} />
 
       <main className="app-main">
-        <DualTrackView
-          commonLawMatches={commonLawMatches}
-          civilLawMatches={civilLawMatches}
-          convergenceResults={convergenceResults}
-          bothTracksMatch={bothTracksMatch}
-          filteredInstruments={filteredInstruments}
-          activeJurisdiction={activeCivilJurisdiction}
-          locale={locale}
-          ui={ui}
-        />
+        {mode === 'property' ? (
+          <DualTrackView
+            commonLawMatches={commonLawMatches}
+            civilLawMatches={civilLawMatches}
+            convergenceResults={convergenceResults}
+            bothTracksMatch={bothTracksMatch}
+            filteredInstruments={filteredInstruments}
+            activeJurisdiction={activeCivilJurisdiction}
+            locale={locale}
+            ui={ui}
+          />
+        ) : (
+          <AIFrameworkPanel
+            matches={frameworkMatches}
+            violations={aiViolations}
+            frameworks={aiFrameworks}
+            locale={locale}
+          />
+        )}
       </main>
-
       <footer className="app-footer">{ui.footer}</footer>
     </div>
   );

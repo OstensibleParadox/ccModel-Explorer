@@ -1,9 +1,9 @@
 import { useState } from 'react';
-import { formatScore } from '../i18n';
 import {
   getMidpointsWithContext,
   SLIDER_KEYS,
 } from '../utils/matchEngine';
+import { getMidpoints as getFrameworkMidpoints } from '../utils/aiMatchEngine';
 import { getCommonLawMidpointsWithContext } from '../utils/commonLawResolver';
 
 const RESET_VALUES = Object.fromEntries(SLIDER_KEYS.map((key) => [key, 50]));
@@ -24,7 +24,6 @@ const ASSET_TYPE_OPTIONS = [
   { value: 'movables' },
   { value: 'intangibles' },
 ];
-
 function getCivilPresetLabel(estate) {
   return (
     estate.displayName ??
@@ -60,7 +59,7 @@ export default function SliderPanel({
   activeCommonLawJurisdiction,
   onCommonLawJurisdictionChange,
   activeCivilJurisdiction,
-  onCivilJurisdictionChange,
+  onCivilLawJurisdictionChange,
   activeAssetType,
   onAssetTypeChange,
   sliderAnnotations = [],
@@ -71,9 +70,9 @@ export default function SliderPanel({
   onSliderLockToggle,
   onSliderLockThresholdChange,
   ui,
-  locale,
   mode = 'property',
-  commonLawContextHint = null,
+  aiFrameworks = [],
+  onSliderPreset,
 }) {
   const [openLockRows, setOpenLockRows] = useState({});
   const annotationsByDimension = sliderAnnotations.reduce(
@@ -84,19 +83,6 @@ export default function SliderPanel({
     },
     {}
   );
-  const eigenvalueTotal =
-    SLIDER_KEYS.reduce((sum, key) => sum + values[key], 0) || 1;
-  const panelNotes = [
-    ...(commonLawContextHint
-      ? [
-          {
-            id: `common-law-context-${activeCommonLawJurisdiction}`,
-            message: commonLawContextHint,
-          },
-        ]
-      : []),
-    ...(panelNote ? [{ id: panelNote.id, ...panelNote }] : []),
-  ];
 
   function toggleLockRow(key) {
     setOpenLockRows((currentRows) => ({
@@ -110,163 +96,191 @@ export default function SliderPanel({
       <div className="panel-heading">
         <p className="panel-kicker">{ui.sliderPanel.kicker}</p>
         <h2 className="track-title">{ui.sliderPanel.title}</h2>
-        <p className="panel-copy">
-          {mode === 'intl' ? ui.sliderPanel.copyIntl : ui.sliderPanel.copy}
-        </p>
-        {panelNotes.length > 0 ? (
-          <div className="panel-inline-note-stack">
-            {panelNotes.map((note) => (
-              <div
-                key={note.id}
-                className="panel-inline-note"
-                title={note.detail ?? note.message}
-              >
-                <span className="panel-inline-note-icon" aria-hidden="true">
-                  i
-                </span>
-                <span>{note.message}</span>
-              </div>
-            ))}
+        <p className="panel-copy">{ui.sliderPanel.copy}</p>
+        {panelNote ? (
+          <div
+            className="panel-inline-note"
+            title={panelNote.detail ?? panelNote.message}
+          >
+            <span className="panel-inline-note-icon" aria-hidden="true">
+              i
+            </span>
+            <span>{panelNote.message}</span>
           </div>
         ) : null}
       </div>
 
-      <div className="context-stack">
-        <div className="context-selector">
-          <span className="preset-title">{ui.sliderPanel.commonLawContext}</span>
-          <div className="preset-pill-row context-pill-row">
-            {COMMON_LAW_CONTEXT_OPTIONS.map(({ value, code }) => {
-              const isActive = activeCommonLawJurisdiction === value;
-              const label =
-                code === 'none' ? ui.jurisdictionOptions.none : code;
-
-              return (
-                <button
-                  key={value ?? 'common-none'}
-                  type="button"
-                  className={`preset-pill context-pill ${
-                    isActive ? 'is-active' : ''
-                  }`}
-                  aria-pressed={isActive}
-                  onClick={() => onCommonLawJurisdictionChange(value)}
-                >
-                  {label}
-                </button>
-              );
-            })}
-          </div>
-        </div>
-
-        <div className="context-selector">
-          <span className="preset-title">{ui.sliderPanel.civilLawContext}</span>
-          <div className="preset-pill-row context-pill-row">
-            {CIVIL_LAW_CONTEXT_OPTIONS.map(({ value, code, civil }) => {
-              const isActive = activeCivilJurisdiction === value;
-              const label =
-                code === 'none' ? ui.jurisdictionOptions.none : code;
-
-              return (
-                <button
-                  key={value ?? 'civil-none'}
-                  type="button"
-                  className={`preset-pill context-pill ${civil ? 'civil' : ''} ${
-                    isActive ? 'is-active' : ''
-                  }`}
-                  aria-pressed={isActive}
-                  onClick={() => onCivilLawJurisdictionChange(value)}
-                >
-                  {label}
-                </button>
-              );
-            })}
-          </div>
-        </div>
-
-        {activeCivilJurisdiction === 'prc' ? (
+      {mode === 'property' && (
+        <div className="context-stack">
           <div className="context-selector">
-            <span className="preset-title">{ui.sliderPanel.prcAssetType}</span>
+            <span className="preset-title">{ui.sliderPanel.commonLawContext}</span>
             <div className="preset-pill-row context-pill-row">
-              {ASSET_TYPE_OPTIONS.map(({ value }) => {
-                const isActive = activeAssetType === value;
+              {COMMON_LAW_CONTEXT_OPTIONS.map(({ value, code }) => {
+                const isActive = activeCommonLawJurisdiction === value;
+                const label =
+                  code === 'none' ? ui.jurisdictionOptions.none : code;
 
                 return (
                   <button
-                    key={value}
+                    key={value ?? 'common-none'}
                     type="button"
-                    className={`preset-pill civil context-pill ${
+                    className={`preset-pill context-pill ${
                       isActive ? 'is-active' : ''
                     }`}
                     aria-pressed={isActive}
-                    onClick={() => onAssetTypeChange(value)}
+                    onClick={() => onCommonLawJurisdictionChange(value)}
                   >
-                    {ui.assetTypes[value]}
+                    {label}
                   </button>
                 );
               })}
             </div>
           </div>
-        ) : null}
-      </div>
 
-      <div className="preset-stack">
-        <div className="preset-section">
-          <div className="preset-section-header">
-            <span className="preset-title">{ui.sliderPanel.commonLaw}</span>
-            <button
-              type="button"
-              className="reset-button"
-              onClick={() => onChange(RESET_VALUES)}
-            >
-              {ui.sliderPanel.resetAll}
-            </button>
+          <div className="context-selector">
+            <span className="preset-title">{ui.sliderPanel.civilLawContext}</span>
+            <div className="preset-pill-row context-pill-row">
+              {CIVIL_LAW_CONTEXT_OPTIONS.map(({ value, code, civil }) => {
+                const isActive = activeCivilJurisdiction === value;
+                const label =
+                  code === 'none' ? ui.jurisdictionOptions.none : code;
+
+                return (
+                  <button
+                    key={value ?? 'civil-none'}
+                    type="button"
+                    className={`preset-pill context-pill ${civil ? 'civil' : ''} ${
+                      isActive ? 'is-active' : ''
+                    }`}
+                    aria-pressed={isActive}
+                    onClick={() => onCivilLawJurisdictionChange(value)}
+                  >
+                    {label}
+                  </button>
+                );
+              })}
+            </div>
           </div>
-          <div className="preset-pill-row">
-            {commonLawEstates.map((estate) => (
+
+          {activeCivilJurisdiction === 'prc' ? (
+            <div className="context-selector">
+              <span className="preset-title">{ui.sliderPanel.prcAssetType}</span>
+              <div className="preset-pill-row context-pill-row">
+                {ASSET_TYPE_OPTIONS.map(({ value }) => {
+                  const isActive = activeAssetType === value;
+
+                  return (
+                    <button
+                      key={value}
+                      type="button"
+                      className={`preset-pill civil context-pill ${
+                        isActive ? 'is-active' : ''
+                      }`}
+                      aria-pressed={isActive}
+                      onClick={() => onAssetTypeChange(value)}
+                    >
+                      {ui.assetTypes[value]}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          ) : null}
+        </div>
+      )}
+
+      {mode === 'property' && (
+        <div className="preset-stack">
+          <div className="preset-section">
+            <div className="preset-section-header">
+              <span className="preset-title">{ui.sliderPanel.commonLaw}</span>
               <button
-                key={estate.id}
                 type="button"
-                className="preset-pill"
-                onClick={() =>
-                  onChange(
-                    getCommonLawMidpointsWithContext(
-                      estate,
-                      activeCommonLawJurisdiction
-                    )
-                  )
-                }
+                className="reset-button"
+                onClick={() => onChange(RESET_VALUES)}
               >
-                {estate.name}
+                {ui.sliderPanel.resetAll}
               </button>
-            ))}
+            </div>
+            <div className="preset-pill-row">
+              {commonLawEstates.map((estate) => (
+                <button
+                  key={estate.id}
+                  type="button"
+                  className="preset-pill"
+                  onClick={() =>
+                    onChange(
+                      getCommonLawMidpointsWithContext(
+                        estate,
+                        activeCommonLawJurisdiction
+                      )
+                    )
+                  }
+                >
+                  {estate.name}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="preset-section">
+            <div className="preset-section-header">
+              <span className="preset-title">{ui.sliderPanel.civilLaw}</span>
+            </div>
+            <div className="preset-pill-row">
+              {civilLawEstates.map((estate) => (
+                <button
+                  key={estate.id}
+                  type="button"
+                  className="preset-pill civil"
+                  onClick={() =>
+                    onChange(
+                      getMidpointsWithContext(
+                        estate,
+                        activeCivilJurisdiction,
+                        activeAssetType
+                      )
+                    )
+                  }
+                >
+                  {getCivilPresetLabel(estate)}
+                </button>
+              ))}
+            </div>
           </div>
         </div>
+      )}
 
-        <div className="preset-section">
-          <div className="preset-section-header">
-            <span className="preset-title">{ui.sliderPanel.civilLaw}</span>
-          </div>
-          <div className="preset-pill-row">
-            {civilLawEstates.map((estate) => (
+      {mode === 'ai' && (
+        <div className="preset-stack">
+          <div className="preset-section">
+            <div className="preset-section-header">
+              <span className="preset-title">Framework Presets</span>
               <button
-                key={estate.id}
                 type="button"
-                className="preset-pill civil"
-                onClick={() =>
-                  onChange(
-                    getMidpointsWithContext(
-                      estate,
-                      activeCivilJurisdiction,
-                      activeAssetType
-                    )
-                  )
-                }
+                className="reset-button"
+                onClick={() => onChange(RESET_VALUES)}
               >
-                {getCivilPresetLabel(estate)}
+                {ui.sliderPanel.resetAll}
               </button>
-            ))}
+            </div>
+            <div className="preset-pill-row">
+              {aiFrameworks
+                .filter((f) => !f.special)
+                .map((framework) => (
+                  <button
+                    key={framework.id}
+                    type="button"
+                    className="preset-pill preset-pill--ai"
+                    onClick={() => onChange(getFrameworkMidpoints(framework))}
+                  >
+                    {framework.name}
+                  </button>
+                ))}
+            </div>
           </div>
         </div>
-      </div>
+      )}
 
       <div className="sliders">
         {sliderMeta.map(({ key, label, lowLabel, highLabel }) => {
@@ -295,11 +309,7 @@ export default function SliderPanel({
             enabled: false,
             threshold: null,
           };
-          const thresholdValue = normalizeThreshold(
-            lockState.threshold,
-            value
-          );
-          const eigenvalueShare = value / eigenvalueTotal;
+          const thresholdValue = normalizeThreshold(lockState.threshold, value);
 
           return (
             <div
@@ -311,26 +321,21 @@ export default function SliderPanel({
                   <label className="slider-label" htmlFor={`slider-${key}`}>
                     {label}
                   </label>
-                  {mode === 'intl' ? (
-                    <span className="slider-eigenvalue-chip">
-                      {ui.sliderPanel.eigenvalueShare}{' '}
-                      {formatScore(eigenvalueShare, locale)}
-                    </span>
-                  ) : null}
                 </div>
-
                 <div className="slider-header-tools">
-                  <button
-                    type="button"
-                    className={`slider-lock-button ${
-                      lockState.enabled ? 'is-enabled' : ''
-                    }`}
-                    aria-expanded={openLockRows[key] ? 'true' : 'false'}
-                    aria-label={`${ui.sliderPanel.lockButton}: ${label}`}
-                    onClick={() => toggleLockRow(key)}
-                  >
-                    🔒
-                  </button>
+                  {mode === 'property' ? (
+                    <button
+                      type="button"
+                      className={`slider-lock-button ${
+                        lockState.enabled ? 'is-enabled' : ''
+                      }`}
+                      aria-expanded={openLockRows[key] ? 'true' : 'false'}
+                      aria-label={`${ui.sliderPanel.lockButton}: ${label}`}
+                      onClick={() => toggleLockRow(key)}
+                    >
+                      🔒
+                    </button>
+                  ) : null}
                   <output className="slider-value" htmlFor={`slider-${key}`}>
                     {value}
                   </output>
@@ -378,7 +383,7 @@ export default function SliderPanel({
                 <span>{highLabel}</span>
               </div>
 
-              {(openLockRows[key] || lockState.enabled) && (
+              {mode === 'property' && (openLockRows[key] || lockState.enabled) ? (
                 <div className="slider-lock-controls">
                   <label className="slider-lock-switch">
                     <input
@@ -413,7 +418,7 @@ export default function SliderPanel({
                     />
                   </label>
                 </div>
-              )}
+              ) : null}
 
               {lockedAnnotations.length > 0 ? (
                 <div className="slider-lock-note-list">
