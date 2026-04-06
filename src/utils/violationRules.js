@@ -1,3 +1,5 @@
+import { SLIDER_KEYS } from './matchEngine';
+
 const RULES = [
   {
     id: 'alienation_without_possession',
@@ -5,6 +7,17 @@ const RULES = [
     message: 'High alienation without a possessory base is unstable.',
     detail: 'Transfer power is outrunning the holder’s actual control of the thing.',
     condition: (values) => values.alienation > 70 && values.possession < 15,
+    bounds: (values) => {
+      if (values.possession <= 15) {
+        return [{ key: 'alienation', max: 70 }];
+      }
+
+      if (values.alienation >= 70) {
+        return [{ key: 'possession', min: 15 }];
+      }
+
+      return [];
+    },
   },
   {
     id: 'exclusion_without_possession',
@@ -36,6 +49,17 @@ const RULES = [
     message: 'High alienation with almost no duration is incoherent.',
     detail: 'A right that expires immediately cannot support broad transfer power.',
     condition: (values) => values.alienation > 80 && values.duration < 15,
+    bounds: (values) => {
+      if (values.duration <= 15) {
+        return [{ key: 'alienation', max: 80 }];
+      }
+
+      if (values.alienation >= 80) {
+        return [{ key: 'duration', min: 15 }];
+      }
+
+      return [];
+    },
   },
   {
     id: 'inheritability_without_duration',
@@ -43,6 +67,17 @@ const RULES = [
     message: 'Inheritance without durable duration is internally inconsistent.',
     detail: 'The bundle purports to descend even though it barely survives the present holder.',
     condition: (values) => values.inheritability > 70 && values.duration < 15,
+    bounds: (values) => {
+      if (values.duration <= 15) {
+        return [{ key: 'inheritability', max: 70 }];
+      }
+
+      if (values.inheritability >= 70) {
+        return [{ key: 'duration', min: 15 }];
+      }
+
+      return [];
+    },
   },
   {
     id: 'art_359_renewal',
@@ -76,6 +111,33 @@ const RULES = [
   },
 ];
 
+function createDefaultBounds() {
+  return Object.fromEntries(
+    SLIDER_KEYS.map((key) => [key, { min: 0, max: 100 }])
+  );
+}
+
+export function computeSliderBounds(sliderValues) {
+  const mergedBounds = createDefaultBounds();
+
+  RULES.forEach((rule) => {
+    if (rule.severity !== 'error' || typeof rule.bounds !== 'function') {
+      return;
+    }
+
+    rule.bounds(sliderValues).forEach(({ key, min, max }) => {
+      const currentBounds = mergedBounds[key] ?? { min: 0, max: 100 };
+
+      mergedBounds[key] = {
+        min: min == null ? currentBounds.min : Math.max(currentBounds.min, min),
+        max: max == null ? currentBounds.max : Math.min(currentBounds.max, max),
+      };
+    });
+  });
+
+  return mergedBounds;
+}
+
 export function checkViolations(
   sliderValues,
   { commonLawMatches, civilLawMatches, jurisdiction, assetType } = {}
@@ -91,6 +153,7 @@ export function checkViolations(
     (rule) => {
       const sanitizedRule = { ...rule };
       delete sanitizedRule.condition;
+      delete sanitizedRule.bounds;
       return sanitizedRule;
     }
   );

@@ -75,8 +75,7 @@
 
 .panel-sliders,
 .track-panel,
-.convergence-panel,
-.violations-panel {
+.convergence-panel {
   border: 1px solid var(--line);
   border-radius: 24px;
   background: var(--surface-panel);
@@ -116,6 +115,36 @@
 .panel-copy {
   max-width: 48rem;
   color: var(--text-secondary);
+}
+
+.panel-inline-note {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  width: fit-content;
+  max-width: min(100%, 44rem);
+  padding: 0.55rem 0.8rem;
+  border: 1px solid var(--info-border);
+  border-radius: 999px;
+  background: rgba(33, 92, 101, 0.07);
+  color: var(--text-secondary);
+  font-size: 0.84rem;
+  line-height: 1.35;
+}
+
+.panel-inline-note-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.1rem;
+  height: 1.1rem;
+  border-radius: 50%;
+  background: rgba(33, 92, 101, 0.12);
+  color: var(--civil);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  flex: 0 0 auto;
 }
 
 .preset-stack {
@@ -254,12 +283,31 @@
   color: var(--accent-strong);
 }
 
-.slider-input {
-  appearance: none;
-  width: 100%;
+.slider-input-shell {
+  position: relative;
+  height: 2.35rem;
+}
+
+.slider-track-base {
+  position: absolute;
+  inset: 0.95rem 0 auto;
   height: 8px;
   border-radius: 999px;
+  background: var(--surface-soft);
+}
+
+.slider-input {
+  appearance: none;
+  position: absolute;
+  top: 0.95rem;
+  left: var(--bound-min-pct);
+  width: calc(var(--bound-max-pct) - var(--bound-min-pct));
+  height: 8px;
+  margin: 0;
+  border-radius: 999px;
   outline: none;
+  cursor: pointer;
+  z-index: 2;
   background:
     linear-gradient(
       90deg,
@@ -268,6 +316,49 @@
       var(--surface-soft) var(--fill-pct),
       var(--surface-soft) 100%
     );
+}
+
+.slider-bound-marker {
+  position: absolute;
+  top: 0;
+  left: var(--bound-position);
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.12rem;
+  transform: translateX(-50%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.slider-bound-marker-line {
+  width: 2px;
+  height: 0.95rem;
+  border-radius: 999px;
+  background: var(--accent-strong);
+  opacity: 0.8;
+}
+
+.slider-bound-marker-label {
+  padding: 0.12rem 0.34rem;
+  border: 1px solid rgba(139, 77, 46, 0.18);
+  border-radius: 999px;
+  background: rgba(249, 240, 233, 0.92);
+  color: var(--accent-strong);
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  line-height: 1;
+}
+
+.slider-bound-marker--min .slider-bound-marker-line,
+.slider-bound-marker--min .slider-bound-marker-label {
+  background: rgba(33, 92, 101, 0.12);
+  color: var(--civil);
+  border-color: rgba(33, 92, 101, 0.18);
+}
+
+.slider-bound-marker--min .slider-bound-marker-line {
+  background: var(--civil);
 }
 
 .slider-input::-webkit-slider-thumb {
@@ -283,7 +374,13 @@
 .slider-input::-moz-range-track {
   height: 8px;
   border-radius: 999px;
-  background: transparent;
+  background: var(--surface-soft);
+}
+
+.slider-input::-moz-range-progress {
+  height: 8px;
+  border-radius: 999px;
+  background: var(--accent);
 }
 
 .slider-input::-moz-range-thumb {
@@ -378,13 +475,11 @@
 }
 
 .track-panel,
-.convergence-panel,
-.violations-panel {
+.convergence-panel {
   padding: 1.5rem;
 }
 
-.match-card-list,
-.violations-list {
+.match-card-list {
   display: grid;
   gap: 1rem;
 }
@@ -638,50 +733,94 @@
   font-size: 1.15rem;
 }
 
-.violations-panel {
-  margin-top: 1.25rem;
+.violation-toast-stack {
+  position: sticky;
+  top: 1rem;
+  z-index: 10;
+  display: grid;
+  gap: 0.55rem;
+  width: min(100%, 32rem);
+  margin: -0.25rem 0 1.25rem auto;
+  pointer-events: none;
 }
 
-.violation-alert {
-  display: grid;
-  grid-template-columns: auto 1fr auto;
-  gap: 0.9rem;
-  align-items: start;
-  padding: 1rem;
+.violation-toast {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.8rem 0.95rem;
   border: 1px solid;
   border-radius: 18px;
+  box-shadow: var(--shadow-sm);
+  backdrop-filter: blur(12px);
+  animation: toast-enter 180ms ease both;
 }
 
-.violation-alert.error {
+.violation-toast--error {
   border-color: var(--error-border);
-  background: var(--error-bg);
+  background: rgba(255, 243, 240, 0.94);
 }
 
-.violation-alert.warning {
+.violation-toast--warning {
   border-color: var(--warning-border);
-  background: var(--warning-bg);
+  background: rgba(255, 248, 238, 0.94);
 }
 
-.violation-alert.info {
-  border-color: var(--info-border);
-  background: var(--info-bg);
+.violation-toast.is-dismissing {
+  animation: toast-exit 220ms ease forwards;
 }
 
-.violation-icon {
-  font-size: 1.1rem;
-  line-height: 1.2;
-}
-
-.violation-title {
+.violation-toast-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.45rem;
+  height: 1.45rem;
+  border-radius: 50%;
+  font-family: var(--font-mono);
+  font-size: 0.88rem;
   font-weight: 700;
+  flex: 0 0 auto;
 }
 
-.violation-badge {
-  font-size: 0.78rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--text-muted);
+.violation-toast--error .violation-toast-icon {
+  background: rgba(200, 77, 49, 0.14);
+  color: #b43b1d;
+}
+
+.violation-toast--warning .violation-toast-icon {
+  background: rgba(205, 127, 50, 0.14);
+  color: #9c5d12;
+}
+
+.violation-toast-message {
+  color: var(--text-primary);
+  font-size: 0.92rem;
+  line-height: 1.35;
+}
+
+@keyframes toast-enter {
+  from {
+    opacity: 0;
+    transform: translateY(-8px) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes toast-exit {
+  from {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+
+  to {
+    opacity: 0;
+    transform: translateY(-8px) scale(0.98);
+  }
 }
 
 .app-footer {
@@ -713,8 +852,7 @@
   .hero-shell,
   .panel-sliders,
   .track-panel,
-  .convergence-panel,
-  .violations-panel {
+  .convergence-panel {
     padding: 1rem;
     border-radius: 20px;
   }
@@ -725,9 +863,7 @@
 
   .preset-section-header,
   .match-header,
-  .convergence-header,
-  .violation-alert {
-    grid-template-columns: 1fr;
+  .convergence-header {
     flex-direction: column;
     align-items: start;
   }
@@ -748,7 +884,12 @@
     background: rgba(33, 92, 101, 0.05);
   }
 
-  .violation-alert {
-    display: flex;
+  .panel-inline-note,
+  .violation-toast-stack {
+    width: 100%;
+  }
+
+  .violation-toast-stack {
+    margin: -0.1rem 0 1rem;
   }
 }

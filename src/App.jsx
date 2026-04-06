@@ -12,10 +12,21 @@ import {
   SLIDER_KEYS,
 } from './utils/matchEngine';
 import { getSliderAnnotations } from './utils/jurisdictionResolver';
-import { checkViolations } from './utils/violationRules';
+import { checkViolations, computeSliderBounds } from './utils/violationRules';
 import './App.css';
 
 const INITIAL_VALUES = Object.fromEntries(SLIDER_KEYS.map((key) => [key, 50]));
+
+function clampSliderValues(nextValues, sliderBounds) {
+  return Object.fromEntries(
+    SLIDER_KEYS.map((key) => {
+      const bounds = sliderBounds[key] ?? { min: 0, max: 100 };
+      const nextValue = nextValues[key];
+
+      return [key, Math.min(bounds.max, Math.max(bounds.min, nextValue))];
+    })
+  );
+}
 
 function App() {
   const [sliderValues, setSliderValues] = useState(INITIAL_VALUES);
@@ -39,6 +50,20 @@ function App() {
     );
   }
 
+  function handleSliderChange(nextValues) {
+    setSliderValues((currentValues) => {
+      const resolvedValues =
+        typeof nextValues === 'function' ? nextValues(currentValues) : nextValues;
+      const nextBounds = computeSliderBounds(resolvedValues);
+
+      return clampSliderValues(resolvedValues, nextBounds);
+    });
+  }
+
+  const sliderBounds = useMemo(() => {
+    return computeSliderBounds(sliderValues);
+  }, [sliderValues]);
+
   const commonLawMatches = useMemo(() => {
     return computeMatches(sliderValues, commonLawEstates);
   }, [sliderValues]);
@@ -52,7 +77,7 @@ function App() {
     );
   }, [sliderValues, activeJurisdiction, activeAssetType]);
 
-  const sliderAnnotations = useMemo(() => {
+  const baseSliderAnnotations = useMemo(() => {
     return getSliderAnnotations(
       civilLawMatches[0]?.estate,
       activeJurisdiction,
@@ -84,6 +109,32 @@ function App() {
     activeAssetType,
   ]);
 
+  const sliderAnnotations = useMemo(() => {
+    const annotations = [...baseSliderAnnotations];
+
+    violations.forEach((violation) => {
+      if (violation.id === 'abstraktionsprinzip_note') {
+        annotations.push({
+          dimension: 'alienation',
+          message: violation.message,
+          severity: 'info',
+        });
+      }
+    });
+
+    return annotations;
+  }, [baseSliderAnnotations, violations]);
+
+  const toastViolations = useMemo(() => {
+    return violations.filter(({ severity }) => severity !== 'info');
+  }, [violations]);
+
+  const sliderPanelNote = useMemo(() => {
+    return (
+      violations.find(({ id }) => id === 'numerus_clausus_violation') ?? null
+    );
+  }, [violations]);
+
   return (
     <div className="app-layout">
       <header className="app-hero">
@@ -109,7 +160,7 @@ function App() {
       <section className="panel-sliders">
         <SliderPanel
           values={sliderValues}
-          onChange={setSliderValues}
+          onChange={handleSliderChange}
           commonLawEstates={commonLawEstates}
           civilLawEstates={civilLawEstates}
           activeJurisdiction={activeJurisdiction}
@@ -117,8 +168,12 @@ function App() {
           activeAssetType={activeAssetType}
           onAssetTypeChange={handleAssetTypeChange}
           sliderAnnotations={sliderAnnotations}
+          sliderBounds={sliderBounds}
+          panelNote={sliderPanelNote}
         />
       </section>
+
+      <ViolationAlert violations={toastViolations} />
 
       <main className="app-main">
         <DualTrackView
@@ -128,8 +183,6 @@ function App() {
           activeJurisdiction={activeJurisdiction}
         />
       </main>
-
-      <ViolationAlert violations={violations} />
 
       <footer className="app-footer">
         Constraint Cascade Method explorer with cross-tradition estate matching.

@@ -29,6 +29,16 @@ function getCivilPresetLabel(estate) {
   );
 }
 
+function getFillPercentage(value, min, max) {
+  const range = max - min;
+
+  if (range <= 0) {
+    return 100;
+  }
+
+  return ((value - min) / range) * 100;
+}
+
 export default function SliderPanel({
   values,
   onChange,
@@ -39,6 +49,8 @@ export default function SliderPanel({
   activeAssetType,
   onAssetTypeChange,
   sliderAnnotations = [],
+  sliderBounds = {},
+  panelNote = null,
 }) {
   const annotationsByDimension = sliderAnnotations.reduce(
     (dimensionMap, annotation) => {
@@ -58,6 +70,17 @@ export default function SliderPanel({
           Move the bundle directly, or snap to a preset estate and compare
           how both traditions classify the same profile.
         </p>
+        {panelNote ? (
+          <div
+            className="panel-inline-note"
+            title={panelNote.detail ?? panelNote.message}
+          >
+            <span className="panel-inline-note-icon" aria-hidden="true">
+              i
+            </span>
+            <span>{panelNote.message}</span>
+          </div>
+        ) : null}
       </div>
 
       <div className="context-stack">
@@ -166,6 +189,19 @@ export default function SliderPanel({
       <div className="sliders">
         {SLIDER_META.map(({ key, label, lowLabel, highLabel }) => {
           const value = values[key];
+          const bounds = sliderBounds[key] ?? { min: 0, max: 100 };
+          const fillPct = Math.max(
+            0,
+            Math.min(100, getFillPercentage(value, bounds.min, bounds.max))
+          );
+          const boundMarkers = [
+            ...(bounds.min > 0
+              ? [{ type: 'min', value: bounds.min, label: bounds.min }]
+              : []),
+            ...(bounds.max < 100
+              ? [{ type: 'max', value: bounds.max, label: bounds.max }]
+              : []),
+          ];
           const rowAnnotations = annotationsByDimension[key] ?? [];
           const lockedAnnotation = rowAnnotations.find(
             ({ severity }) => severity === 'locked'
@@ -190,21 +226,41 @@ export default function SliderPanel({
                 </output>
               </div>
 
-              <input
-                id={`slider-${key}`}
-                type="range"
-                min="0"
-                max="100"
-                value={value}
-                className="slider-input"
-                style={{ '--fill-pct': `${value}%` }}
-                onChange={(event) =>
-                  onChange({
-                    ...values,
-                    [key]: Number(event.target.value),
-                  })
-                }
-              />
+              <div className="slider-input-shell">
+                <span className="slider-track-base" aria-hidden="true" />
+
+                {boundMarkers.map(({ type, value: markerValue, label }) => (
+                  <span
+                    key={`${key}-${type}`}
+                    className={`slider-bound-marker slider-bound-marker--${type}`}
+                    style={{ '--bound-position': `${markerValue}%` }}
+                    aria-hidden="true"
+                  >
+                    <span className="slider-bound-marker-line" />
+                    <span className="slider-bound-marker-label">{label}</span>
+                  </span>
+                ))}
+
+                <input
+                  id={`slider-${key}`}
+                  type="range"
+                  min={bounds.min}
+                  max={bounds.max}
+                  value={value}
+                  className="slider-input"
+                  style={{
+                    '--fill-pct': `${fillPct}%`,
+                    '--bound-min-pct': `${bounds.min}%`,
+                    '--bound-max-pct': `${bounds.max}%`,
+                  }}
+                  onChange={(event) =>
+                    onChange({
+                      ...values,
+                      [key]: Number(event.target.value),
+                    })
+                  }
+                />
+              </div>
 
               <div className="slider-endpoints">
                 <span>{lowLabel}</span>
