@@ -28,9 +28,9 @@ import {
 import { computeConvergence } from './utils/convergenceEngine';
 import {
   computeCivilMatches,
-  computeMatches,
   SLIDER_KEYS,
 } from './utils/matchEngine';
+import { computeCommonLawMatches } from './utils/commonLawResolver';
 import { computeFrameworkMatches, getMidpoints as getFrameworkMidpoints } from './utils/aiMatchEngine';
 import { getSliderAnnotations } from './utils/jurisdictionResolver';
 import { checkViolations, computeSliderBounds } from './utils/violationRules';
@@ -90,7 +90,9 @@ function App() {
   const [locale, setLocale] = useState(resolveInitialLocale);
   const [mode, setMode] = useState('property'); // 'property' | 'ai'
   const [sliderValues, setSliderValues] = useState(INITIAL_VALUES);
-  const [activeJurisdiction, setActiveJurisdiction] = useState(null);
+  const [activeCommonLawJurisdiction, setActiveCommonLawJurisdiction] =
+    useState(null);
+  const [activeCivilJurisdiction, setActiveCivilJurisdiction] = useState(null);
   const [activeAssetType, setActiveAssetType] = useState(null);
 
   const ui = useMemo(() => getUiCopy(locale), [locale]);
@@ -126,13 +128,19 @@ function App() {
     return civilLawEstates.map((estate) => localizeCivilLawEstate(estate, locale));
   }, [locale]);
 
-  function handleJurisdictionChange(jurisdiction) {
+  function handleCommonLawJurisdictionChange(jurisdiction) {
+    setActiveCommonLawJurisdiction((currentJurisdiction) =>
+      currentJurisdiction === jurisdiction ? null : jurisdiction
+    );
+  }
+
+  function handleCivilJurisdictionChange(jurisdiction) {
     const nextJurisdiction =
-      activeJurisdiction === jurisdiction ? null : jurisdiction;
+      activeCivilJurisdiction === jurisdiction ? null : jurisdiction;
 
-    setActiveJurisdiction(nextJurisdiction);
+    setActiveCivilJurisdiction(nextJurisdiction);
 
-    if (nextJurisdiction !== 'prc') {
+    if (nextJurisdiction != 'prc') {
       setActiveAssetType(null);
     }
   }
@@ -147,7 +155,8 @@ function App() {
     setMode(nextMode);
     if (nextMode === 'ai') {
       setSliderValues(AI_DEFAULT_VALUES);
-      setActiveJurisdiction(null);
+      setActiveCommonLawJurisdiction(null);
+      setActiveCivilJurisdiction(null);
       setActiveAssetType(null);
     } else {
       setSliderValues(INITIAL_VALUES);
@@ -184,31 +193,35 @@ function App() {
   }, [mode, sliderValues]);
 
   const commonLawMatches = useMemo(() => {
-    return computeMatches(sliderValues, localizedCommonLawEstates);
-  }, [sliderValues, localizedCommonLawEstates]);
+    return computeCommonLawMatches(
+      sliderValues,
+      localizedCommonLawEstates,
+      activeCommonLawJurisdiction
+    );
+  }, [sliderValues, localizedCommonLawEstates, activeCommonLawJurisdiction]);
 
   const civilLawMatches = useMemo(() => {
     return computeCivilMatches(
       sliderValues,
       localizedCivilLawEstates,
-      activeJurisdiction,
+      activeCivilJurisdiction,
       activeAssetType
     );
   }, [
     sliderValues,
     localizedCivilLawEstates,
-    activeJurisdiction,
+    activeCivilJurisdiction,
     activeAssetType,
   ]);
 
   const baseSliderAnnotations = useMemo(() => {
     return getSliderAnnotations(
       civilLawMatches[0]?.estate,
-      activeJurisdiction,
+      activeCivilJurisdiction,
       activeAssetType,
       sliderValues
     );
-  }, [civilLawMatches, activeJurisdiction, activeAssetType, sliderValues]);
+  }, [civilLawMatches, activeCivilJurisdiction, activeAssetType, sliderValues]);
 
   const convergenceResults = useMemo(() => {
     return computeConvergence(
@@ -222,14 +235,14 @@ function App() {
     return checkViolations(sliderValues, {
       commonLawMatches,
       civilLawMatches,
-      jurisdiction: activeJurisdiction,
+      jurisdiction: activeCivilJurisdiction,
       assetType: activeAssetType,
     });
   }, [
     sliderValues,
     commonLawMatches,
     civilLawMatches,
-    activeJurisdiction,
+    activeCivilJurisdiction,
     activeAssetType,
   ]);
 
@@ -333,8 +346,16 @@ function App() {
           onChange={handleSliderChange}
           commonLawEstates={mode === 'property' ? localizedCommonLawEstates : []}
           civilLawEstates={mode === 'property' ? localizedCivilLawEstates : []}
-          activeJurisdiction={mode === 'property' ? activeJurisdiction : null}
-          onJurisdictionChange={mode === 'property' ? handleJurisdictionChange : () => {}}
+          activeCommonLawJurisdiction={
+            mode === 'property' ? activeCommonLawJurisdiction : null
+          }
+          onCommonLawJurisdictionChange={
+            mode === 'property' ? handleCommonLawJurisdictionChange : () => {}
+          }
+          activeCivilJurisdiction={mode === 'property' ? activeCivilJurisdiction : null}
+          onCivilLawJurisdictionChange={
+            mode === 'property' ? handleCivilLawJurisdictionChange : () => {}
+          }
           activeAssetType={mode === 'property' ? activeAssetType : null}
           onAssetTypeChange={mode === 'property' ? handleAssetTypeChange : () => {}}
           sliderAnnotations={mode === 'property' ? sliderAnnotations : []}
@@ -358,7 +379,7 @@ function App() {
             convergenceResults={convergenceResults}
             bothTracksMatch={bothTracksMatch}
             filteredInstruments={filteredInstruments}
-            activeJurisdiction={activeJurisdiction}
+            activeJurisdiction={activeCivilJurisdiction}
             locale={locale}
             ui={ui}
           />
@@ -371,7 +392,6 @@ function App() {
           />
         )}
       </main>
-
       <footer className="app-footer">{ui.footer}</footer>
     </div>
   );

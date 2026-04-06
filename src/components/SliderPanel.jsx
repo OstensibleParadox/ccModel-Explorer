@@ -1,12 +1,17 @@
 import {
-  getMidpoints,
   getMidpointsWithContext,
   SLIDER_KEYS,
 } from '../utils/matchEngine';
 import { getMidpoints as getFrameworkMidpoints } from '../utils/aiMatchEngine';
+import { getCommonLawMidpointsWithContext } from '../utils/commonLawResolver';
 
 const RESET_VALUES = Object.fromEntries(SLIDER_KEYS.map((key) => [key, 50]));
-const JURISDICTION_OPTIONS = [
+const COMMON_LAW_CONTEXT_OPTIONS = [
+  { value: null, code: 'none' },
+  { value: 'uk', code: 'UK' },
+  { value: 'us', code: 'US' },
+];
+const CIVIL_LAW_CONTEXT_OPTIONS = [
   { value: null, code: 'none' },
   { value: 'de', code: 'DE' },
   { value: 'jp', code: 'JP' },
@@ -18,7 +23,6 @@ const ASSET_TYPE_OPTIONS = [
   { value: 'movables' },
   { value: 'intangibles' },
 ];
-
 function getCivilPresetLabel(estate) {
   return (
     estate.displayName ??
@@ -45,8 +49,10 @@ export default function SliderPanel({
   onChange,
   commonLawEstates,
   civilLawEstates,
-  activeJurisdiction,
-  onJurisdictionChange,
+  activeCommonLawJurisdiction,
+  onCommonLawJurisdictionChange,
+  activeCivilJurisdiction,
+  onCivilLawJurisdictionChange,
   activeAssetType,
   onAssetTypeChange,
   sliderAnnotations = [],
@@ -89,22 +95,22 @@ export default function SliderPanel({
       {mode === 'property' && (
         <div className="context-stack">
           <div className="context-selector">
-            <span className="preset-title">{ui.sliderPanel.jurisdictionContext}</span>
+            <span className="preset-title">{ui.sliderPanel.commonLawContext}</span>
             <div className="preset-pill-row context-pill-row">
-              {JURISDICTION_OPTIONS.map(({ value, code, civil }) => {
-                const isActive = activeJurisdiction === value;
+              {COMMON_LAW_CONTEXT_OPTIONS.map(({ value, code }) => {
+                const isActive = activeCommonLawJurisdiction === value;
                 const label =
                   code === 'none' ? ui.jurisdictionOptions.none : code;
 
                 return (
                   <button
-                    key={value ?? 'none'}
+                    key={value ?? 'common-none'}
                     type="button"
-                    className={`preset-pill context-pill ${civil ? 'civil' : ''} ${
+                    className={`preset-pill context-pill ${
                       isActive ? 'is-active' : ''
                     }`}
                     aria-pressed={isActive}
-                    onClick={() => onJurisdictionChange(value)}
+                    onClick={() => onCommonLawJurisdictionChange(value)}
                   >
                     {label}
                   </button>
@@ -113,7 +119,32 @@ export default function SliderPanel({
             </div>
           </div>
 
-          {activeJurisdiction === 'prc' ? (
+          <div className="context-selector">
+            <span className="preset-title">{ui.sliderPanel.civilLawContext}</span>
+            <div className="preset-pill-row context-pill-row">
+              {CIVIL_LAW_CONTEXT_OPTIONS.map(({ value, code, civil }) => {
+                const isActive = activeCivilJurisdiction === value;
+                const label =
+                  code === 'none' ? ui.jurisdictionOptions.none : code;
+
+                return (
+                  <button
+                    key={value ?? 'civil-none'}
+                    type="button"
+                    className={`preset-pill context-pill ${civil ? 'civil' : ''} ${
+                      isActive ? 'is-active' : ''
+                    }`}
+                    aria-pressed={isActive}
+                    onClick={() => onCivilLawJurisdictionChange(value)}
+                  >
+                    {label}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          {activeCivilJurisdiction === 'prc' ? (
             <div className="context-selector">
               <span className="preset-title">{ui.sliderPanel.prcAssetType}</span>
               <div className="preset-pill-row context-pill-row">
@@ -159,7 +190,14 @@ export default function SliderPanel({
                   key={estate.id}
                   type="button"
                   className="preset-pill"
-                  onClick={() => onChange(getMidpoints(estate))}
+                  onClick={() =>
+                    onChange(
+                      getCommonLawMidpointsWithContext(
+                        estate,
+                        activeCommonLawJurisdiction
+                      )
+                    )
+                  }
                 >
                   {estate.name}
                 </button>
@@ -181,7 +219,7 @@ export default function SliderPanel({
                     onChange(
                       getMidpointsWithContext(
                         estate,
-                        activeJurisdiction,
+                        activeCivilJurisdiction,
                         activeAssetType
                       )
                     )
