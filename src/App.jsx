@@ -1,10 +1,25 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import commonLawEstates from './data/commonLawEstates.json';
 import civilLawEstates from './data/civilLawEstates.json';
 import harmonizationData from './data/harmonization.json';
+import LanguageSwitcher from './components/LanguageSwitcher';
 import SliderPanel from './components/SliderPanel';
 import DualTrackView from './components/DualTrackView';
 import ViolationAlert from './components/ViolationAlert';
+import {
+  DEFAULT_LOCALE,
+  LOCALE_STORAGE_KEY,
+  detectLocale,
+  getLanguageOption,
+  getSliderMeta,
+  getUiCopy,
+  isSupportedLocale,
+  localizeCommonLawEstate,
+  localizeCivilLawEstate,
+  localizeConvergenceResult,
+  localizeSliderAnnotation,
+  localizeViolation,
+} from './i18n';
 import { computeConvergence } from './utils/convergenceEngine';
 import {
   computeCivilMatches,
@@ -16,6 +31,26 @@ import { checkViolations, computeSliderBounds } from './utils/violationRules';
 import './App.css';
 
 const INITIAL_VALUES = Object.fromEntries(SLIDER_KEYS.map((key) => [key, 50]));
+const DOCUMENT_TITLES = {
+  en: 'ccModel Explorer',
+  zh: 'ccModel Explorer | 简体中文',
+  de: 'ccModel Explorer | Deutsch',
+  ja: 'ccModel Explorer | 日本語',
+};
+
+function resolveInitialLocale() {
+  if (typeof window === 'undefined') {
+    return DEFAULT_LOCALE;
+  }
+
+  const storedLocale = window.localStorage.getItem(LOCALE_STORAGE_KEY);
+
+  if (isSupportedLocale(storedLocale)) {
+    return storedLocale;
+  }
+
+  return detectLocale(window.navigator.languages ?? [window.navigator.language]);
+}
 
 function clampSliderValues(nextValues, sliderBounds) {
   return Object.fromEntries(
@@ -29,9 +64,41 @@ function clampSliderValues(nextValues, sliderBounds) {
 }
 
 function App() {
+  const [locale, setLocale] = useState(resolveInitialLocale);
   const [sliderValues, setSliderValues] = useState(INITIAL_VALUES);
   const [activeJurisdiction, setActiveJurisdiction] = useState(null);
   const [activeAssetType, setActiveAssetType] = useState(null);
+
+  const ui = useMemo(() => getUiCopy(locale), [locale]);
+  const sliderMeta = useMemo(() => getSliderMeta(locale), [locale]);
+  const languageOption = useMemo(() => getLanguageOption(locale), [locale]);
+
+  useEffect(() => {
+    if (typeof document === 'undefined') {
+      return;
+    }
+
+    document.documentElement.lang = languageOption.htmlLang;
+    document.title = DOCUMENT_TITLES[locale] ?? DOCUMENT_TITLES.en;
+  }, [languageOption, locale]);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') {
+      return;
+    }
+
+    window.localStorage.setItem(LOCALE_STORAGE_KEY, locale);
+  }, [locale]);
+
+  const localizedCommonLawEstates = useMemo(() => {
+    return commonLawEstates.map((estate) =>
+      localizeCommonLawEstate(estate, locale)
+    );
+  }, [locale]);
+
+  const localizedCivilLawEstates = useMemo(() => {
+    return civilLawEstates.map((estate) => localizeCivilLawEstate(estate, locale));
+  }, [locale]);
 
   function handleJurisdictionChange(jurisdiction) {
     const nextJurisdiction =
@@ -65,17 +132,22 @@ function App() {
   }, [sliderValues]);
 
   const commonLawMatches = useMemo(() => {
-    return computeMatches(sliderValues, commonLawEstates);
-  }, [sliderValues]);
+    return computeMatches(sliderValues, localizedCommonLawEstates);
+  }, [sliderValues, localizedCommonLawEstates]);
 
   const civilLawMatches = useMemo(() => {
     return computeCivilMatches(
       sliderValues,
-      civilLawEstates,
+      localizedCivilLawEstates,
       activeJurisdiction,
       activeAssetType
     );
-  }, [sliderValues, activeJurisdiction, activeAssetType]);
+  }, [
+    sliderValues,
+    localizedCivilLawEstates,
+    activeJurisdiction,
+    activeAssetType,
+  ]);
 
   const baseSliderAnnotations = useMemo(() => {
     return getSliderAnnotations(
@@ -91,10 +163,10 @@ function App() {
       commonLawMatches,
       civilLawMatches,
       harmonizationData
-    );
-  }, [commonLawMatches, civilLawMatches]);
+    ).map((result) => localizeConvergenceResult(result, locale));
+  }, [commonLawMatches, civilLawMatches, locale]);
 
-  const violations = useMemo(() => {
+  const rawViolations = useMemo(() => {
     return checkViolations(sliderValues, {
       commonLawMatches,
       civilLawMatches,
@@ -109,8 +181,14 @@ function App() {
     activeAssetType,
   ]);
 
+  const violations = useMemo(() => {
+    return rawViolations.map((violation) => localizeViolation(violation, locale));
+  }, [rawViolations, locale]);
+
   const sliderAnnotations = useMemo(() => {
-    const annotations = [...baseSliderAnnotations];
+    const annotations = baseSliderAnnotations.map((annotation) =>
+      localizeSliderAnnotation(annotation, locale)
+    );
 
     violations.forEach((violation) => {
       if (violation.id === 'abstraktionsprinzip_note') {
@@ -123,7 +201,7 @@ function App() {
     });
 
     return annotations;
-  }, [baseSliderAnnotations, violations]);
+  }, [baseSliderAnnotations, locale, violations]);
 
   const toastViolations = useMemo(() => {
     return violations.filter(({ severity }) => severity !== 'info');
@@ -140,19 +218,21 @@ function App() {
       <header className="app-hero">
         <div className="hero-shell">
           <div className="hero-copy">
-            <p className="hero-kicker">Common Law + Civil Law Dual Track</p>
+            <p className="hero-kicker">{ui.heroKicker}</p>
             <h1>ccModel Explorer</h1>
-            <p className="hero-text">
-              Tune possession, use, income, alienation, exclusion, duration,
-              and inheritability, then compare how the same bundle resolves in
-              two property-law traditions.
-            </p>
+            <p className="hero-text">{ui.heroText}</p>
           </div>
 
-          <div className="hero-metrics">
-            <span className="metric-chip">13 common-law estates</span>
-            <span className="metric-chip">13 civil-law forms</span>
-            <span className="metric-chip">Top-3 convergence scan</span>
+          <div className="hero-aside">
+            <div className="hero-topbar">
+              <LanguageSwitcher locale={locale} onChange={setLocale} ui={ui} />
+            </div>
+
+            <div className="hero-metrics">
+              <span className="metric-chip">{ui.heroMetrics.commonLaw}</span>
+              <span className="metric-chip">{ui.heroMetrics.civilLaw}</span>
+              <span className="metric-chip">{ui.heroMetrics.convergence}</span>
+            </div>
           </div>
         </div>
       </header>
@@ -161,8 +241,8 @@ function App() {
         <SliderPanel
           values={sliderValues}
           onChange={handleSliderChange}
-          commonLawEstates={commonLawEstates}
-          civilLawEstates={civilLawEstates}
+          commonLawEstates={localizedCommonLawEstates}
+          civilLawEstates={localizedCivilLawEstates}
           activeJurisdiction={activeJurisdiction}
           onJurisdictionChange={handleJurisdictionChange}
           activeAssetType={activeAssetType}
@@ -170,6 +250,8 @@ function App() {
           sliderAnnotations={sliderAnnotations}
           sliderBounds={sliderBounds}
           panelNote={sliderPanelNote}
+          sliderMeta={sliderMeta}
+          ui={ui}
         />
       </section>
 
@@ -181,12 +263,12 @@ function App() {
           civilLawMatches={civilLawMatches}
           convergenceResults={convergenceResults}
           activeJurisdiction={activeJurisdiction}
+          locale={locale}
+          ui={ui}
         />
       </main>
 
-      <footer className="app-footer">
-        Constraint Cascade Method explorer with cross-tradition estate matching.
-      </footer>
+      <footer className="app-footer">{ui.footer}</footer>
     </div>
   );
 }

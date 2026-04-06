@@ -28,6 +28,19 @@
   gap: 0.9rem;
 }
 
+.hero-aside {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 1rem;
+}
+
+.hero-topbar {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+}
+
 .hero-kicker,
 .panel-kicker,
 .track-kicker {
@@ -52,6 +65,86 @@
   max-width: 52rem;
   color: rgba(248, 243, 231, 0.82);
   font-size: 1rem;
+}
+
+.language-switcher {
+  position: relative;
+}
+
+.language-trigger,
+.language-option {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  border: 1px solid rgba(248, 243, 231, 0.18);
+  border-radius: 999px;
+  background: rgba(248, 243, 231, 0.08);
+  color: rgba(248, 243, 231, 0.96);
+  backdrop-filter: blur(12px);
+  transition:
+    transform 120ms ease,
+    border-color 120ms ease,
+    background-color 120ms ease;
+}
+
+.language-trigger {
+  padding: 0.5rem 0.8rem;
+}
+
+.language-trigger:hover,
+.language-option:hover {
+  transform: translateY(-1px);
+  border-color: rgba(248, 243, 231, 0.34);
+  background: rgba(248, 243, 231, 0.14);
+}
+
+.language-trigger-flag,
+.language-option-flag {
+  font-size: 1rem;
+  line-height: 1;
+}
+
+.language-trigger-text,
+.language-option-label {
+  white-space: nowrap;
+}
+
+.language-trigger-caret {
+  font-size: 0.8rem;
+  opacity: 0.78;
+}
+
+.language-menu {
+  position: absolute;
+  top: calc(100% + 0.55rem);
+  right: 0;
+  z-index: 12;
+  display: grid;
+  gap: 0.45rem;
+  min-width: 12.5rem;
+  padding: 0.55rem;
+  border: 1px solid rgba(248, 243, 231, 0.12);
+  border-radius: 18px;
+  background: rgba(14, 23, 34, 0.94);
+  box-shadow: 0 16px 38px rgba(0, 0, 0, 0.28);
+}
+
+.language-option {
+  justify-content: space-between;
+  padding: 0.65rem 0.8rem;
+  text-align: left;
+}
+
+.language-option.is-active {
+  border-color: rgba(248, 243, 231, 0.38);
+  background: rgba(248, 243, 231, 0.16);
+}
+
+.language-option-code {
+  margin-left: auto;
+  color: rgba(248, 243, 231, 0.68);
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
 }
 
 .hero-metrics {
@@ -841,6 +934,17 @@
   .hero-metrics {
     justify-content: start;
   }
+
+  .hero-aside,
+  .hero-topbar {
+    align-items: flex-start;
+    justify-content: flex-start;
+  }
+
+  .language-menu {
+    right: auto;
+    left: 0;
+  }
 }
 
 @media (max-width: 768px) {
@@ -859,6 +963,15 @@
 
   .track-title {
     font-size: 1.55rem;
+  }
+
+  .language-trigger {
+    padding-inline: 0.72rem;
+  }
+
+  .language-trigger-text,
+  .language-option-code {
+    display: none;
   }
 
   .preset-section-header,

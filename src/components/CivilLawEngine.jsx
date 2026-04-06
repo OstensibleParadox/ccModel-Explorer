@@ -1,4 +1,5 @@
 import { Fragment, useState } from 'react';
+import { formatScore } from '../i18n';
 
 const JURISDICTIONS = [
   { key: 'de', label: 'DE' },
@@ -9,6 +10,7 @@ const JURISDICTIONS = [
 
 function getCivilDisplayName(estate) {
   return (
+    estate.displayName ??
     estate.names.de ??
     estate.names.tw ??
     estate.names.prc ??
@@ -17,7 +19,7 @@ function getCivilDisplayName(estate) {
   );
 }
 
-function CivilLawCard({ estate, score, index, activeJurisdiction }) {
+function CivilLawCard({ estate, score, index, activeJurisdiction, locale, ui }) {
   const defaultJurisdiction =
     JURISDICTIONS.find(({ key }) => estate.names[key])?.key ?? 'de';
   const [mobileJurisdiction, setMobileJurisdiction] =
@@ -25,20 +27,22 @@ function CivilLawCard({ estate, score, index, activeJurisdiction }) {
   const activeLabel = JURISDICTIONS.find(
     ({ key }) => key === mobileJurisdiction
   );
-  const percentage = Math.round(score * 100);
 
   return (
     <article className={`match-card civil-card ${index === 0 ? 'top-match' : ''}`}>
       <div className="match-header">
         <div>
-          <p className="match-rank">#{index + 1} civil-law fit</p>
+          <p className="match-rank">{ui.ranks.civilLaw(index + 1)}</p>
           <h3 className="estate-name">{getCivilDisplayName(estate)}</h3>
         </div>
-        <span className="match-pct">{percentage}%</span>
+        <span className="match-pct">{formatScore(score, locale)}</span>
       </div>
 
       <div className="match-bar">
-        <div className="match-fill" style={{ width: `${percentage}%` }} />
+        <div
+          className="match-fill"
+          style={{ width: `${Math.round(score * 100)}%` }}
+        />
       </div>
 
       <div className="jurisdiction-grid">
@@ -62,7 +66,11 @@ function CivilLawCard({ estate, score, index, activeJurisdiction }) {
         ))}
       </div>
 
-      <div className="civil-law-tabs" role="tablist" aria-label="Jurisdiction view">
+      <div
+        className="civil-law-tabs"
+        role="tablist"
+        aria-label={ui.aria.jurisdictionView}
+      >
         {JURISDICTIONS.map(({ key, label }) => (
           <button
             key={key}
@@ -91,7 +99,7 @@ function CivilLawCard({ estate, score, index, activeJurisdiction }) {
         ) : null}
       </div>
 
-      <div className="genealogy-chain" aria-label="Jurisdiction genealogy chain">
+      <div className="genealogy-chain" aria-label={ui.aria.genealogy}>
         {JURISDICTIONS.map(({ key, label }, indexValue) => (
           <Fragment key={key}>
             <div className="genealogy-step">
@@ -119,16 +127,18 @@ function CivilLawCard({ estate, score, index, activeJurisdiction }) {
 
 export default function CivilLawEngine({
   matches,
-  title = 'Civil Law Track',
+  title,
   limit = 5,
   activeJurisdiction = null,
+  locale,
+  ui,
 }) {
   const visibleMatches = matches.slice(0, limit);
 
   return (
     <section className="track-panel">
       <div className="track-heading">
-        <p className="track-kicker">Ranked Matches</p>
+        <p className="track-kicker">{ui.tracks.ranked}</p>
         <h2 className="track-title">{title}</h2>
       </div>
 
@@ -140,6 +150,8 @@ export default function CivilLawEngine({
             score={score}
             index={index}
             activeJurisdiction={activeJurisdiction}
+            locale={locale}
+            ui={ui}
           />
         ))}
       </div>

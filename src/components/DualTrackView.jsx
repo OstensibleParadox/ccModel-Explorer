@@ -1,16 +1,11 @@
 import EstateEngine from './EstateEngine';
 import CivilLawEngine from './CivilLawEngine';
+import { getConvergenceLevelLabel } from '../i18n';
 import { getConvergenceColor } from '../utils/convergenceEngine';
-
-function formatConvergenceLevel(level) {
-  return level
-    .split('_')
-    .map((part) => part[0].toUpperCase() + part.slice(1))
-    .join(' ');
-}
 
 function getCivilDisplayName(estate) {
   return (
+    estate.displayName ??
     estate.names.de ??
     estate.names.tw ??
     estate.names.prc ??
@@ -24,22 +19,31 @@ export default function DualTrackView({
   civilLawMatches,
   convergenceResults,
   activeJurisdiction,
+  locale,
+  ui,
 }) {
   return (
     <section className="dual-track-view">
       <div className="dual-track-columns">
-        <EstateEngine matches={commonLawMatches} title="Common Law Track" />
+        <EstateEngine
+          matches={commonLawMatches}
+          title={ui.tracks.commonLaw}
+          locale={locale}
+          ui={ui}
+        />
         <CivilLawEngine
           matches={civilLawMatches}
-          title="Civil Law Track"
+          title={ui.tracks.civilLaw}
           activeJurisdiction={activeJurisdiction}
+          locale={locale}
+          ui={ui}
         />
       </div>
 
       <section className="convergence-panel">
         <div className="track-heading">
-          <p className="track-kicker">Bridgework</p>
-          <h2 className="track-title">Convergence Panel</h2>
+          <p className="track-kicker">{ui.convergence.kicker}</p>
+          <h2 className="track-title">{ui.convergence.title}</h2>
         </div>
 
         <div className="convergence-grid">
@@ -60,20 +64,20 @@ export default function DualTrackView({
                 <div className="convergence-header">
                   <span className="convergence-level">
                     <span className="convergence-dot" />
-                    {formatConvergenceLevel(level)}
+                    {getConvergenceLevelLabel(level, locale)}
                   </span>
                   <span
                     className={`convergence-alignment ${
                       bothInTopN ? 'aligned' : 'split'
                     }`}
                   >
-                    {bothInTopN ? 'Top-3 aligned' : 'Not co-ranked'}
+                    {bothInTopN ? ui.convergence.aligned : ui.convergence.split}
                   </span>
                 </div>
 
                 <p className="convergence-pair">
-                  {getCivilDisplayName(civilEstate)} to{' '}
-                  {commonLawEstate?.name ?? 'No stable common-law analogue'}
+                  {getCivilDisplayName(civilEstate)} →{' '}
+                  {commonLawEstate?.name ?? ui.convergence.noAnalogue}
                 </p>
                 <p className="convergence-message">{message}</p>
                 <p className="convergence-divergence">{divergence}</p>

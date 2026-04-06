@@ -46,11 +46,13 @@ export function getSliderAnnotations(
     return [
       {
         dimension: 'alienation',
+        messageId: 'eigentum_prc_land_lock',
         message: EIGENTUM_PRC_LAND_MESSAGE,
         severity: 'locked',
       },
       {
         dimension: 'inheritability',
+        messageId: 'eigentum_prc_land_lock',
         message: EIGENTUM_PRC_LAND_MESSAGE,
         severity: 'locked',
       },
@@ -61,6 +63,7 @@ export function getSliderAnnotations(
     const annotations = [
       {
         dimension: 'duration',
+        messageId: 'erbbaurecht_prc_duration',
         message: ERBBAURECHT_DURATION_MESSAGE,
         severity: 'info',
       },
@@ -69,6 +72,7 @@ export function getSliderAnnotations(
     if ((sliderValues?.duration ?? 0) >= 60) {
       annotations.push({
         dimension: 'duration',
+        messageId: 'erbbaurecht_prc_renewal',
         message: ERBBAURECHT_RENEWAL_MESSAGE,
         severity: 'info',
       });
@@ -81,6 +85,7 @@ export function getSliderAnnotations(
     return [
       {
         dimension: 'alienation',
+        messageId: 'hypothek_prc_land',
         message: HYPOTHEK_PRC_LAND_MESSAGE,
         severity: 'info',
       },

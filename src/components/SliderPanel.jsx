@@ -2,25 +2,25 @@ import {
   getMidpoints,
   getMidpointsWithContext,
   SLIDER_KEYS,
-  SLIDER_META,
 } from '../utils/matchEngine';
 
 const RESET_VALUES = Object.fromEntries(SLIDER_KEYS.map((key) => [key, 50]));
 const JURISDICTION_OPTIONS = [
-  { value: null, label: 'None' },
-  { value: 'de', label: 'DE' },
-  { value: 'jp', label: 'JP' },
-  { value: 'tw', label: 'TW' },
-  { value: 'prc', label: 'PRC', civil: true },
+  { value: null, code: 'none' },
+  { value: 'de', code: 'DE' },
+  { value: 'jp', code: 'JP' },
+  { value: 'tw', code: 'TW' },
+  { value: 'prc', code: 'PRC', civil: true },
 ];
 const ASSET_TYPE_OPTIONS = [
-  { value: 'land', label: 'Land' },
-  { value: 'movables', label: 'Movables' },
-  { value: 'intangibles', label: 'Intangibles' },
+  { value: 'land' },
+  { value: 'movables' },
+  { value: 'intangibles' },
 ];
 
 function getCivilPresetLabel(estate) {
   return (
+    estate.displayName ??
     estate.names.de ??
     estate.names.tw ??
     estate.names.prc ??
@@ -51,6 +51,8 @@ export default function SliderPanel({
   sliderAnnotations = [],
   sliderBounds = {},
   panelNote = null,
+  sliderMeta = [],
+  ui,
 }) {
   const annotationsByDimension = sliderAnnotations.reduce(
     (dimensionMap, annotation) => {
@@ -64,12 +66,9 @@ export default function SliderPanel({
   return (
     <section className="slider-panel">
       <div className="panel-heading">
-        <p className="panel-kicker">Bundle Controls</p>
-        <h2 className="track-title">Seven-Dimension Slider Matrix</h2>
-        <p className="panel-copy">
-          Move the bundle directly, or snap to a preset estate and compare
-          how both traditions classify the same profile.
-        </p>
+        <p className="panel-kicker">{ui.sliderPanel.kicker}</p>
+        <h2 className="track-title">{ui.sliderPanel.title}</h2>
+        <p className="panel-copy">{ui.sliderPanel.copy}</p>
         {panelNote ? (
           <div
             className="panel-inline-note"
@@ -85,10 +84,12 @@ export default function SliderPanel({
 
       <div className="context-stack">
         <div className="context-selector">
-          <span className="preset-title">Jurisdiction Context</span>
+          <span className="preset-title">{ui.sliderPanel.jurisdictionContext}</span>
           <div className="preset-pill-row context-pill-row">
-            {JURISDICTION_OPTIONS.map(({ value, label, civil }) => {
+            {JURISDICTION_OPTIONS.map(({ value, code, civil }) => {
               const isActive = activeJurisdiction === value;
+              const label =
+                code === 'none' ? ui.jurisdictionOptions.none : code;
 
               return (
                 <button
@@ -109,9 +110,9 @@ export default function SliderPanel({
 
         {activeJurisdiction === 'prc' ? (
           <div className="context-selector">
-            <span className="preset-title">PRC Asset Type</span>
+            <span className="preset-title">{ui.sliderPanel.prcAssetType}</span>
             <div className="preset-pill-row context-pill-row">
-              {ASSET_TYPE_OPTIONS.map(({ value, label }) => {
+              {ASSET_TYPE_OPTIONS.map(({ value }) => {
                 const isActive = activeAssetType === value;
 
                 return (
@@ -124,7 +125,7 @@ export default function SliderPanel({
                     aria-pressed={isActive}
                     onClick={() => onAssetTypeChange(value)}
                   >
-                    {label}
+                    {ui.assetTypes[value]}
                   </button>
                 );
               })}
@@ -136,13 +137,13 @@ export default function SliderPanel({
       <div className="preset-stack">
         <div className="preset-section">
           <div className="preset-section-header">
-            <span className="preset-title">Common Law</span>
+            <span className="preset-title">{ui.sliderPanel.commonLaw}</span>
             <button
               type="button"
               className="reset-button"
               onClick={() => onChange(RESET_VALUES)}
             >
-              Reset All
+              {ui.sliderPanel.resetAll}
             </button>
           </div>
           <div className="preset-pill-row">
@@ -161,7 +162,7 @@ export default function SliderPanel({
 
         <div className="preset-section">
           <div className="preset-section-header">
-            <span className="preset-title">Civil Law</span>
+            <span className="preset-title">{ui.sliderPanel.civilLaw}</span>
           </div>
           <div className="preset-pill-row">
             {civilLawEstates.map((estate) => (
@@ -187,7 +188,7 @@ export default function SliderPanel({
       </div>
 
       <div className="sliders">
-        {SLIDER_META.map(({ key, label, lowLabel, highLabel }) => {
+        {sliderMeta.map(({ key, label, lowLabel, highLabel }) => {
           const value = values[key];
           const bounds = sliderBounds[key] ?? { min: 0, max: 100 };
           const fillPct = Math.max(
@@ -229,7 +230,7 @@ export default function SliderPanel({
               <div className="slider-input-shell">
                 <span className="slider-track-base" aria-hidden="true" />
 
-                {boundMarkers.map(({ type, value: markerValue, label }) => (
+                {boundMarkers.map(({ type, value: markerValue, label: markerLabel }) => (
                   <span
                     key={`${key}-${type}`}
                     className={`slider-bound-marker slider-bound-marker--${type}`}
@@ -237,7 +238,7 @@ export default function SliderPanel({
                     aria-hidden="true"
                   >
                     <span className="slider-bound-marker-line" />
-                    <span className="slider-bound-marker-label">{label}</span>
+                    <span className="slider-bound-marker-label">{markerLabel}</span>
                   </span>
                 ))}
 
