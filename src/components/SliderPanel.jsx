@@ -72,7 +72,6 @@ export default function SliderPanel({
   ui,
   mode = 'property',
   aiFrameworks = [],
-  onSliderPreset,
 }) {
   const [openLockRows, setOpenLockRows] = useState({});
   const annotationsByDimension = sliderAnnotations.reduce(

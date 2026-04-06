@@ -31,7 +31,7 @@ import {
   SLIDER_KEYS,
 } from './utils/matchEngine';
 import { computeCommonLawMatches } from './utils/commonLawResolver';
-import { computeFrameworkMatches, getMidpoints as getFrameworkMidpoints } from './utils/aiMatchEngine';
+import { computeFrameworkMatches } from './utils/aiMatchEngine';
 import { getSliderAnnotations } from './utils/jurisdictionResolver';
 import { checkViolations, computeSliderBounds } from './utils/violationRules';
 import { checkAIViolations, computeAISliderBounds } from './utils/aiViolationRules';
@@ -450,7 +450,7 @@ function App() {
           }
           activeCivilJurisdiction={mode === 'property' ? activeCivilJurisdiction : null}
           onCivilLawJurisdictionChange={
-            mode === 'property' ? handleCivilLawJurisdictionChange : () => {}
+            mode === 'property' ? handleCivilJurisdictionChange : () => {}
           }
           activeAssetType={mode === 'property' ? activeAssetType : null}
           onAssetTypeChange={mode === 'property' ? handleAssetTypeChange : () => {}}
@@ -464,7 +464,6 @@ function App() {
           ui={ui}
           mode={mode}
           aiFrameworks={aiFrameworks}
-          onSliderPreset={handleSliderChange}
         />
       </section>
 
