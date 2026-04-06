@@ -19,6 +19,7 @@ import {
   getAISliderMeta,
   getUiCopy,
   isSupportedLocale,
+  localizeAIFramework,
   localizeCommonLawEstate,
   localizeCivilLawEstate,
   localizeConvergenceResult,
@@ -107,7 +108,7 @@ function App() {
 
   const ui = useMemo(() => getUiCopy(locale), [locale]);
   const propertySliderMeta = useMemo(() => getSliderMeta(locale), [locale]);
-  const aiSliderMetaMemo = useMemo(() => getAISliderMeta(), []);
+  const aiSliderMetaMemo = useMemo(() => getAISliderMeta(locale), [locale]);
   const sliderMeta = mode === 'ai' ? aiSliderMetaMemo : propertySliderMeta;
   const languageOption = useMemo(() => getLanguageOption(locale), [locale]);
 
@@ -136,6 +137,12 @@ function App() {
 
   const localizedCivilLawEstates = useMemo(() => {
     return civilLawEstates.map((estate) => localizeCivilLawEstate(estate, locale));
+  }, [locale]);
+
+  const localizedAIFrameworks = useMemo(() => {
+    return aiFrameworks.map((framework) =>
+      localizeAIFramework(framework, locale)
+    );
   }, [locale]);
 
   function handleCommonLawJurisdictionChange(jurisdiction) {
@@ -257,13 +264,15 @@ function App() {
 
   const frameworkMatches = useMemo(() => {
     if (mode !== 'ai') return [];
-    return computeFrameworkMatches(sliderValues, aiFrameworks);
-  }, [mode, sliderValues]);
+    return computeFrameworkMatches(sliderValues, localizedAIFrameworks);
+  }, [localizedAIFrameworks, mode, sliderValues]);
 
   const aiViolations = useMemo(() => {
     if (mode !== 'ai') return [];
-    return checkAIViolations(sliderValues);
-  }, [mode, sliderValues]);
+    return checkAIViolations(sliderValues).map((violation) =>
+      localizeViolation(violation, locale)
+    );
+  }, [locale, mode, sliderValues]);
 
   const commonLawMatches = useMemo(() => {
     return computeCommonLawMatches(
@@ -400,12 +409,12 @@ function App() {
         <div className="hero-shell">
           <div className="hero-copy">
             <p className="hero-kicker">
-              {mode === 'ai' ? 'AI Governance — Constraint Cascade' : ui.heroKicker}
+              {mode === 'ai' ? ui.aiMode.heroKicker : ui.heroKicker}
             </p>
             <h1>ccModel Explorer</h1>
             <p className="hero-text">
               {mode === 'ai'
-                ? 'The same seven-dimension constraint cascade logic maps any AI system configuration to known governance frameworks. Adjust the sliders and watch violations fire in real time.'
+                ? ui.aiMode.heroText
                 : ui.heroText}
             </p>
           </div>
@@ -415,7 +424,7 @@ function App() {
               <LanguageSwitcher locale={locale} onChange={setLocale} ui={ui} />
             </div>
 
-            <ModeSwitcher mode={mode} onChange={handleModeChange} />
+            <ModeSwitcher mode={mode} onChange={handleModeChange} ui={ui} />
 
             {mode === 'property' && (
               <div className="hero-metrics">
@@ -427,9 +436,9 @@ function App() {
 
             {mode === 'ai' && (
               <div className="hero-metrics">
-                <span className="metric-chip">7 governance frameworks</span>
-                <span className="metric-chip">3 violation rules</span>
-                <span className="metric-chip">FAccT 2026 demo</span>
+                <span className="metric-chip">{ui.aiMode.metrics.frameworks}</span>
+                <span className="metric-chip">{ui.aiMode.metrics.violations}</span>
+                <span className="metric-chip">{ui.aiMode.metrics.demo}</span>
               </div>
             )}
           </div>
@@ -463,7 +472,7 @@ function App() {
           onSliderLockThresholdChange={handleSliderLockThresholdChange}
           ui={ui}
           mode={mode}
-          aiFrameworks={aiFrameworks}
+          aiFrameworks={localizedAIFrameworks}
         />
       </section>
 
@@ -485,8 +494,9 @@ function App() {
           <AIFrameworkPanel
             matches={frameworkMatches}
             violations={aiViolations}
-            frameworks={aiFrameworks}
+            frameworks={localizedAIFrameworks}
             locale={locale}
+            ui={ui}
           />
         )}
       </main>

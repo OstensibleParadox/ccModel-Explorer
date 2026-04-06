@@ -10,6 +10,7 @@ export default function AIFrameworkPanel({
   violations,
   frameworks,
   locale,
+  ui,
   limit = 5,
 }) {
   const visibleMatches = matches.slice(0, limit);
@@ -19,11 +20,10 @@ export default function AIFrameworkPanel({
     <div className="ai-framework-panel">
       <section className="track-panel">
         <div className="track-heading">
-          <p className="track-kicker">Framework Matching</p>
-          <h2 className="track-title">AI Governance Mode</h2>
+          <p className="track-kicker">{ui.aiMode.panelKicker}</p>
+          <h2 className="track-title">{ui.aiMode.panelTitle}</h2>
           <p className="ai-panel-subtitle">
-            The same constraint cascade logic maps this configuration to known
-            AI governance frameworks.
+            {ui.aiMode.panelSubtitle}
           </p>
         </div>
 
@@ -57,7 +57,7 @@ export default function AIFrameworkPanel({
             >
               <div className="match-header">
                 <div>
-                  <p className="match-rank">#{index + 1} framework fit</p>
+                  <p className="match-rank">{ui.aiMode.ranks.framework(index + 1)}</p>
                   <h3 className="estate-name">{framework.name}</h3>
                 </div>
                 <span className="match-pct">{formatScore(score, locale)}</span>
@@ -87,7 +87,7 @@ export default function AIFrameworkPanel({
           <div className="ai-no-governance-note">
             <span className="ai-no-governance-icon" aria-hidden="true">∅</span>
             <div>
-              <strong>{noGovernance.name}</strong>
+              <strong>{ui.aiMode.noGovernanceLabel}: {noGovernance.name}</strong>
               <p>{noGovernance.notes}</p>
             </div>
           </div>

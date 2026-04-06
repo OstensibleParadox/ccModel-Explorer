@@ -329,6 +329,30 @@ const UI_ENHANCEMENTS = {
       property: "Property Law",
       internationalEconomic: "International Economic Law",
     },
+    modeSwitcher: {
+      aria: "Explorer mode",
+      property: "Property Law Mode",
+      ai: "AI Governance Mode",
+    },
+    aiMode: {
+      heroKicker: "AI Governance — Constraint Cascade",
+      heroText:
+        "The same seven-dimension constraint cascade logic maps any AI system configuration to known governance frameworks. Adjust the sliders and watch violations fire in real time.",
+      metrics: {
+        frameworks: "7 governance frameworks",
+        violations: "3 violation rules",
+        demo: "FAccT 2026 demo",
+      },
+      frameworkPresets: "Framework Presets",
+      panelKicker: "Framework Matching",
+      panelTitle: "AI Governance Mode",
+      panelSubtitle:
+        "The same constraint cascade logic maps this configuration to known AI governance frameworks.",
+      ranks: {
+        framework: (index) => `#${index} framework fit`,
+      },
+      noGovernanceLabel: "No-governance baseline",
+    },
     harmonisation: {
       kicker: "Harmonisation",
       title: "International Instruments",
@@ -360,6 +384,30 @@ const UI_ENHANCEMENTS = {
       property: "财产法术语",
       internationalEconomic: "国际经济法术语",
     },
+    modeSwitcher: {
+      aria: "探索模式",
+      property: "财产法模式",
+      ai: "AI治理模式",
+    },
+    aiMode: {
+      heroKicker: "AI治理：约束级联",
+      heroText:
+        "同一套七维约束级联逻辑可以把任意 AI 配置映射到已知治理框架。调节滑块，即可实时看到违规提示。",
+      metrics: {
+        frameworks: "7 个治理框架",
+        violations: "3 条违规规则",
+        demo: "FAccT 2026 演示",
+      },
+      frameworkPresets: "框架预设",
+      panelKicker: "框架匹配",
+      panelTitle: "AI治理模式",
+      panelSubtitle:
+        "同一套约束级联逻辑会把当前配置映射到已知 AI 治理框架。",
+      ranks: {
+        framework: (index) => `#${index} 框架匹配`,
+      },
+      noGovernanceLabel: "无治理基线",
+    },
     harmonisation: {
       kicker: "协调化",
       title: "国际法文书",
@@ -389,6 +437,30 @@ const UI_ENHANCEMENTS = {
       aria: "Begriffslinse",
       property: "Eigentumsrecht",
       internationalEconomic: "Internationales Wirtschaftsrecht",
+    },
+    modeSwitcher: {
+      aria: "Explorer-Modus",
+      property: "Sachenrechtsmodus",
+      ai: "AI-Governance-Modus",
+    },
+    aiMode: {
+      heroKicker: "AI-Governance — Constraint Cascade",
+      heroText:
+        "Dieselbe siebendimensionale Constraint-Cascade-Logik ordnet jede AI-Konfiguration bekannten Governance-Frameworks zu. Bewege die Slider und beobachte Verstöße in Echtzeit.",
+      metrics: {
+        frameworks: "7 Governance-Frameworks",
+        violations: "3 Verstoßregeln",
+        demo: "FAccT-2026-Demo",
+      },
+      frameworkPresets: "Framework-Voreinstellungen",
+      panelKicker: "Framework-Matching",
+      panelTitle: "AI-Governance-Modus",
+      panelSubtitle:
+        "Dieselbe Constraint-Cascade-Logik ordnet diese Konfiguration bekannten AI-Governance-Frameworks zu.",
+      ranks: {
+        framework: (index) => `#${index} Framework-Treffer`,
+      },
+      noGovernanceLabel: "Unregulierte Baseline",
     },
     harmonisation: {
       kicker: "Harmonisierung",
@@ -421,6 +493,30 @@ const UI_ENHANCEMENTS = {
       aria: "術語レンズ",
       property: "財産法術語",
       internationalEconomic: "国際経済法術語",
+    },
+    modeSwitcher: {
+      aria: "探索モード",
+      property: "財産法モード",
+      ai: "AIガバナンスモード",
+    },
+    aiMode: {
+      heroKicker: "AIガバナンス：制約カスケード",
+      heroText:
+        "同じ七次元の制約カスケード論理で、任意の AI 構成を既知のガバナンス枠組みに対応づけます。スライダーを動かすと違反が即時に表示されます。",
+      metrics: {
+        frameworks: "7 つのガバナンス枠組み",
+        violations: "3 つの違反ルール",
+        demo: "FAccT 2026 デモ",
+      },
+      frameworkPresets: "フレームワーク・プリセット",
+      panelKicker: "フレームワーク適合",
+      panelTitle: "AIガバナンスモード",
+      panelSubtitle:
+        "同じ制約カスケード論理で、この構成を既知の AI ガバナンス枠組みに対応づけます。",
+      ranks: {
+        framework: (index) => `#${index} フレームワーク適合`,
+      },
+      noGovernanceLabel: "無規制ベースライン",
     },
     harmonisation: {
       kicker: "調和化",
@@ -1344,6 +1440,24 @@ const HARMONIZATION_TEXT = {
 
 const VIOLATION_TEXT = {
   zh: {
+    autonomy_without_accountability: {
+      message: "自主性上升但责任主体不清，问责结构失衡。",
+      detail:
+        "这相当于在几乎没有有效责任分配的情况下放大系统自主行为，风险难以归责。",
+      authority: "张某，《AI治理中的代理权放弃》（EiT 2026）",
+    },
+    value_capture_without_accountability: {
+      message: "价值捕获高度集中，但可归责性不足。",
+      detail:
+        "部署方保留主要收益，却缺少与之匹配的可追责安排，形成收益与责任脱钩。",
+      authority: "“黑箱围墙中的无责任收益捕获”论题（FAccT 2026）",
+    },
+    capability_without_constraint: {
+      message: "能力范围很高，但外部约束层过薄。",
+      detail:
+        "过度依赖模型自身对齐，缺乏分层防护与制度性兜底，属于高风险配置。",
+      authority: "“马其诺防线”比喻（Bengio et al., 2025）",
+    },
     alienation_without_possession: {
       message: "处分权过高而占有基础过低，这种组合不稳定。",
       detail: "转让能力已经跑在对标的物的现实控制之前。",
@@ -1382,6 +1496,28 @@ const VIOLATION_TEXT = {
     },
   },
   de: {
+    autonomy_without_accountability: {
+      message:
+        "Steigende Autonomie ohne klare Verantwortungszuordnung untergräbt die Rechenschaft.",
+      detail:
+        "Autonomes Verhalten nimmt zu, während tragfähige Haftungs- und Zuständigkeitsstrukturen fehlen.",
+      authority: "Zhang, „Waivers of Agency in AI Governance“ (EiT 2026)",
+    },
+    value_capture_without_accountability: {
+      message:
+        "Hohe Wertabschöpfung bei unzureichender Verantwortlichkeit ist governance-seitig instabil.",
+      detail:
+        "Der Betreiber vereinnahmt den Großteil des Werts, ohne entsprechend belastbare Rechenschaftsmechanismen.",
+      authority:
+        "These zur „value capture without accountability“ (FAccT 2026)",
+    },
+    capability_without_constraint: {
+      message:
+        "Hoher Fähigkeitsumfang ohne mehrschichtige Begrenzung ist ein Hochrisikoprofil.",
+      detail:
+        "Die Konfiguration verlässt sich primär auf interne Ausrichtung statt auf abgestufte externe Sicherungen.",
+      authority: "„Maginot-Line“-Analogie (Bengio et al., 2025)",
+    },
     alienation_without_possession: {
       message:
         "Hohe Veräußerbarkeit ohne tragfähige Besitzbasis ist instabil.",
@@ -1438,6 +1574,27 @@ const VIOLATION_TEXT = {
     },
   },
   ja: {
+    autonomy_without_accountability: {
+      message:
+        "自律性が高いのに責任主体が不明確で、説明責任の構造が弱い状態です。",
+      detail:
+        "システムの自律行動が拡大している一方、追跡可能な責任配分が十分に整っていません。",
+      authority: "Zhang「Waivers of Agency in AI Governance」（EiT 2026）",
+    },
+    value_capture_without_accountability: {
+      message:
+        "価値の取り込みが強いのに、対応する説明責任が不足しています。",
+      detail:
+        "提供者が主要な価値を保持する一方で、損害時の責任経路が薄く、統治上の不均衡が生じています。",
+      authority: "「value capture without accountability」論点（FAccT 2026）",
+    },
+    capability_without_constraint: {
+      message:
+        "能力範囲が高いのに、外部制約が薄すぎる高リスク構成です。",
+      detail:
+        "内部アラインメントへの依存が強く、段階的な外部防護やフェイルセーフが不足しています。",
+      authority: "「マジノ線」比喩（Bengio et al., 2025）",
+    },
     alienation_without_possession: {
       message:
         "占有基盤が薄いのに譲渡権限だけが高い状態は不安定です。",
@@ -1491,6 +1648,183 @@ const VIOLATION_TEXT = {
         "この組合せは、処分と占有が切り離される抽象的分離をほのめかします。",
       detail:
         "譲渡シグナルが高い一方、占有がそれに追いついていません。",
+    },
+  },
+};
+
+const AI_FRAMEWORK_TEXT = {
+  zh: {
+    eu_ai_act_high_risk: {
+      name: "欧盟《AI法案》：高风险系统",
+      description:
+        "附件 III 列举的系统，需进行强制合规评估、在欧盟数据库登记并接受上市后监测。",
+      notes:
+        "核心要求是强制评估、登记和持续监管，覆盖关键基础设施、教育、就业、公共服务、执法、移民与司法等场景。",
+    },
+    eu_ai_act_prohibited: {
+      name: "欧盟《AI法案》：被禁止实践",
+      description:
+        "无论采取何种防护措施都被绝对禁止的系统，例如社会评分、实时生物识别监控和对脆弱群体的操纵。",
+      notes:
+        "属于绝对禁止条款，不存在合规进入路径。",
+    },
+    open_source_model: {
+      name: "开源模型（如 Llama、Mistral）",
+      description:
+        "模型权重公开发布，采用开放或宽松许可，可自由下载和再分发。",
+      notes:
+        "高可转移性与高可复制性通常伴随较低访问控制，部署后治理约束更依赖下游实践。",
+    },
+    closed_api_model: {
+      name: "闭源 API 模型（如 GPT、Claude）",
+      description:
+        "模型权重专有，通过商业 API 门控访问并由提供方集中控制。",
+      notes:
+        "典型特征是高价值捕获、低可转移性和高访问控制。",
+    },
+    frontier_model_pre_release: {
+      name: "前沿模型：发布前安全评估阶段",
+      description:
+        "能力已确认但尚未公开，正在进行内部或第三方安全评估。",
+      notes:
+        "高能力与高限制并存，重点是发布前评估与风险缓释。",
+    },
+    uk_framework: {
+      name: "英国：促创新 AI 监管框架",
+      description:
+        "基于原则、按行业分工的监管结构，没有单一 AI 监管者和统一前置审批路径。",
+      notes:
+        "强调跨行业原则和现有监管机构协同，整体弹性较高。",
+    },
+    china_ai_regulation: {
+      name: "中国：算法/生成式/深度合成三层规制",
+      description:
+        "由算法推荐、生成式 AI 与深度合成规则共同构成，面向上线前安全与内容治理提出要求。",
+      notes:
+        "突出上线前评估、平台责任与内容合规联动。",
+    },
+    no_governance: {
+      name: "无监管部署",
+      description:
+        "没有明确治理框架约束，七个维度均处于开放区间。",
+      notes:
+        "可作为对照基线，用于识别“无制度约束”状态与制度化框架之间的差异。",
+    },
+  },
+  de: {
+    eu_ai_act_high_risk: {
+      name: "EU AI Act — Hochrisikosystem",
+      description:
+        "In Anhang III gelistete Systeme mit verpflichtender Konformitätsbewertung, EU-Datenbankeintrag und Marktüberwachung.",
+      notes:
+        "Kern sind Pflichtprüfung, Registrierung und fortlaufende Aufsicht in sensiblen Sektoren.",
+    },
+    eu_ai_act_prohibited: {
+      name: "EU AI Act — Verbotene Praxis",
+      description:
+        "Systeme, deren Einsatz unabhängig von Schutzmaßnahmen absolut untersagt ist, etwa Social Scoring oder Echtzeit-Biometrieüberwachung.",
+      notes:
+        "Absolute Verbotskategorie ohne regulären Zulassungspfad.",
+    },
+    open_source_model: {
+      name: "Open-Source-Modell (z. B. Llama, Mistral)",
+      description:
+        "Öffentlich bereitgestellte Modellgewichte mit freier oder offener Lizenz, herunterladbar und weiterverteilbar.",
+      notes:
+        "Hohe Übertragbarkeit und Replizierbarkeit gehen häufig mit geringer Zugangskontrolle einher.",
+    },
+    closed_api_model: {
+      name: "Geschlossenes API-Modell (z. B. GPT, Claude)",
+      description:
+        "Proprietäre Modellgewichte; Zugriff erfolgt kontrolliert über eine kommerzielle API.",
+      notes:
+        "Typisches Profil: hohe Wertabschöpfung, niedrige Übertragbarkeit, starke Zugangskontrolle.",
+    },
+    frontier_model_pre_release: {
+      name: "Frontier-Modell — Vorfreigabe-Sicherheitsphase",
+      description:
+        "Fähigkeiten bestätigt, aber noch nicht öffentlich verfügbar; derzeit interne oder externe Sicherheitsprüfung.",
+      notes:
+        "Hohe Fähigkeiten bei maximaler Restriktion, Fokus auf Pre-Release-Risikomanagement.",
+    },
+    uk_framework: {
+      name: "UK Pro-Innovation AI Regulation",
+      description:
+        "Prinzipienbasiertes, sektorspezifisches Modell ohne zentrale AI-Behörde und ohne einheitlichen Vorabzulassungsweg.",
+      notes:
+        "Breite Bandbreiten spiegeln bewusst regulatorische Flexibilität wider.",
+    },
+    china_ai_regulation: {
+      name: "VR China: Algorithmus-/GenAI-/Deep-Synthesis-Regime",
+      description:
+        "Überlappende Regelwerke für Empfehlungssysteme, generative AI und synthetische Medien mit vorgelagerter Sicherheitslogik.",
+      notes:
+        "Betont Vorabprüfung, Plattformpflichten und inhaltliche Compliance.",
+    },
+    no_governance: {
+      name: "Unregulierter Einsatz",
+      description:
+        "Kein Governance-Framework greift; alle sieben Dimensionen bleiben offen.",
+      notes:
+        "Nutzt man als Baseline, um institutionell ungebundene Konfigurationen sichtbar zu machen.",
+    },
+  },
+  ja: {
+    eu_ai_act_high_risk: {
+      name: "EU AI法：高リスクシステム",
+      description:
+        "附属書IIIに列挙されるシステムで、適合性評価・EUデータベース登録・市販後監視が必須です。",
+      notes:
+        "重要分野に対して、事前評価と継続監督を制度的に求める構成です。",
+    },
+    eu_ai_act_prohibited: {
+      name: "EU AI法：禁止行為",
+      description:
+        "保護措置の有無にかかわらず配備が絶対禁止される類型（社会的スコアリング等）。",
+      notes:
+        "適合法の経路がない絶対禁止カテゴリです。",
+    },
+    open_source_model: {
+      name: "オープンソースモデル（例：Llama、Mistral）",
+      description:
+        "モデル重みが公開され、オープンまたは寛容なライセンスで再配布可能な構成です。",
+      notes:
+        "高い移転可能性・複製可能性と低いアクセス制御が併存しやすい類型です。",
+    },
+    closed_api_model: {
+      name: "クローズドAPIモデル（例：GPT、Claude）",
+      description:
+        "モデル重みは非公開で、商用API経由でアクセスを統制する構成です。",
+      notes:
+        "高い価値捕捉と強いアクセス管理、低い移転可能性が典型です。",
+    },
+    frontier_model_pre_release: {
+      name: "フロンティアモデル：公開前安全評価段階",
+      description:
+        "能力は確認済みだが未公開で、社内または第三者による安全評価中の段階です。",
+      notes:
+        "高能力と高制限が同時に現れるため、公開前評価が中心課題になります。",
+    },
+    uk_framework: {
+      name: "英国：プロイノベーション型AI規制",
+      description:
+        "原則ベースかつ分野別運用で、単一のAI規制当局や一律の事前承認制度を持たない枠組みです。",
+      notes:
+        "既存規制当局の分担運用を重視し、柔軟性を確保する設計です。",
+    },
+    china_ai_regulation: {
+      name: "中国：アルゴリズム/生成AI/深層合成ガバナンス",
+      description:
+        "推薦アルゴリズム、生成AI、深層合成の各規制を組み合わせた多層的ガバナンス構成です。",
+      notes:
+        "事前評価、プラットフォーム責任、コンテンツ整合を一体で扱います。",
+    },
+    no_governance: {
+      name: "無規制配備",
+      description:
+        "明示的なガバナンス枠組みが適用されず、七次元が実質的に無制約の状態です。",
+      notes:
+        "制度的制約がない基準線として、他フレームワークとの比較に使えます。",
     },
   },
 };
@@ -1608,47 +1942,162 @@ export function getSliderMeta(locale) {
 // AI governance dimension labels. Uses the same underlying slider keys but
 // relabels each dimension to its AI governance analogue.
 const AI_SLIDER_META_COPY = {
-  possession: {
-    label: 'Autonomy',
-    lowLabel: 'Fully human-controlled',
-    highLabel: 'Fully autonomous',
+  en: {
+    possession: {
+      label: "Autonomy",
+      lowLabel: "Fully human-controlled",
+      highLabel: "Fully autonomous",
+    },
+    use: {
+      label: "Capability Scope",
+      lowLabel: "Narrow / restricted use",
+      highLabel: "General-purpose, unrestricted",
+    },
+    income: {
+      label: "Value Capture",
+      lowLabel: "All value to users",
+      highLabel: "All value to deployer",
+    },
+    alienation: {
+      label: "Transferability",
+      lowLabel: "Model locked to one context",
+      highLabel: "Freely redistributable / open-source",
+    },
+    exclusion: {
+      label: "Access Control",
+      lowLabel: "Open to all",
+      highLabel: "Restricted / gated access",
+    },
+    duration: {
+      label: "Deployment Persistence",
+      lowLabel: "Ephemeral / session-based",
+      highLabel: "Permanent / always-on",
+    },
+    inheritability: {
+      label: "Replicability",
+      lowLabel: "Cannot be copied or distilled",
+      highLabel: "Freely reproducible",
+    },
   },
-  use: {
-    label: 'Capability Scope',
-    lowLabel: 'Narrow / restricted use',
-    highLabel: 'General-purpose, unrestricted',
+  zh: {
+    possession: {
+      label: "自主性",
+      lowLabel: "完全人工控制",
+      highLabel: "完全自主运行",
+    },
+    use: {
+      label: "能力范围",
+      lowLabel: "狭窄 / 受限用途",
+      highLabel: "通用且不受限",
+    },
+    income: {
+      label: "价值捕获",
+      lowLabel: "价值主要归用户",
+      highLabel: "价值主要归部署方",
+    },
+    alienation: {
+      label: "可转移性",
+      lowLabel: "模型锁定在单一场景",
+      highLabel: "可自由再分发 / 开源",
+    },
+    exclusion: {
+      label: "访问控制",
+      lowLabel: "对所有人开放",
+      highLabel: "受限 / 门控访问",
+    },
+    duration: {
+      label: "部署持续性",
+      lowLabel: "临时 / 会话级",
+      highLabel: "长期常驻 / 持续在线",
+    },
+    inheritability: {
+      label: "可复制性",
+      lowLabel: "无法复制或蒸馏",
+      highLabel: "可自由复现",
+    },
   },
-  income: {
-    label: 'Value Capture',
-    lowLabel: 'All value to users',
-    highLabel: 'All value to deployer',
+  de: {
+    possession: {
+      label: "Autonomie",
+      lowLabel: "Vollständig menschlich gesteuert",
+      highLabel: "Vollständig autonom",
+    },
+    use: {
+      label: "Fähigkeitsumfang",
+      lowLabel: "Eng / eingeschränkt",
+      highLabel: "Allzweckfähig, uneingeschränkt",
+    },
+    income: {
+      label: "Wertabschöpfung",
+      lowLabel: "Wert primär bei Nutzenden",
+      highLabel: "Wert primär beim Betreiber",
+    },
+    alienation: {
+      label: "Übertragbarkeit",
+      lowLabel: "Modell an einen Kontext gebunden",
+      highLabel: "Frei weitergebbar / Open Source",
+    },
+    exclusion: {
+      label: "Zugangskontrolle",
+      lowLabel: "Für alle offen",
+      highLabel: "Beschränkt / zugangsgesteuert",
+    },
+    duration: {
+      label: "Einsatzpersistenz",
+      lowLabel: "Flüchtig / sitzungsbasiert",
+      highLabel: "Dauerhaft / always-on",
+    },
+    inheritability: {
+      label: "Replizierbarkeit",
+      lowLabel: "Nicht kopier- oder destillierbar",
+      highLabel: "Frei reproduzierbar",
+    },
   },
-  alienation: {
-    label: 'Transferability',
-    lowLabel: 'Model locked to one context',
-    highLabel: 'Freely redistributable / open-source',
-  },
-  exclusion: {
-    label: 'Access Control',
-    lowLabel: 'Open to all',
-    highLabel: 'Restricted / gated access',
-  },
-  duration: {
-    label: 'Deployment Persistence',
-    lowLabel: 'Ephemeral / session-based',
-    highLabel: 'Permanent / always-on',
-  },
-  inheritability: {
-    label: 'Replicability',
-    lowLabel: 'Cannot be copied or distilled',
-    highLabel: 'Freely reproducible',
+  ja: {
+    possession: {
+      label: "自律性",
+      lowLabel: "完全に人間が制御",
+      highLabel: "完全に自律",
+    },
+    use: {
+      label: "能力範囲",
+      lowLabel: "限定的 / 制限付き利用",
+      highLabel: "汎用・無制限",
+    },
+    income: {
+      label: "価値捕捉",
+      lowLabel: "価値は主に利用者へ",
+      highLabel: "価値は主に提供者へ",
+    },
+    alienation: {
+      label: "移転可能性",
+      lowLabel: "単一文脈に固定",
+      highLabel: "自由に再配布 / オープンソース",
+    },
+    exclusion: {
+      label: "アクセス制御",
+      lowLabel: "誰でもアクセス可能",
+      highLabel: "制限 / ゲート管理",
+    },
+    duration: {
+      label: "配備持続性",
+      lowLabel: "一時的 / セッション依存",
+      highLabel: "恒常的 / 常時稼働",
+    },
+    inheritability: {
+      label: "複製可能性",
+      lowLabel: "複製・蒸留が困難",
+      highLabel: "自由に再現可能",
+    },
   },
 };
 
-export function getAISliderMeta() {
+export function getAISliderMeta(locale) {
+  const copy = AI_SLIDER_META_COPY[locale] ?? AI_SLIDER_META_COPY.en;
+
   return SLIDER_KEYS.map((key) => ({
     key,
-    ...AI_SLIDER_META_COPY[key],
+    ...copy[key],
   }));
 }
 
@@ -1703,6 +2152,22 @@ export function localizeCivilLawEstate(estate, locale) {
   };
 }
 
+export function localizeAIFramework(framework, locale) {
+  const localized = AI_FRAMEWORK_TEXT[locale]?.[framework.id];
+
+  if (!localized) {
+    return framework;
+  }
+
+  return {
+    ...framework,
+    name: localized.name ?? framework.name,
+    description: localized.description ?? framework.description,
+    notes: localized.notes ?? framework.notes,
+    authority: localized.authority ?? framework.authority,
+  };
+}
+
 export function localizeConvergenceResult(result, locale) {
   const copy = HARMONIZATION_TEXT[locale]?.[result.civilEstate.id];
 
@@ -1728,6 +2193,7 @@ export function localizeViolation(violation, locale) {
     ...violation,
     message: copy.message ?? violation.message,
     detail: copy.detail ?? violation.detail,
+    authority: copy.authority ?? violation.authority,
   };
 }
 

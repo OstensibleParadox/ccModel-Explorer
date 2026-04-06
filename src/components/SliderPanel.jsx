@@ -254,7 +254,7 @@ export default function SliderPanel({
         <div className="preset-stack">
           <div className="preset-section">
             <div className="preset-section-header">
-              <span className="preset-title">Framework Presets</span>
+              <span className="preset-title">{ui.aiMode.frameworkPresets}</span>
               <button
                 type="button"
                 className="reset-button"
