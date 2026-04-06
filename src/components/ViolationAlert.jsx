@@ -171,7 +171,12 @@ export default function ViolationAlert({ violations }) {
           <span className="violation-toast-icon" aria-hidden="true">
             {ICONS[violation.severity]}
           </span>
-          <p className="violation-toast-message">{violation.message}</p>
+          <div className="violation-toast-body">
+            <p className="violation-toast-message">{violation.message}</p>
+            {violation.detail ? (
+              <p className="violation-toast-detail">{violation.detail}</p>
+            ) : null}
+          </div>
         </article>
       ))}
     </aside>

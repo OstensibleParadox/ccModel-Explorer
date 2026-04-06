@@ -827,36 +827,37 @@
 }
 
 .violation-toast-stack {
-  position: sticky;
-  top: 1rem;
+  position: fixed;
+  top: 1.25rem;
+  right: 1.25rem;
   z-index: 10;
   display: grid;
   gap: 0.55rem;
-  width: min(100%, 32rem);
-  margin: -0.25rem 0 1.25rem auto;
+  width: min(24rem, calc(100vw - 2rem));
   pointer-events: none;
 }
 
 .violation-toast {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 0.75rem;
-  padding: 0.8rem 0.95rem;
+  padding: 0.95rem 1rem;
   border: 1px solid;
-  border-radius: 18px;
-  box-shadow: var(--shadow-sm);
+  border-left-width: 5px;
+  border-radius: 20px;
+  box-shadow: 0 18px 36px rgba(18, 33, 52, 0.16);
   backdrop-filter: blur(12px);
   animation: toast-enter 180ms ease both;
 }
 
 .violation-toast--error {
-  border-color: var(--error-border);
-  background: rgba(255, 243, 240, 0.94);
+  border-color: rgba(200, 77, 49, 0.32);
+  background: rgba(255, 240, 236, 0.98);
 }
 
 .violation-toast--warning {
-  border-color: var(--warning-border);
-  background: rgba(255, 248, 238, 0.94);
+  border-color: rgba(205, 127, 50, 0.28);
+  background: rgba(255, 248, 238, 0.98);
 }
 
 .violation-toast.is-dismissing {
@@ -886,10 +887,23 @@
   color: #9c5d12;
 }
 
+.violation-toast-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
 .violation-toast-message {
   color: var(--text-primary);
-  font-size: 0.92rem;
+  font-size: 0.94rem;
+  font-weight: 700;
   line-height: 1.35;
+}
+
+.violation-toast-detail {
+  color: var(--text-secondary);
+  font-size: 0.84rem;
+  line-height: 1.45;
 }
 
 @keyframes toast-enter {
@@ -1136,6 +1150,7 @@
   }
 
   .violation-toast-stack {
+    position: static;
     margin: -0.1rem 0 1rem;
   }
 }
