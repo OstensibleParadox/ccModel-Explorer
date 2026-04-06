@@ -240,6 +240,12 @@
   flex: 0 0 auto;
 }
 
+.panel-inline-note-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
 .preset-stack {
   display: flex;
   flex-direction: column;
@@ -377,6 +383,19 @@
   font-family: var(--font-display);
   font-size: 1.2rem;
   font-weight: 700;
+}
+
+.slider-eigenvalue-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.24rem 0.58rem;
+  border: 1px solid rgba(33, 92, 101, 0.2);
+  border-radius: 999px;
+  background: rgba(33, 92, 101, 0.08);
+  color: var(--civil);
+  font-size: 0.75rem;
+  font-weight: 700;
+  line-height: 1;
 }
 
 .slider-value {
@@ -1312,7 +1331,7 @@
   background: rgba(255, 255, 255, 0.15);
 }
 
-.mode-ai .mode-tab.is-active {
+.mode-intl .mode-tab.is-active {
   background: rgba(33, 92, 101, 0.55);
 }
 
