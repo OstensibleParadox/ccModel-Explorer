@@ -42,6 +42,9 @@ import './App.css';
 const MATCH_THRESHOLD = 0.5;
 
 const INITIAL_VALUES = Object.fromEntries(SLIDER_KEYS.map((key) => [key, 50]));
+const INITIAL_SLIDER_LOCKS = Object.fromEntries(
+  SLIDER_KEYS.map((key) => [key, { enabled: false, threshold: null }])
+);
 
 // Default slider configuration for AI Governance mode: Closed API Model midpoints.
 // Triggers value_capture_without_accountability immediately to demonstrate the demo.
@@ -86,10 +89,17 @@ function clampSliderValues(nextValues, sliderBounds) {
   );
 }
 
+function normalizeThreshold(value, fallbackValue) {
+  const parsed = Number(value);
+  const safeValue = Number.isFinite(parsed) ? parsed : fallbackValue;
+  return Math.min(100, Math.max(0, Math.round(safeValue)));
+}
+
 function App() {
   const [locale, setLocale] = useState(resolveInitialLocale);
   const [mode, setMode] = useState('property'); // 'property' | 'ai'
   const [sliderValues, setSliderValues] = useState(INITIAL_VALUES);
+  const [sliderLocks, setSliderLocks] = useState(INITIAL_SLIDER_LOCKS);
   const [activeCommonLawJurisdiction, setActiveCommonLawJurisdiction] =
     useState(null);
   const [activeCivilJurisdiction, setActiveCivilJurisdiction] = useState(null);
@@ -159,7 +169,12 @@ function App() {
       setActiveCivilJurisdiction(null);
       setActiveAssetType(null);
     } else {
-      setSliderValues(INITIAL_VALUES);
+      setSliderValues(
+        clampSliderValues(
+          INITIAL_VALUES,
+          computeSliderBounds(INITIAL_VALUES, sliderLocks)
+        )
+      );
     }
   }
 
@@ -170,17 +185,75 @@ function App() {
       const nextBounds =
         mode === 'ai'
           ? computeAISliderBounds()
-          : computeSliderBounds(resolvedValues);
+          : computeSliderBounds(resolvedValues, sliderLocks);
 
       return clampSliderValues(resolvedValues, nextBounds);
+    });
+  }
+
+  function handleSliderLockToggle(key, enabled, fallbackThreshold) {
+    setSliderLocks((currentLocks) => {
+      const currentLock = currentLocks[key] ?? {
+        enabled: false,
+        threshold: null,
+      };
+      const threshold = normalizeThreshold(
+        currentLock.threshold,
+        fallbackThreshold
+      );
+      const nextLocks = {
+        ...currentLocks,
+        [key]: {
+          enabled,
+          threshold,
+        },
+      };
+
+      setSliderValues((currentValues) =>
+        clampSliderValues(
+          currentValues,
+          mode === 'ai'
+            ? computeAISliderBounds()
+            : computeSliderBounds(currentValues, nextLocks)
+        )
+      );
+
+      return nextLocks;
+    });
+  }
+
+  function handleSliderLockThresholdChange(key, threshold) {
+    setSliderLocks((currentLocks) => {
+      const currentLock = currentLocks[key] ?? {
+        enabled: false,
+        threshold: null,
+      };
+      const nextLocks = {
+        ...currentLocks,
+        [key]: {
+          ...currentLock,
+          threshold,
+        },
+      };
+
+      setSliderValues((currentValues) =>
+        clampSliderValues(
+          currentValues,
+          mode === 'ai'
+            ? computeAISliderBounds()
+            : computeSliderBounds(currentValues, nextLocks)
+        )
+      );
+
+      return nextLocks;
     });
   }
 
   const sliderBounds = useMemo(() => {
     return mode === 'ai'
       ? computeAISliderBounds()
-      : computeSliderBounds(sliderValues);
-  }, [mode, sliderValues]);
+      : computeSliderBounds(sliderValues, sliderLocks);
+  }, [mode, sliderLocks, sliderValues]);
 
   const frameworkMatches = useMemo(() => {
     if (mode !== 'ai') return [];
@@ -254,6 +327,29 @@ function App() {
     const annotations = baseSliderAnnotations.map((annotation) =>
       localizeSliderAnnotation(annotation, locale)
     );
+    const manualLockAnnotations =
+      mode === 'property'
+        ? SLIDER_KEYS.flatMap((key) => {
+            const sliderLock = sliderLocks[key];
+
+            if (!sliderLock?.enabled) {
+              return [];
+            }
+
+            const threshold = normalizeThreshold(
+              sliderLock.threshold,
+              sliderValues[key]
+            );
+
+            return [
+              {
+                dimension: key,
+                message: ui.sliderPanel.lockedAt(threshold),
+                severity: 'locked',
+              },
+            ];
+          })
+        : [];
 
     violations.forEach((violation) => {
       if (violation.id === 'abstraktionsprinzip_note') {
@@ -265,8 +361,8 @@ function App() {
       }
     });
 
-    return annotations;
-  }, [baseSliderAnnotations, locale, violations]);
+    return [...manualLockAnnotations, ...annotations];
+  }, [baseSliderAnnotations, locale, mode, sliderLocks, sliderValues, ui, violations]);
 
   const toastViolations = useMemo(() => {
     if (mode === 'ai') {
@@ -362,6 +458,9 @@ function App() {
           sliderBounds={sliderBounds}
           panelNote={mode === 'property' ? sliderPanelNote : null}
           sliderMeta={sliderMeta}
+          sliderLocks={mode === 'property' ? sliderLocks : {}}
+          onSliderLockToggle={handleSliderLockToggle}
+          onSliderLockThresholdChange={handleSliderLockThresholdChange}
           ui={ui}
           mode={mode}
           aiFrameworks={aiFrameworks}

@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import {
   getMidpointsWithContext,
   SLIDER_KEYS,
@@ -44,6 +45,12 @@ function getFillPercentage(value, min, max) {
   return ((value - min) / range) * 100;
 }
 
+function normalizeThreshold(value, fallbackValue) {
+  const parsed = Number(value);
+  const safeValue = Number.isFinite(parsed) ? parsed : fallbackValue;
+  return Math.min(100, Math.max(0, Math.round(safeValue)));
+}
+
 export default function SliderPanel({
   values,
   onChange,
@@ -59,11 +66,15 @@ export default function SliderPanel({
   sliderBounds = {},
   panelNote = null,
   sliderMeta = [],
+  sliderLocks = {},
+  onSliderLockToggle,
+  onSliderLockThresholdChange,
   ui,
   mode = 'property',
   aiFrameworks = [],
   onSliderPreset,
 }) {
+  const [openLockRows, setOpenLockRows] = useState({});
   const annotationsByDimension = sliderAnnotations.reduce(
     (dimensionMap, annotation) => {
       dimensionMap[annotation.dimension] ??= [];
@@ -72,6 +83,13 @@ export default function SliderPanel({
     },
     {}
   );
+
+  function toggleLockRow(key) {
+    setOpenLockRows((currentRows) => ({
+      ...currentRows,
+      [key]: !currentRows[key],
+    }));
+  }
 
   return (
     <section className="slider-panel">
@@ -281,27 +299,47 @@ export default function SliderPanel({
               : []),
           ];
           const rowAnnotations = annotationsByDimension[key] ?? [];
-          const lockedAnnotation = rowAnnotations.find(
+          const lockedAnnotations = rowAnnotations.filter(
             ({ severity }) => severity === 'locked'
           );
           const infoAnnotations = rowAnnotations.filter(
             ({ severity }) => severity !== 'locked'
           );
+          const lockState = sliderLocks[key] ?? {
+            enabled: false,
+            threshold: null,
+          };
+          const thresholdValue = normalizeThreshold(lockState.threshold, value);
 
           return (
             <div
               key={key}
-              className={`slider-row ${lockedAnnotation ? 'slider-row--locked' : ''}`}
+              className={`slider-row ${lockedAnnotations.length ? 'slider-row--locked' : ''}`}
             >
               <div className="slider-header">
-                <div>
+                <div className="slider-title-stack">
                   <label className="slider-label" htmlFor={`slider-${key}`}>
                     {label}
                   </label>
                 </div>
-                <output className="slider-value" htmlFor={`slider-${key}`}>
-                  {value}
-                </output>
+                <div className="slider-header-tools">
+                  {mode === 'property' ? (
+                    <button
+                      type="button"
+                      className={`slider-lock-button ${
+                        lockState.enabled ? 'is-enabled' : ''
+                      }`}
+                      aria-expanded={openLockRows[key] ? 'true' : 'false'}
+                      aria-label={`${ui.sliderPanel.lockButton}: ${label}`}
+                      onClick={() => toggleLockRow(key)}
+                    >
+                      🔒
+                    </button>
+                  ) : null}
+                  <output className="slider-value" htmlFor={`slider-${key}`}>
+                    {value}
+                  </output>
+                </div>
               </div>
 
               <div className="slider-input-shell">
@@ -345,10 +383,54 @@ export default function SliderPanel({
                 <span>{highLabel}</span>
               </div>
 
-              {lockedAnnotation ? (
-                <div className="slider-lock-note">
-                  <span className="slider-lock-indicator" aria-hidden="true" />
-                  <span>{lockedAnnotation.message}</span>
+              {mode === 'property' && (openLockRows[key] || lockState.enabled) ? (
+                <div className="slider-lock-controls">
+                  <label className="slider-lock-switch">
+                    <input
+                      type="checkbox"
+                      checked={lockState.enabled}
+                      onChange={(event) =>
+                        onSliderLockToggle(
+                          key,
+                          event.target.checked,
+                          thresholdValue
+                        )
+                      }
+                    />
+                    <span className="slider-lock-switch-ui" aria-hidden="true" />
+                    <span>{ui.sliderPanel.lockEnable}</span>
+                  </label>
+
+                  <label className="slider-lock-threshold">
+                    <span>{ui.sliderPanel.lockThreshold}</span>
+                    <input
+                      type="number"
+                      min="0"
+                      max="100"
+                      inputMode="numeric"
+                      value={thresholdValue}
+                      onChange={(event) =>
+                        onSliderLockThresholdChange(
+                          key,
+                          normalizeThreshold(event.target.value, value)
+                        )
+                      }
+                    />
+                  </label>
+                </div>
+              ) : null}
+
+              {lockedAnnotations.length > 0 ? (
+                <div className="slider-lock-note-list">
+                  {lockedAnnotations.map(({ message }, index) => (
+                    <div
+                      key={`${key}-lock-${index}-${message}`}
+                      className="slider-lock-note"
+                    >
+                      <span className="slider-lock-indicator" aria-hidden="true" />
+                      <span>{message}</span>
+                    </div>
+                  ))}
                 </div>
               ) : null}
 
