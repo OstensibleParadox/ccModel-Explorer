@@ -6,9 +6,12 @@ Interactive property rights visualisation based on the Constraint Cascade Method
 
 ## What it does
 
-Drag 7 sliders — one for each of Honore's incidents of ownership (possession, use, management, income, capital, alienation, exclusion) — and see which English common law estate best matches the resulting property rights bundle. The tool flags doctrinally incoherent combinations with case law authority.
+Drag 7 sliders — possession, use, income, alienation, exclusion, duration, inheritability — and watch two legal traditions classify the same rights bundle simultaneously:
 
-Phase 1 covers English property law (11 estates, 7 violation rules).
+- **Common Law track** — 11 English property estates (Fee Simple to Profit à Prendre)
+- **Civil Law track** — 8 Germanic/East Asian interests with jurisdiction sub-columns: BGB → Japan → Taiwan → PRC
+- **Convergence panel** — doctrinal comparison of the two top matches (very high ↔ none)
+- **Violation alerts** — flags incoherent configurations with case law authority
 
 ## Development
 
