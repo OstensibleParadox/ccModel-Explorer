@@ -24,7 +24,7 @@
       "prc": "民法典240条"
     },
     "common_law_equivalent": "fee_simple_absolute",
-    "notes": "This is the nearest civilian anchor to the common-law fee simple absolute, while still sitting inside a codified numerus clausus."
+    "notes": "The nearest civilian anchor to the common-law fee simple absolute, but PRC 所有权 over land is structurally different: all urban land is state-owned (Art. 249) and all rural land is collectively owned (Art. 260). Individuals can only own buildings and structures, never the land beneath them. Slider ranges here reflect the DE/JP/TW concept of private ownership; PRC land ownership is a state prerogative with no private equivalent."
   },
   {
     "id": "erbbaurecht",
@@ -51,17 +51,17 @@
       "prc": "民法典344条"
     },
     "common_law_equivalent": "leasehold",
-    "notes": "The long-term, inheritable building right often looks leasehold-like from a common-law angle, but it is structurally treated as a named real right."
+    "notes": "Structurally a named real right, not a contractual lease. PRC 建设用地使用权 has mandatory maximum terms by use type: residential 70yr, commercial 40yr, industrial 50yr (国务院令第55号 Art. 12). Art. 359 provides for automatic renewal of residential terms, but conditions remain unsettled. Duration and inheritability ranges here span the cross-jurisdictional spread; PRC sits at the lower end."
   },
   {
     "id": "niessbrauch",
     "names": {
       "de": "Nießbrauch",
-      "jp": "用益権",
-      "tw": "用益權",
-      "prc": "用益物权"
+      "jp": null,
+      "tw": null,
+      "prc": null
     },
-    "description": "A usufruct-style right focused on use and fruits rather than alienable ownership: rich in enjoyment and income, but personal and typically non-descendible.",
+    "description": "A German usufruct right (Nießbrauch) focused on use and fruits rather than alienable ownership. No direct equivalent exists in JP, TW, or PRC law; 用益物権/用益物权 is a category name, not a holdable right.",
     "ranges": {
       "possession": [60, 85],
       "use": [70, 90],
@@ -85,7 +85,7 @@
     "names": {
       "de": "Grunddienstbarkeit",
       "jp": "地役権",
-      "tw": "地役權",
+      "tw": "不動產役權",
       "prc": "地役权"
     },
     "description": "A land-serving real right comparable to a servitude or easement: narrow in possession, enduring in duration, and usually tied to another parcel’s use.",
@@ -129,7 +129,7 @@
       "de": "§ 1113 BGB",
       "jp": "民法369条",
       "tw": "民法860條",
-      "prc": "民法典395条"
+      "prc": "民法典394条"
     },
     "common_law_equivalent": "mortgage",
     "notes": "The civilian mortgage remains closer to an accessory real security than the layered equitable devices familiar to common-law lawyers."
@@ -155,7 +155,7 @@
     "authorities": {
       "de": "§ 1204 BGB",
       "jp": "民法342条",
-      "tw": "民法873條",
+      "tw": "民法884條",
       "prc": "民法典425条"
     },
     "common_law_equivalent": "mortgage",
@@ -214,5 +214,140 @@
     },
     "common_law_equivalent": "licence",
     "notes": "Common law tends to fragment this space into licenses, occupation rights, and specialized statutory protections rather than one named real right."
+  },
+  {
+    "id": "tudi_chengbao_jingyingquan",
+    "names": {
+      "de": null,
+      "jp": null,
+      "tw": null,
+      "prc": "土地承包经营权"
+    },
+    "description": "The foundational PRC rural land use right: households contract collectively owned land for agriculture and hold long-term possession, use, and income rights. The 2018 Three Rights Separation reform split this into 承包权 (contract right, non-transferable outside household) and 经营权 (management right, transferable and mortgageable).",
+    "ranges": {
+      "possession": [70, 90],
+      "use": [75, 95],
+      "income": [80, 95],
+      "alienation": [30, 55],
+      "exclusion": [60, 80],
+      "duration": [50, 75],
+      "inheritability": [25, 50]
+    },
+    "authorities": {
+      "de": null,
+      "jp": null,
+      "tw": null,
+      "prc": "民法典330条"
+    },
+    "common_law_equivalent": null,
+    "notes": "Approximately 300 million rural households hold this right. Term limits vary by land type: 耕地 30yr, 草地 30–50yr, 林地 30–70yr (Art. 332). The 经营权 is now separately transferable, exchangeable, and mortgageable (Art. 339–342), but the underlying 承包权 remains with the household. No clean common-law or other civil-law analogue exists."
+  },
+  {
+    "id": "zhaijidi_shiyongquan",
+    "names": {
+      "de": null,
+      "jp": null,
+      "tw": null,
+      "prc": "宅基地使用权"
+    },
+    "description": "A PRC-specific rural residential land use right: one household per homestead allocation from the village collective, with strong possession and use for housing but near-zero alienation outside the collective.",
+    "ranges": {
+      "possession": [75, 95],
+      "use": [70, 90],
+      "income": [5, 20],
+      "alienation": [0, 15],
+      "exclusion": [60, 80],
+      "duration": [65, 85],
+      "inheritability": [15, 40]
+    },
+    "authorities": {
+      "de": null,
+      "jp": null,
+      "tw": null,
+      "prc": "民法典362条"
+    },
+    "common_law_equivalent": null,
+    "notes": "Governed by Art. 362–365 and the Land Administration Law. Each household may hold only one homestead plot (一户一宅). Transfer outside the collective is heavily restricted in practice. Duration has no statutory ceiling but the right is tied to household membership in the collective. Inheritability is contested: current policy allows house inheritance (房地一体) but the underlying land right may revert when no eligible household members remain."
+  },
+  {
+    "id": "liuzhiquan",
+    "names": {
+      "de": null,
+      "jp": "留置権",
+      "tw": "留置權",
+      "prc": "留置权"
+    },
+    "description": "A possessory security interest: the creditor retains possession of the debtor's movable property until the secured debt is satisfied, with enforcement through auction or sale upon default.",
+    "ranges": {
+      "possession": [40, 65],
+      "use": [0, 10],
+      "income": [0, 15],
+      "alienation": [10, 30],
+      "exclusion": [35, 55],
+      "duration": [10, 35],
+      "inheritability": [10, 25]
+    },
+    "authorities": {
+      "de": null,
+      "jp": "民法295条",
+      "tw": "民法928條",
+      "prc": "民法典447条"
+    },
+    "common_law_equivalent": null,
+    "notes": "The third type of security interest in PRC law alongside 抵押权 and 质权. Unlike pledge, lien arises by operation of law rather than by agreement. The holder must not use the retained property (Art. 451 PRC) but may collect fruits to offset the debt. German law has no exact in rem equivalent; Zurückbehaltungsrecht (§ 273 BGB) is an obligational defense, not a property right."
+  },
+  {
+    "id": "nongyuquan",
+    "names": {
+      "de": null,
+      "jp": null,
+      "tw": "農育權",
+      "prc": null
+    },
+    "description": "A Taiwanese usufructuary right for agriculture, forestry, fishing, and animal husbandry, created by the 2010 Civil Code reform to replace the abolished 永佃權. Term-limited to a maximum of 20 years.",
+    "ranges": {
+      "possession": [70, 90],
+      "use": [75, 95],
+      "income": [70, 90],
+      "alienation": [40, 65],
+      "exclusion": [50, 75],
+      "duration": [25, 50],
+      "inheritability": [40, 60]
+    },
+    "authorities": {
+      "de": null,
+      "jp": null,
+      "tw": "民法850-1條",
+      "prc": null
+    },
+    "common_law_equivalent": null,
+    "notes": "Art. 850-1 through 850-9 (added 民國99年). Maximum term 20 years; terms exceeding this are shortened to 20 years (Art. 850-3). Transferable with notice to the landowner (Art. 850-5). Replaces the old 永佃權 which was abolished in the same reform. No precise common-law or German equivalent."
+  },
+  {
+    "id": "qufen_dishangquan",
+    "names": {
+      "de": null,
+      "jp": "区分地上権",
+      "tw": "區分地上權",
+      "prc": null
+    },
+    "description": "A sectional superficies right over a specific stratum above or below the land surface, rather than the entire vertical column. Critical for modern urban development (underground infrastructure, elevated rail, subsurface utilities).",
+    "ranges": {
+      "possession": [50, 75],
+      "use": [55, 80],
+      "income": [35, 60],
+      "alienation": [50, 75],
+      "exclusion": [40, 65],
+      "duration": [60, 85],
+      "inheritability": [55, 80]
+    },
+    "authorities": {
+      "de": null,
+      "jp": "民法269-2条",
+      "tw": "民法841-1條",
+      "prc": null
+    },
+    "common_law_equivalent": null,
+    "notes": "TW: Art. 841-1 through 841-6 (added 民國99年). JP: Art. 269-2 (区分地上権). Allows creation of superficies rights limited to a defined stratum, enabling layered development. The ordinary 地上權 covers the full vertical column; 區分地上權 partitions it. No direct common-law equivalent, though strata title and airspace rights serve partially analogous functions."
   }
 ]

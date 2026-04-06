@@ -53,8 +53,8 @@ function App() {
           </div>
 
           <div className="hero-metrics">
-            <span className="metric-chip">11 common-law estates</span>
-            <span className="metric-chip">8 civil-law forms</span>
+            <span className="metric-chip">13 common-law estates</span>
+            <span className="metric-chip">13 civil-law forms</span>
             <span className="metric-chip">Top-3 convergence scan</span>
           </div>
         </div>

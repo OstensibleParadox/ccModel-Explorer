@@ -16,12 +16,12 @@
   {
     "id": "fee_simple_defeasible",
     "name": "Fee Simple Defeasible",
-    "description": "An ownership form burdened by a condition or executory limitation: still broad, but less secure in time and marketability than fee simple absolute.",
+    "description": "An ownership form burdened by a condition or executory limitation: still broad, but less secure in time and marketability than fee simple absolute. The power of alienation itself remains unrestricted — the grantee takes subject to the condition.",
     "ranges": {
       "possession": [75, 95],
       "use": [70, 90],
       "income": [60, 85],
-      "alienation": [45, 70],
+      "alienation": [70, 90],
       "exclusion": [70, 90],
       "duration": [55, 80],
       "inheritability": [80, 95]
@@ -34,7 +34,7 @@
     "ranges": {
       "possession": [75, 95],
       "use": [70, 90],
-      "income": [50, 75],
+      "income": [40, 70],
       "alienation": [10, 30],
       "exclusion": [60, 85],
       "duration": [25, 45],
@@ -44,7 +44,7 @@
   {
     "id": "leasehold",
     "name": "Leasehold",
-    "description": "A term-based possessory estate that grants exclusive occupation and use but remains bounded by term, covenants, and the landlord’s reversion.",
+    "description": "A term-based possessory estate that grants exclusive occupation and use but remains bounded by term, covenants, and the landlord’s reversion. Alienability varies widely: commercial leases are often freely assignable, while residential tenancies typically restrict or prohibit assignment.",
     "ranges": {
       "possession": [60, 85],
       "use": [55, 80],
@@ -128,14 +128,14 @@
   {
     "id": "adverse_possession",
     "name": "Adverse Possession",
-    "description": "Possession hardened against the title holder through time: factually strong and exclusionary, but initially weak in formal transferability and descent.",
+    "description": "The inchoate possessory state during a limitation period: factually strong and exclusionary, but without formal title until the period completes. The result of successful adverse possession is typically fee simple. Note: the Land Registration Act 2002 (England/Wales) and Torrens systems (Australia) have significantly curtailed this doctrine for registered land.",
     "ranges": {
       "possession": [80, 100],
       "use": [65, 90],
       "income": [30, 55],
       "alienation": [0, 20],
       "exclusion": [60, 85],
-      "duration": [45, 80],
+      "duration": [30, 65],
       "inheritability": [5, 25]
     }
   },
@@ -151,6 +151,34 @@
       "exclusion": [5, 20],
       "duration": [55, 85],
       "inheritability": [60, 90]
+    }
+  },
+  {
+    "id": "fee_tail",
+    "name": "Fee Tail (Historical)",
+    "description": "The historical entailed estate: strong possession, use, and duration tied to lineal descendants, but near-zero alienation by design. Abolished in England (LPA 1925 s.130) and most US states; included here for its importance in illustrating how the estate system constrains the alienation dimension while preserving all others.",
+    "ranges": {
+      "possession": [85, 100],
+      "use": [80, 95],
+      "income": [75, 95],
+      "alienation": [0, 10],
+      "exclusion": [80, 95],
+      "duration": [85, 100],
+      "inheritability": [70, 90]
+    }
+  },
+  {
+    "id": "future_interest",
+    "name": "Future Interest (Remainder / Reversion)",
+    "description": "A non-possessory interest that becomes possessory upon the natural or stipulated termination of a prior estate. No current control, use, or income, but potentially strong duration and descent. Vested remainders are freely alienable; contingent remainders and executory interests are more restricted.",
+    "ranges": {
+      "possession": [0, 5],
+      "use": [0, 5],
+      "income": [0, 10],
+      "alienation": [20, 70],
+      "exclusion": [0, 5],
+      "duration": [60, 95],
+      "inheritability": [55, 90]
     }
   }
 ]

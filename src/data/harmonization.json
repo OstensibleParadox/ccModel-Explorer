@@ -46,5 +46,35 @@
     "convergence_level": "low",
     "message": "A habitation right partially resembles a protected occupation licence in common-law terms.",
     "divergence": "Civil law can package residence as a named real right, while common law typically disperses the same social function across weaker, more situational devices."
+  },
+  "tudi_chengbao_jingyingquan": {
+    "common_law_id": null,
+    "convergence_level": "none",
+    "message": "No common-law estate captures the collective-to-household land contracting structure of PRC rural property.",
+    "divergence": "The right is embedded in PRC's collective land ownership system, which has no structural parallel in common-law jurisdictions. Agricultural tenancy and leasehold capture fragments of the economic function but miss the collective allocation mechanism entirely."
+  },
+  "zhaijidi_shiyongquan": {
+    "common_law_id": null,
+    "convergence_level": "none",
+    "message": "No common-law estate captures the one-household-one-plot allocation model of PRC rural residential land.",
+    "divergence": "The right arises from administrative allocation by the village collective, not market transaction. Common-law systems have no equivalent mechanism for distributing residential land use rights within a collective ownership framework."
+  },
+  "liuzhiquan": {
+    "common_law_id": null,
+    "convergence_level": "low",
+    "message": "Common-law possessory liens share the retention-until-payment logic, but lack the in rem security interest structure of the civil-law form.",
+    "divergence": "Civil law treats lien as a named property right with priority rules and enforcement procedures; common law tends to treat possessory liens as equitable or statutory remedies without a unified real-right classification."
+  },
+  "nongyuquan": {
+    "common_law_id": null,
+    "convergence_level": "none",
+    "message": "No common-law estate cleanly maps to a codified, term-limited agricultural use right with numerus clausus status.",
+    "divergence": "Common law channels agricultural use through leasehold, profit à prendre, or contractual arrangements rather than a dedicated real right. The 20-year statutory ceiling and the abolition of the predecessor 永佃權 reflect policy choices with no common-law parallel."
+  },
+  "qufen_dishangquan": {
+    "common_law_id": null,
+    "convergence_level": "low",
+    "message": "Common-law strata title and airspace rights serve partially analogous functions, but lack the codified numerus clausus packaging.",
+    "divergence": "The civil-law form is a named real right over a defined stratum; common law achieves similar outcomes through a mix of strata title legislation, airspace conveyances, and easements, none of which map one-to-one to the sectional superficies concept."
   }
 }
