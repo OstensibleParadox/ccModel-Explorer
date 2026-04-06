@@ -1,0 +1,145 @@
+[
+  {
+    "id": "cisg-25",
+    "instrument": "CISG",
+    "article": "Art. 25",
+    "title": "Fundamental Breach",
+    "summary": "\"Fundamental breach\" is a novel category — neither the common-law condition/warranty split nor the civilian Nicht-/Schlechterfüllung framework — granting avoidance rights without requiring judicial intervention in either tradition.",
+    "triggers": {},
+    "bridgesCommonLaw": "Condition / warranty breach + anticipatory repudiation",
+    "bridgesCivilLaw": "Nichterfüllung / Schlechterfüllung (§ 280 BGB)",
+    "isOvershoot": true
+  },
+  {
+    "id": "cisg-30-44",
+    "instrument": "CISG",
+    "article": "Arts 30–44",
+    "title": "Seller's Obligations and Buyer's Remedies",
+    "summary": "Delivery, conformity, and third-party claims obligations unify common-law sale-of-goods conformity rules and civilian delivery regimes under a single obligations framework.",
+    "triggers": { "possession": [40, 100], "income": [40, 100] },
+    "bridgesCommonLaw": "Sale of Goods Act delivery and conformity rules",
+    "bridgesCivilLaw": "§§ 433–441 BGB Kaufvertrag; Art. 361 PRC Civil Code",
+    "isOvershoot": false
+  },
+  {
+    "id": "cisg-69",
+    "instrument": "CISG",
+    "article": "Art. 69",
+    "title": "Passing of Risk with Possession",
+    "summary": "Risk passes to the buyer upon taking possession — a possession-linked rule that reconciles common-law delivery-date approaches with the BGB Übergabe-Prinzip without fully adopting either.",
+    "triggers": { "possession": [40, 100] },
+    "bridgesCommonLaw": "Sale of Goods Act s.20 / UCC §2-509 delivery rules",
+    "bridgesCivilLaw": "§ 446 BGB Übergabe-Prinzip",
+    "isOvershoot": false
+  },
+  {
+    "id": "cisg-71-73",
+    "instrument": "CISG",
+    "article": "Arts 71–73",
+    "title": "Anticipatory Breach and Instalment Contracts",
+    "summary": "Suspension and avoidance rights for anticipated non-performance in continuing contractual relationships — most relevant where duration-sensitive interests govern performance obligations.",
+    "triggers": { "duration": [60, 100] },
+    "bridgesCommonLaw": "Anticipatory repudiation doctrine (Hochster v De La Tour)",
+    "bridgesCivilLaw": "§ 321 BGB Vorleistungspflicht / Unsicherheitseinrede",
+    "isOvershoot": false
+  },
+  {
+    "id": "cisg-74-77",
+    "instrument": "CISG",
+    "article": "Arts 74–77",
+    "title": "Damages and Mitigation",
+    "summary": "Full compensation for foreseeable loss including lost profits, paired with a mitigation obligation — bridges Hadley v Baxendale foreseeability with civilian full-compensation norms.",
+    "triggers": { "income": [40, 100] },
+    "bridgesCommonLaw": "Hadley v Baxendale foreseeability rule + mitigation duty",
+    "bridgesCivilLaw": "§ 252 BGB entgangener Gewinn; Art. 584 PRC Civil Code",
+    "isOvershoot": false
+  },
+  {
+    "id": "uncitral-7",
+    "instrument": "UNCITRAL",
+    "article": "Art. 7",
+    "title": "Assignment of Receivables",
+    "summary": "Creates a priority framework for assignment of receivables that cuts across common-law notice requirements and civilian notification formalism, harmonising transfer mechanics at the interface of both traditions.",
+    "triggers": { "alienation": [50, 100] },
+    "bridgesCommonLaw": "Equitable and legal assignment (LPA 1925 s.136)",
+    "bridgesCivilLaw": "§§ 398–413 BGB Abtretung; Art. 547 PRC Civil Code",
+    "isOvershoot": false
+  },
+  {
+    "id": "uncitral-16",
+    "instrument": "UNCITRAL",
+    "article": "Art. 16",
+    "title": "Priority of Security Rights",
+    "summary": "Establishes a registration-based priority system for security rights in receivables — a framework neither tradition had fully preempted at the international level.",
+    "triggers": { "exclusion": [60, 100] },
+    "bridgesCommonLaw": "Fixed and floating charge priority / PPSA registration regimes",
+    "bridgesCivilLaw": "§§ 1204–1273 BGB Pfandrecht priority rules",
+    "isOvershoot": false
+  },
+  {
+    "id": "uncitral-34-36",
+    "instrument": "UNCITRAL",
+    "article": "Arts 34–36",
+    "title": "Secured Creditor's Enforcement Rights",
+    "summary": "Standardised enforcement rights for secured creditors across long-duration credit relationships, bridging disparate foreclosure and realisation traditions from both legal families.",
+    "triggers": { "duration": [70, 100] },
+    "bridgesCommonLaw": "Mortgagee's power of sale; LPA 1925 s.101",
+    "bridgesCivilLaw": "§ 1147 BGB Zwangsvollstreckung; Art. 410 PRC Civil Code",
+    "isOvershoot": false
+  },
+  {
+    "id": "unidroit-1.1",
+    "instrument": "UNIDROIT",
+    "article": "Art. 1.1",
+    "title": "Freedom of Contract",
+    "summary": "The Principles assert broad freedom of contract as an autonomous transnational norm, harmonising common-law and civil-law contract formation doctrines under a single foundational principle.",
+    "triggers": { "alienation": [50, 100] },
+    "bridgesCommonLaw": "Freedom of contract (Printing & Numerical Registering Co v Sampson)",
+    "bridgesCivilLaw": "Vertragsfreiheit § 311 BGB; Art. 465 PRC Civil Code",
+    "isOvershoot": false
+  },
+  {
+    "id": "unidroit-3.2",
+    "instrument": "UNIDROIT",
+    "article": "Arts 3.2.1–7",
+    "title": "Validity of Contract",
+    "summary": "Avoidance grounds — mistake, fraud, threat, gross disparity — create a composite validity regime that spans common-law vitiating factors and civilian nullity doctrines without collapsing into either.",
+    "triggers": { "exclusion": [50, 100], "income": [40, 100] },
+    "bridgesCommonLaw": "Misrepresentation, duress, undue influence",
+    "bridgesCivilLaw": "§§ 119–138 BGB Anfechtung; Arts 147–154 PRC Civil Code",
+    "isOvershoot": false
+  },
+  {
+    "id": "unidroit-6.1.1",
+    "instrument": "UNIDROIT",
+    "article": "Art. 6.1.1",
+    "title": "Time of Performance",
+    "summary": "Performance timing obligations across continuing contracts — operative wherever duration-sensitive interests determine when obligations fall due.",
+    "triggers": { "duration": [40, 100] },
+    "bridgesCommonLaw": "Time of the essence doctrine; conditions as to time",
+    "bridgesCivilLaw": "§ 271 BGB Leistungszeit; Art. 511 PRC Civil Code",
+    "isOvershoot": false
+  },
+  {
+    "id": "unidroit-7.4",
+    "instrument": "UNIDROIT",
+    "article": "Arts 7.4.1–4",
+    "title": "Right to Damages",
+    "summary": "Full compensation for harm caused by non-performance, including lost profits from income-generating obligations — harmonising expectation-based recovery across both traditions.",
+    "triggers": { "income": [40, 100] },
+    "bridgesCommonLaw": "Expectation damages; account of profits",
+    "bridgesCivilLaw": "§ 249 BGB Schadensersatz; Art. 577 PRC Civil Code",
+    "isOvershoot": false
+  },
+  {
+    "id": "cape-town",
+    "instrument": "Cape Town",
+    "article": "Arts 2–16 + Aircraft Protocol",
+    "title": "International Interest in Mobile Equipment",
+    "summary": "The Convention creates the \"international interest\" — a new category of security right over high-value mobile assets (aircraft, railway rolling stock, space assets) that existed in neither common-law nor civil-law tradition as a pre-Convention concept. Enforcement is self-help oriented; the registry is ICAO-based.",
+    "triggers": { "alienation": [60, 100], "duration": [70, 100], "exclusion": [60, 100] },
+    "bridgesCommonLaw": "Chattel mortgage / Bills of Sale Act security over aircraft",
+    "bridgesCivilLaw": "Hypothek / Pfandrecht over registered movables",
+    "isOvershoot": true
+  }
+]

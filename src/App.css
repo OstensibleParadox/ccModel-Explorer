@@ -563,7 +563,7 @@
 
 .dual-track-columns {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: 1fr 1.2fr 1fr;
   gap: 1.25rem;
 }
 
@@ -916,6 +916,135 @@
   }
 }
 
+/* ─── Harmonisation Panel ─────────────────────────────────────────────────── */
+
+.harmonisation-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  background: var(--surface-panel);
+  border-color: rgba(100, 100, 130, 0.2);
+}
+
+.harmonisation-panel--idle {
+  opacity: 0.85;
+}
+
+.harmonisation-placeholder {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  line-height: 1.5;
+  padding: 0.5rem 0;
+}
+
+.instrument-groups {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.instrument-group-name {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 0.6rem;
+}
+
+.instrument-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  padding: 0.9rem;
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--line);
+  border-radius: 16px;
+  background: var(--surface-raised);
+  margin-bottom: 0.65rem;
+}
+
+.instrument-card:last-child {
+  margin-bottom: 0;
+}
+
+.instrument-card--overshoot {
+  border-left-color: #d97706;
+  background: rgba(217, 119, 6, 0.04);
+}
+
+.overshoot-label {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.22rem 0.6rem;
+  border-radius: 999px;
+  background: rgba(217, 119, 6, 0.14);
+  color: #92400e;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  width: fit-content;
+}
+
+.instrument-header {
+  display: flex;
+  align-items: baseline;
+  gap: 0.65rem;
+  flex-wrap: wrap;
+}
+
+.article-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.18rem 0.55rem;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--surface-soft);
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  white-space: nowrap;
+  flex: 0 0 auto;
+}
+
+.instrument-title {
+  font-size: 0.95rem;
+  color: var(--text-primary);
+  line-height: 1.3;
+}
+
+.instrument-summary {
+  color: var(--text-secondary);
+  font-size: 0.87rem;
+  line-height: 1.5;
+}
+
+.instrument-bridge {
+  display: flex;
+  align-items: baseline;
+  gap: 0.45rem;
+  flex-wrap: wrap;
+  padding-top: 0.35rem;
+  border-top: 1px solid var(--line);
+  font-size: 0.8rem;
+}
+
+.bridge-cl {
+  color: var(--accent-strong);
+}
+
+.bridge-arrow {
+  color: var(--text-muted);
+  flex: 0 0 auto;
+}
+
+.bridge-civil {
+  color: var(--civil);
+}
+
+/* ─── App Footer ──────────────────────────────────────────────────────────── */
+
 .app-footer {
   padding: 1rem 0 0;
   color: var(--text-muted);
@@ -929,6 +1058,10 @@
   .convergence-grid,
   .sliders {
     grid-template-columns: 1fr;
+  }
+
+  .dual-track-columns .harmonisation-panel {
+    order: -1;
   }
 
   .hero-metrics {

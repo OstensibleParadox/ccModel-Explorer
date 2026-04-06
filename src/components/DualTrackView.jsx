@@ -1,5 +1,6 @@
 import EstateEngine from './EstateEngine';
 import CivilLawEngine from './CivilLawEngine';
+import HarmonisationPanel from './HarmonisationPanel';
 import { getConvergenceLevelLabel } from '../i18n';
 import { getConvergenceColor } from '../utils/convergenceEngine';
 
@@ -18,6 +19,8 @@ export default function DualTrackView({
   commonLawMatches,
   civilLawMatches,
   convergenceResults,
+  bothTracksMatch,
+  filteredInstruments,
   activeJurisdiction,
   locale,
   ui,
@@ -30,6 +33,10 @@ export default function DualTrackView({
           title={ui.tracks.commonLaw}
           locale={locale}
           ui={ui}
+        />
+        <HarmonisationPanel
+          bothTracksMatch={bothTracksMatch}
+          instruments={filteredInstruments}
         />
         <CivilLawEngine
           matches={civilLawMatches}

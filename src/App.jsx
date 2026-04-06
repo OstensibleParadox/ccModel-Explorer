@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import commonLawEstates from './data/commonLawEstates.json';
 import civilLawEstates from './data/civilLawEstates.json';
 import harmonizationData from './data/harmonization.json';
+import harmonizationInstruments from './data/harmonizationInstruments.json';
 import LanguageSwitcher from './components/LanguageSwitcher';
 import SliderPanel from './components/SliderPanel';
 import DualTrackView from './components/DualTrackView';
@@ -28,7 +29,10 @@ import {
 } from './utils/matchEngine';
 import { getSliderAnnotations } from './utils/jurisdictionResolver';
 import { checkViolations, computeSliderBounds } from './utils/violationRules';
+import { filterInstruments } from './utils/instrumentEngine';
 import './App.css';
+
+const MATCH_THRESHOLD = 0.5;
 
 const INITIAL_VALUES = Object.fromEntries(SLIDER_KEYS.map((key) => [key, 50]));
 const DOCUMENT_TITLES = {
@@ -213,6 +217,18 @@ function App() {
     );
   }, [violations]);
 
+  const bothTracksMatch = useMemo(() => {
+    return (
+      (commonLawMatches[0]?.score ?? 0) >= MATCH_THRESHOLD &&
+      (civilLawMatches[0]?.score ?? 0) >= MATCH_THRESHOLD
+    );
+  }, [commonLawMatches, civilLawMatches]);
+
+  const filteredInstruments = useMemo(() => {
+    if (!bothTracksMatch) return [];
+    return filterInstruments(sliderValues, harmonizationInstruments);
+  }, [bothTracksMatch, sliderValues]);
+
   return (
     <div className="app-layout">
       <header className="app-hero">
@@ -262,6 +278,8 @@ function App() {
           commonLawMatches={commonLawMatches}
           civilLawMatches={civilLawMatches}
           convergenceResults={convergenceResults}
+          bothTracksMatch={bothTracksMatch}
+          filteredInstruments={filteredInstruments}
           activeJurisdiction={activeJurisdiction}
           locale={locale}
           ui={ui}
