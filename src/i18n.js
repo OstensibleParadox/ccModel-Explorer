@@ -314,11 +314,13 @@ const UI_ENHANCEMENTS = {
       commonLawContext: "Common-Law Context",
       civilLawContext: "Civil-Law Context",
       eigenvalueShare: "Eigenvalue Share",
-      lockButton: "Configure threshold lock",
-      lockEnable: "Enforce cap",
-      lockThreshold: "Threshold",
-      lockedAt: (threshold) =>
-        `Manual cap enabled: this term cannot exceed ${threshold}.`,
+      whyButton: "Why?",
+      becomeMessage: (arrangement, alternative) =>
+        `You are leaving ${arrangement} territory — closest match is now ${alternative}.`,
+      illegalMessage: (arrangement) =>
+        `This configuration has moved outside ${arrangement} and does not match a recognized legal arrangement.`,
+      independentTrackNote:
+        "Each legal track computes matches independently. See the convergence panel below for cross-tradition comparison.",
       commonLawContextHints: {
         uk: "UK context narrows registered-land adverse possession after the Land Registration Act 2002 and treats fee tail as effectively historical.",
         us: "US context keeps adverse possession more operational and fee tail mostly historical, with limited survival in a few states.",
@@ -370,10 +372,13 @@ const UI_ENHANCEMENTS = {
       commonLawContext: "普通法上下文",
       civilLawContext: "大陆法上下文",
       eigenvalueShare: "eigenvalue 占比",
-      lockButton: "设置阈值锁定",
-      lockEnable: "启用上限",
-      lockThreshold: "阈值",
-      lockedAt: (threshold) => `手动锁定已启用：该术语不得超过 ${threshold}。`,
+      whyButton: "为什么？",
+      becomeMessage: (arrangement, alternative) =>
+        `您正在脱离${arrangement}的范围——当前最接近的匹配是${alternative}。`,
+      illegalMessage: (arrangement) =>
+        `此配置已超出${arrangement}的范围，不符合任何已知法律安排。`,
+      independentTrackNote:
+        "两个法律传统的匹配独立计算。请参阅下方的趋同面板进行跨传统比较。",
       commonLawContextHints: {
         uk: "英国法语境会明显收紧登记土地上的逆权占有，并把 fee tail 视为基本只剩历史意义的类别。",
         us: "美国法语境下，逆权占有仍更具操作性；fee tail 在绝大多数州已历史化，但少数州仍留有残迹。",
@@ -423,11 +428,13 @@ const UI_ENHANCEMENTS = {
       commonLawContext: "Common-Law-Kontext",
       civilLawContext: "Zivilrechtskontext",
       eigenvalueShare: "Eigenwertanteil",
-      lockButton: "Schwellensperre konfigurieren",
-      lockEnable: "Obergrenze erzwingen",
-      lockThreshold: "Schwelle",
-      lockedAt: (threshold) =>
-        `Manuelle Sperre aktiv: Dieser Term darf ${threshold} nicht überschreiten.`,
+      whyButton: "Warum?",
+      becomeMessage: (arrangement, alternative) =>
+        `Sie verlassen den Bereich von ${arrangement} — nächste Übereinstimmung ist jetzt ${alternative}.`,
+      illegalMessage: (arrangement) =>
+        `Diese Konfiguration liegt außerhalb von ${arrangement} und entspricht keiner anerkannten Rechtsform.`,
+      independentTrackNote:
+        "Jede Rechtstradition berechnet Übereinstimmungen unabhängig. Siehe Konvergenz-Panel unten für traditionsübergreifende Vergleiche.",
       commonLawContextHints: {
         uk: "Der UK-Kontext verengt adverse possession bei registriertem Land nach dem Land Registration Act 2002 deutlich und behandelt fee tail praktisch nur noch historisch.",
         us: "Der US-Kontext hält adverse possession operativer; fee tail ist meist historisch, lebt aber in wenigen Staaten in Restformen fort.",
@@ -479,11 +486,13 @@ const UI_ENHANCEMENTS = {
       commonLawContext: "コモンロー文脈",
       civilLawContext: "大陸法文脈",
       eigenvalueShare: "eigenvalue 比率",
-      lockButton: "閾値ロックを設定",
-      lockEnable: "上限を適用",
-      lockThreshold: "閾値",
-      lockedAt: (threshold) =>
-        `手動ロックが有効です。この術語は ${threshold} を超えられません。`,
+      whyButton: "なぜ？",
+      becomeMessage: (arrangement, alternative) =>
+        `${arrangement}の範囲を離れています——現在最も近い一致は${alternative}です。`,
+      illegalMessage: (arrangement) =>
+        `この構成は${arrangement}の範囲外であり、認められた法的形態に該当しません。`,
+      independentTrackNote:
+        "各法的伝統は独立してマッチングを計算します。伝統間の比較はコンバージェンスパネルをご覧ください。",
       commonLawContextHints: {
         uk: "UK 文脈では Land Registration Act 2002 以後、登録土地での adverse possession がかなり狭まり、fee tail もほぼ歴史的分類として扱われます。",
         us: "US 文脈では adverse possession がなお実務的で、fee tail は大半の州で歴史化していますが一部には残滓があります。",

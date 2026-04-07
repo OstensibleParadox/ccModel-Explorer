@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import {
   getMidpointsWithContext,
   SLIDER_KEYS,
@@ -45,12 +44,6 @@ function getFillPercentage(value, min, max) {
   return ((value - min) / range) * 100;
 }
 
-function normalizeThreshold(value, fallbackValue) {
-  const parsed = Number(value);
-  const safeValue = Number.isFinite(parsed) ? parsed : fallbackValue;
-  return Math.min(100, Math.max(0, Math.round(safeValue)));
-}
-
 export default function SliderPanel({
   values,
   onChange,
@@ -66,14 +59,16 @@ export default function SliderPanel({
   sliderBounds = {},
   panelNote = null,
   sliderMeta = [],
-  sliderLocks = {},
-  onSliderLockToggle,
-  onSliderLockThresholdChange,
+  selectedPreset = null,
+  lockedArrangement = null,
+  onPresetClick,
+  onReset,
+  arrangementViolations = [],
+  closestAlternative = null,
   ui,
   mode = 'property',
   aiFrameworks = [],
 }) {
-  const [openLockRows, setOpenLockRows] = useState({});
   const annotationsByDimension = sliderAnnotations.reduce(
     (dimensionMap, annotation) => {
       dimensionMap[annotation.dimension] ??= [];
@@ -83,11 +78,48 @@ export default function SliderPanel({
     {}
   );
 
-  function toggleLockRow(key) {
-    setOpenLockRows((currentRows) => ({
-      ...currentRows,
-      [key]: !currentRows[key],
-    }));
+  const violationsByDimension = arrangementViolations.reduce(
+    (dimensionMap, violation) => {
+      dimensionMap[violation.dimension] = violation;
+      return dimensionMap;
+    },
+    {}
+  );
+
+  function resolveEstateName(estate) {
+    return estate.displayName ?? estate.name ?? getCivilPresetLabel(estate);
+  }
+
+  function getPresetPillClass(estateId, track, baseClass) {
+    const isSelected =
+      selectedPreset?.id === estateId && selectedPreset?.track === track;
+    const isLocked =
+      lockedArrangement?.id === estateId && lockedArrangement?.track === track;
+    const classes = [baseClass];
+    if (isSelected) classes.push('is-selected');
+    if (isLocked) classes.push('is-locked');
+    return classes.join(' ');
+  }
+
+  function getLockedEstateName() {
+    if (!lockedArrangement) return '';
+    const estates =
+      lockedArrangement.track === 'common' ? commonLawEstates : civilLawEstates;
+    const current = estates.find((e) => e.id === lockedArrangement.id);
+    return current ? resolveEstateName(current) : resolveEstateName(lockedArrangement.estate);
+  }
+
+  function formatViolationMessage() {
+    const estateName = getLockedEstateName();
+
+    if (closestAlternative) {
+      return ui.sliderPanel.becomeMessage(
+        estateName,
+        resolveEstateName(closestAlternative.estate)
+      );
+    }
+
+    return ui.sliderPanel.illegalMessage(estateName);
   }
 
   return (
@@ -196,7 +228,7 @@ export default function SliderPanel({
               <button
                 type="button"
                 className="reset-button"
-                onClick={() => onChange(RESET_VALUES)}
+                onClick={onReset}
               >
                 {ui.sliderPanel.resetAll}
               </button>
@@ -206,17 +238,20 @@ export default function SliderPanel({
                 <button
                   key={estate.id}
                   type="button"
-                  className="preset-pill"
-                  onClick={() =>
-                    onChange(
-                      getCommonLawMidpointsWithContext(
-                        estate,
-                        activeCommonLawJurisdiction
-                      )
-                    )
+                  className={getPresetPillClass(estate.id, 'common', 'preset-pill')}
+                  aria-pressed={
+                    (selectedPreset?.id === estate.id && selectedPreset?.track === 'common') ||
+                    (lockedArrangement?.id === estate.id && lockedArrangement?.track === 'common')
                   }
+                  onClick={() => onPresetClick(estate, 'common')}
                 >
                   {estate.name}
+                  {lockedArrangement?.id === estate.id &&
+                    lockedArrangement?.track === 'common' && (
+                      <span className="preset-lock-icon" aria-label="Locked">
+                        🔒
+                      </span>
+                    )}
                 </button>
               ))}
             </div>
@@ -231,22 +266,31 @@ export default function SliderPanel({
                 <button
                   key={estate.id}
                   type="button"
-                  className="preset-pill civil"
-                  onClick={() =>
-                    onChange(
-                      getMidpointsWithContext(
-                        estate,
-                        activeCivilJurisdiction,
-                        activeAssetType
-                      )
-                    )
+                  className={getPresetPillClass(estate.id, 'civil', 'preset-pill civil')}
+                  aria-pressed={
+                    (selectedPreset?.id === estate.id && selectedPreset?.track === 'civil') ||
+                    (lockedArrangement?.id === estate.id && lockedArrangement?.track === 'civil')
                   }
+                  onClick={() => onPresetClick(estate, 'civil')}
                 >
                   {getCivilPresetLabel(estate)}
+                  {lockedArrangement?.id === estate.id &&
+                    lockedArrangement?.track === 'civil' && (
+                      <span className="preset-lock-icon" aria-label="Locked">
+                        🔒
+                      </span>
+                    )}
                 </button>
               ))}
             </div>
           </div>
+
+          {lockedArrangement && (
+            <div className="independent-track-note">
+              <span className="independent-track-note-icon" aria-hidden="true">i</span>
+              <span>{ui.sliderPanel.independentTrackNote}</span>
+            </div>
+          )}
         </div>
       )}
 
@@ -258,7 +302,7 @@ export default function SliderPanel({
               <button
                 type="button"
                 className="reset-button"
-                onClick={() => onChange(RESET_VALUES)}
+                onClick={onReset}
               >
                 {ui.sliderPanel.resetAll}
               </button>
@@ -298,22 +342,12 @@ export default function SliderPanel({
               : []),
           ];
           const rowAnnotations = annotationsByDimension[key] ?? [];
-          const lockedAnnotations = rowAnnotations.filter(
-            ({ severity }) => severity === 'locked'
-          );
-          const infoAnnotations = rowAnnotations.filter(
-            ({ severity }) => severity !== 'locked'
-          );
-          const lockState = sliderLocks[key] ?? {
-            enabled: false,
-            threshold: null,
-          };
-          const thresholdValue = normalizeThreshold(lockState.threshold, value);
+          const violation = violationsByDimension[key] ?? null;
 
           return (
             <div
               key={key}
-              className={`slider-row ${lockedAnnotations.length ? 'slider-row--locked' : ''}`}
+              className={`slider-row ${violation ? 'has-violation' : ''}`}
             >
               <div className="slider-header">
                 <div className="slider-title-stack">
@@ -322,19 +356,6 @@ export default function SliderPanel({
                   </label>
                 </div>
                 <div className="slider-header-tools">
-                  {mode === 'property' ? (
-                    <button
-                      type="button"
-                      className={`slider-lock-button ${
-                        lockState.enabled ? 'is-enabled' : ''
-                      }`}
-                      aria-expanded={openLockRows[key] ? 'true' : 'false'}
-                      aria-label={`${ui.sliderPanel.lockButton}: ${label}`}
-                      onClick={() => toggleLockRow(key)}
-                    >
-                      🔒
-                    </button>
-                  ) : null}
                   <output className="slider-value" htmlFor={`slider-${key}`}>
                     {value}
                   </output>
@@ -382,60 +403,18 @@ export default function SliderPanel({
                 <span>{highLabel}</span>
               </div>
 
-              {mode === 'property' && (openLockRows[key] || lockState.enabled) ? (
-                <div className="slider-lock-controls">
-                  <label className="slider-lock-switch">
-                    <input
-                      type="checkbox"
-                      checked={lockState.enabled}
-                      onChange={(event) =>
-                        onSliderLockToggle(
-                          key,
-                          event.target.checked,
-                          thresholdValue
-                        )
-                      }
-                    />
-                    <span className="slider-lock-switch-ui" aria-hidden="true" />
-                    <span>{ui.sliderPanel.lockEnable}</span>
-                  </label>
-
-                  <label className="slider-lock-threshold">
-                    <span>{ui.sliderPanel.lockThreshold}</span>
-                    <input
-                      type="number"
-                      min="0"
-                      max="100"
-                      inputMode="numeric"
-                      value={thresholdValue}
-                      onChange={(event) =>
-                        onSliderLockThresholdChange(
-                          key,
-                          normalizeThreshold(event.target.value, value)
-                        )
-                      }
-                    />
-                  </label>
+              {violation && lockedArrangement && (
+                <div className="arrangement-violation-alert">
+                  <span className="violation-icon" aria-hidden="true">!</span>
+                  <span className="violation-message">
+                    {formatViolationMessage(violation)}
+                  </span>
                 </div>
-              ) : null}
+              )}
 
-              {lockedAnnotations.length > 0 ? (
-                <div className="slider-lock-note-list">
-                  {lockedAnnotations.map(({ message }, index) => (
-                    <div
-                      key={`${key}-lock-${index}-${message}`}
-                      className="slider-lock-note"
-                    >
-                      <span className="slider-lock-indicator" aria-hidden="true" />
-                      <span>{message}</span>
-                    </div>
-                  ))}
-                </div>
-              ) : null}
-
-              {infoAnnotations.length > 0 ? (
+              {rowAnnotations.length > 0 ? (
                 <div className="slider-annotation-list">
-                  {infoAnnotations.map(({ message, severity }, index) => (
+                  {rowAnnotations.map(({ message, severity }, index) => (
                     <div
                       key={`${key}-${index}-${message}`}
                       className={`slider-annotation-chip slider-annotation-chip--${severity}`}
