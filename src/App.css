@@ -362,6 +362,51 @@
   font-size: 0.85em;
 }
 
+.lock-status-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  padding: 0.75rem 0.9rem;
+  border: 1px solid rgba(139, 77, 46, 0.2);
+  border-radius: 14px;
+  background: rgba(249, 240, 233, 0.7);
+  color: var(--accent-strong);
+  font-size: 0.84rem;
+  line-height: 1.45;
+}
+
+.lock-status-note.civil {
+  border-color: rgba(33, 92, 101, 0.22);
+  background: rgba(230, 241, 241, 0.82);
+  color: var(--civil);
+}
+
+.lock-status-note.is-locked {
+  box-shadow: inset 0 0 0 1px rgba(139, 77, 46, 0.08);
+}
+
+.lock-status-note.civil.is-locked {
+  box-shadow: inset 0 0 0 1px rgba(33, 92, 101, 0.08);
+}
+
+.lock-status-note-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.2rem;
+  height: 1.2rem;
+  border-radius: 50%;
+  background: rgba(139, 77, 46, 0.12);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  flex: 0 0 auto;
+}
+
+.lock-status-note.civil .lock-status-note-icon {
+  background: rgba(33, 92, 101, 0.12);
+}
+
 /* ─── Independent track annotation ────────────────────────────────────── */
 
 .independent-track-note {
@@ -457,6 +502,25 @@
   background: var(--surface-soft);
 }
 
+.slider-range-window {
+  position: absolute;
+  top: 0.83rem;
+  left: var(--range-start);
+  width: calc(var(--range-end) - var(--range-start));
+  height: 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(139, 77, 46, 0.2);
+  background: rgba(214, 160, 118, 0.22);
+  box-shadow: inset 0 0 0 1px rgba(249, 240, 233, 0.3);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.slider-range-window--civil {
+  border-color: rgba(33, 92, 101, 0.22);
+  background: rgba(74, 142, 148, 0.18);
+}
+
 .slider-input {
   appearance: none;
   position: absolute;
@@ -520,6 +584,47 @@
 
 .slider-bound-marker--min .slider-bound-marker-line {
   background: var(--civil);
+}
+
+.slider-range-marker {
+  position: absolute;
+  top: -0.05rem;
+  left: var(--range-marker-position);
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.12rem;
+  transform: translateX(-50%);
+  pointer-events: none;
+  z-index: 3;
+}
+
+.slider-range-marker-line {
+  width: 2px;
+  height: 1.2rem;
+  border-radius: 999px;
+  background: var(--accent-strong);
+}
+
+.slider-range-marker-label {
+  padding: 0.12rem 0.34rem;
+  border: 1px solid rgba(139, 77, 46, 0.18);
+  border-radius: 999px;
+  background: rgba(249, 240, 233, 0.96);
+  color: var(--accent-strong);
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  line-height: 1;
+}
+
+.slider-range-marker--civil .slider-range-marker-line {
+  background: var(--civil);
+}
+
+.slider-range-marker--civil .slider-range-marker-label {
+  border-color: rgba(33, 92, 101, 0.2);
+  background: rgba(241, 248, 248, 0.96);
+  color: var(--civil);
 }
 
 .slider-input::-webkit-slider-thumb {

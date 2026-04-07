@@ -468,6 +468,9 @@ function App() {
           onAssetTypeChange={mode === 'property' ? handleAssetTypeChange : () => {}}
           sliderAnnotations={mode === 'property' ? sliderAnnotations : []}
           sliderBounds={sliderBounds}
+          arrangementRanges={
+            mode === 'property' ? lockedArrangement?.resolvedRanges ?? null : null
+          }
           panelNote={mode === 'property' ? sliderPanelNote : null}
           sliderMeta={sliderMeta}
           selectedPreset={mode === 'property' ? selectedPreset : null}

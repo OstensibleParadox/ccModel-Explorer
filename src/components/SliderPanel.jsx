@@ -53,6 +53,7 @@ export default function SliderPanel({
   onAssetTypeChange,
   sliderAnnotations = [],
   sliderBounds = {},
+  arrangementRanges = null,
   panelNote = null,
   sliderMeta = [],
   selectedPreset = null,
@@ -87,6 +88,20 @@ export default function SliderPanel({
     return estate.displayName ?? estate.name ?? getCivilPresetLabel(estate);
   }
 
+  function getTrackEstates(track) {
+    return track === 'common' ? commonLawEstates : civilLawEstates;
+  }
+
+  function getEstateNameForSelection(selection) {
+    if (!selection) return '';
+
+    const estate = getTrackEstates(selection.track).find(
+      (entry) => entry.id === selection.id
+    );
+
+    return estate ? resolveEstateName(estate) : selection.id;
+  }
+
   function getPresetPillClass(estateId, track, baseClass) {
     const isSelected =
       selectedPreset?.id === estateId && selectedPreset?.track === track;
@@ -100,11 +115,20 @@ export default function SliderPanel({
 
   function getLockedEstateName() {
     if (!lockedArrangement) return '';
-    const estates =
-      lockedArrangement.track === 'common' ? commonLawEstates : civilLawEstates;
-    const current = estates.find((e) => e.id === lockedArrangement.id);
+    const current = getTrackEstates(lockedArrangement.track).find(
+      (estate) => estate.id === lockedArrangement.id
+    );
     return current ? resolveEstateName(current) : resolveEstateName(lockedArrangement.estate);
   }
+
+  const selectionNote = lockedArrangement
+    ? ui.sliderPanel.lockedHint(getLockedEstateName())
+    : selectedPreset
+      ? ui.sliderPanel.selectedHint(getEstateNameForSelection(selectedPreset))
+      : null;
+  const selectionNoteTrack =
+    lockedArrangement?.track ?? selectedPreset?.track ?? null;
+  const selectionNoteState = lockedArrangement ? 'is-locked' : 'is-selected';
 
   function formatViolationMessage() {
     const estateName = getLockedEstateName();
@@ -282,6 +306,19 @@ export default function SliderPanel({
             </div>
           </div>
 
+          {selectionNote && (
+            <div
+              className={`lock-status-note ${selectionNoteState} ${
+                selectionNoteTrack === 'civil' ? 'civil' : ''
+              }`}
+            >
+              <span className="lock-status-note-icon" aria-hidden="true">
+                {lockedArrangement ? '!' : 'i'}
+              </span>
+              <span>{selectionNote}</span>
+            </div>
+          )}
+
           {lockedArrangement && (
             <div className="independent-track-note">
               <span className="independent-track-note-icon" aria-hidden="true">i</span>
@@ -326,6 +363,7 @@ export default function SliderPanel({
         {sliderMeta.map(({ key, label, lowLabel, highLabel }) => {
           const value = values[key];
           const bounds = sliderBounds[key] ?? { min: 0, max: 100 };
+          const arrangementRange = arrangementRanges?.[key] ?? null;
           const fillPct = Math.max(
             0,
             Math.min(100, getFillPercentage(value, bounds.min, bounds.max))
@@ -338,6 +376,12 @@ export default function SliderPanel({
               ? [{ type: 'max', value: bounds.max, label: bounds.max }]
               : []),
           ];
+          const arrangementMarkers = arrangementRange
+            ? [
+                { type: 'min', value: arrangementRange[0], label: arrangementRange[0] },
+                { type: 'max', value: arrangementRange[1], label: arrangementRange[1] },
+              ]
+            : [];
           const rowAnnotations = annotationsByDimension[key] ?? [];
           const violation = violationsByDimension[key] ?? null;
 
@@ -362,6 +406,19 @@ export default function SliderPanel({
               <div className="slider-input-shell">
                 <span className="slider-track-base" aria-hidden="true" />
 
+                {arrangementRange ? (
+                  <span
+                    className={`slider-range-window slider-range-window--${
+                      lockedArrangement?.track === 'civil' ? 'civil' : 'common'
+                    }`}
+                    style={{
+                      '--range-start': `${arrangementRange[0]}%`,
+                      '--range-end': `${arrangementRange[1]}%`,
+                    }}
+                    aria-hidden="true"
+                  />
+                ) : null}
+
                 {boundMarkers.map(({ type, value: markerValue, label: markerLabel }) => (
                   <span
                     key={`${key}-${type}`}
@@ -373,6 +430,22 @@ export default function SliderPanel({
                     <span className="slider-bound-marker-label">{markerLabel}</span>
                   </span>
                 ))}
+
+                {arrangementMarkers.map(
+                  ({ type, value: markerValue, label: markerLabel }) => (
+                    <span
+                      key={`${key}-range-${type}`}
+                      className={`slider-range-marker slider-range-marker--${type} slider-range-marker--${
+                        lockedArrangement?.track === 'civil' ? 'civil' : 'common'
+                      }`}
+                      style={{ '--range-marker-position': `${markerValue}%` }}
+                      aria-hidden="true"
+                    >
+                      <span className="slider-range-marker-line" />
+                      <span className="slider-range-marker-label">{markerLabel}</span>
+                    </span>
+                  )
+                )}
 
                 <input
                   id={`slider-${key}`}

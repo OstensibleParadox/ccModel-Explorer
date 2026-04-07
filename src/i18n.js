@@ -315,6 +315,10 @@ const UI_ENHANCEMENTS = {
       civilLawContext: "Civil-Law Context",
       eigenvalueShare: "Eigenvalue Share",
       whyButton: "Why?",
+      selectedHint: (arrangement) =>
+        `Selected ${arrangement}. Click the same pill again to lock its doctrinal range.`,
+      lockedHint: (arrangement) =>
+        `Locked to ${arrangement}. Highlighted bands show its doctrinal range; drag outside them to test violations.`,
       becomeMessage: (arrangement, alternative) =>
         `You are leaving ${arrangement} territory — closest match is now ${alternative}.`,
       illegalMessage: (arrangement) =>
@@ -384,6 +388,10 @@ const UI_ENHANCEMENTS = {
       civilLawContext: "大陆法上下文",
       eigenvalueShare: "eigenvalue 占比",
       whyButton: "为什么？",
+      selectedHint: (arrangement) =>
+        `已选择${arrangement}。再次点击同一个预设即可锁定其法教义区间。`,
+      lockedHint: (arrangement) =>
+        `已锁定到${arrangement}。高亮区间显示其法教义范围；拖到区间外即可测试违反。`,
       becomeMessage: (arrangement, alternative) =>
         `您正在脱离${arrangement}的范围——当前最接近的匹配是${alternative}。`,
       illegalMessage: (arrangement) =>
@@ -451,6 +459,10 @@ const UI_ENHANCEMENTS = {
       civilLawContext: "Zivilrechtskontext",
       eigenvalueShare: "Eigenwertanteil",
       whyButton: "Warum?",
+      selectedHint: (arrangement) =>
+        `${arrangement} ist ausgewählt. Klicken Sie dieselbe Schaltfläche erneut, um den doktrinären Bereich zu sperren.`,
+      lockedHint: (arrangement) =>
+        `${arrangement} ist jetzt gesperrt. Die hervorgehobenen Bänder zeigen den doktrinären Bereich; ziehen Sie darüber hinaus, um Verstöße zu testen.`,
       becomeMessage: (arrangement, alternative) =>
         `Sie verlassen den Bereich von ${arrangement} — nächste Übereinstimmung ist jetzt ${alternative}.`,
       illegalMessage: (arrangement) =>
@@ -520,6 +532,10 @@ const UI_ENHANCEMENTS = {
       civilLawContext: "大陸法文脈",
       eigenvalueShare: "eigenvalue 比率",
       whyButton: "なぜ？",
+      selectedHint: (arrangement) =>
+        `${arrangement}を選択しました。同じピルをもう一度押すと法教義上の範囲をロックします。`,
+      lockedHint: (arrangement) =>
+        `${arrangement}にロックしました。ハイライト帯が法教義上の範囲を示し、その外側へ動かすと違反を確認できます。`,
       becomeMessage: (arrangement, alternative) =>
         `${arrangement}の範囲を離れています——現在最も近い一致は${alternative}です。`,
       illegalMessage: (arrangement) =>
