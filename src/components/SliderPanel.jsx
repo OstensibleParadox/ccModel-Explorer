@@ -1,9 +1,5 @@
-import {
-  getMidpointsWithContext,
-  SLIDER_KEYS,
-} from '../utils/matchEngine';
+import { SLIDER_KEYS } from '../utils/matchEngine';
 import { getMidpoints as getFrameworkMidpoints } from '../utils/aiMatchEngine';
-import { getCommonLawMidpointsWithContext } from '../utils/commonLawResolver';
 
 const RESET_VALUES = Object.fromEntries(SLIDER_KEYS.map((key) => [key, 50]));
 const COMMON_LAW_CONTEXT_OPTIONS = [

@@ -109,6 +109,10 @@ function App() {
   const [activeAssetType, setActiveAssetType] = useState(null);
   const [violationModalDimension, setViolationModalDimension] = useState(null);
 
+  const arrangementViolations = useMemo(() => {
+    return detectArrangementViolations(sliderValues, lockedArrangement);
+  }, [sliderValues, lockedArrangement]);
+
   const violationModalData = useMemo(() => {
     if (!violationModalDimension || !lockedArrangement) return null;
     return arrangementViolations.find(
@@ -370,10 +374,6 @@ function App() {
       violations.find(({ id }) => id === 'numerus_clausus_violation') ?? null
     );
   }, [violations]);
-
-  const arrangementViolations = useMemo(() => {
-    return detectArrangementViolations(sliderValues, lockedArrangement);
-  }, [sliderValues, lockedArrangement]);
 
   const closestAlternative = useMemo(() => {
     if (arrangementViolations.length === 0 || !lockedArrangement) return null;
