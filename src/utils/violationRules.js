@@ -117,7 +117,7 @@ function createDefaultBounds() {
   );
 }
 
-export function computeSliderBounds(sliderValues, sliderLocks = {}) {
+export function computeSliderBounds(sliderValues) {
   const mergedBounds = createDefaultBounds();
 
   RULES.forEach((rule) => {
@@ -133,19 +133,6 @@ export function computeSliderBounds(sliderValues, sliderLocks = {}) {
         max: max == null ? currentBounds.max : Math.min(currentBounds.max, max),
       };
     });
-  });
-
-  Object.entries(sliderLocks).forEach(([key, sliderLock]) => {
-    if (!sliderLock?.enabled || sliderLock.threshold == null) {
-      return;
-    }
-
-    const currentBounds = mergedBounds[key] ?? { min: 0, max: 100 };
-
-    mergedBounds[key] = {
-      ...currentBounds,
-      max: Math.min(currentBounds.max, sliderLock.threshold),
-    };
   });
 
   return mergedBounds;

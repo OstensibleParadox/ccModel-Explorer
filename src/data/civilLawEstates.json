@@ -32,7 +32,49 @@
       "prc": "民法典240条"
     },
     "common_law_equivalent": "fee_simple_absolute",
-    "notes": "The nearest civilian anchor to the common-law fee simple absolute, but PRC 所有权 over land is structurally different: all urban land is state-owned (Art. 249) and all rural land is collectively owned (Art. 260). Individuals can only own buildings and structures, never the land beneath them. Slider ranges here reflect the DE/JP/TW concept of private ownership; PRC land ownership is a state prerogative with no private equivalent."
+    "notes": "The nearest civilian anchor to the common-law fee simple absolute, but PRC 所有权 over land is structurally different: all urban land is state-owned (Art. 249) and all rural land is collectively owned (Art. 260). Individuals can only own buildings and structures, never the land beneath them. Slider ranges here reflect the DE/JP/TW concept of private ownership; PRC land ownership is a state prerogative with no private equivalent.",
+    "dimensionConstraints": {
+      "alienation": {
+        "reasoning": {
+          "en": "Civilian Eigentum grants unrestricted power of disposition (Verfügungsbefugnis). Under § 903 BGB, the owner may deal with the thing at pleasure and exclude others. Alienation at full strength is the market-facing expression of this dominion.",
+          "zh": "大陆法系的所有权授予不受限制的处分权（Verfügungsbefugnis）。根据《德国民法典》第903条，所有权人可以随意处置其物并排除他人。完全的转让权是这种支配权的市场表达。",
+          "de": "Zivilrechtliches Eigentum gewährt uneingeschränkte Verfügungsbefugnis. Nach § 903 BGB kann der Eigentümer mit der Sache nach Belieben verfahren und andere ausschließen. Volle Veräußerbarkeit ist der Marktausdruck dieser Herrschaft.",
+          "ja": "大陸法上のEigentumは無制限の処分権（Verfügungsbefugnis）を付与します。BGB第903条の下、所有者は物を自由に扱い、他者を排除することができます。完全な譲渡可能性はこの支配権の市場的表現です。"
+        },
+        "caseLaw": {
+          "en": "§ 903 BGB codifies the owner's comprehensive right of disposition. In PRC land context, Art. 249 of the Civil Code reserves all urban land to state ownership, making private alienation of land structurally impossible — a fundamental departure from DE/JP/TW Eigentum.",
+          "zh": "《德国民法典》第903条将所有权人的全面处分权法典化。在中国土地语境下，《民法典》第249条将所有城市土地保留为国家所有，使土地的私人转让在结构上不可能——这与德/日/台的所有权存在根本差异。",
+          "de": "§ 903 BGB kodifiziert das umfassende Verfügungsrecht des Eigentümers. Im PRC-Landkontext reserviert Art. 249 des Zivilgesetzbuchs sämtliches städtisches Land dem Staatseigentum, was private Veräußerung von Land strukturell unmöglich macht — eine fundamentale Abweichung vom DE/JP/TW-Eigentum.",
+          "ja": "BGB第903条は所有者の包括的処分権を法典化しています。中国の土地文脈では、民法典第249条がすべての都市用地を国家所有に留保し、土地の私的譲渡を構造的に不可能にしています——これはDE/JP/TWのEigentumとの根本的な相違です。"
+        },
+        "consequences": {
+          "en": "Reducing alienation below 90 compromises the core market function of Eigentum. The configuration shifts toward Erbbaurecht (if duration remains high) or Nießbrauch (if alienation is near zero but use and income remain high).",
+          "zh": "将转让降低到90以下会损害所有权的核心市场功能。配置将向建设用地使用权（如果存续期仍高）或用益权（如果转让接近零但使用和收益仍高）转移。",
+          "de": "Wird die Veräußerbarkeit unter 90 reduziert, wird die Kernmarktfunktion des Eigentums beeinträchtigt. Die Konfiguration verschiebt sich in Richtung Erbbaurecht (wenn die Dauer hoch bleibt) oder Nießbrauch (wenn Veräußerbarkeit nahe null, aber Nutzung und Erträge hoch bleiben).",
+          "ja": "譲渡を90未満に下げると、Eigentumの核心的市場機能が損なわれます。構成はErbbaurecht（存続期間が高いままの場合）またはNießbrauch（譲渡がほぼゼロだが使用と収益が高い場合）に移行します。"
+        }
+      },
+      "duration": {
+        "reasoning": {
+          "en": "Civilian ownership is temporally unlimited — it endures unless the owner alienates, the thing is destroyed, or expropriation occurs. Any internal time limit is structurally incompatible with the concept of Eigentum.",
+          "zh": "大陆法系的所有权在时间上是无限的——除非所有权人转让、物被毁坏或被征收，否则永久存续。任何内部时间限制在结构上都与所有权概念不相容。",
+          "de": "Zivilrechtliches Eigentum ist zeitlich unbegrenzt — es besteht fort, sofern der Eigentümer nicht veräußert, die Sache zerstört wird oder Enteignung eintritt. Jede interne Zeitbegrenzung ist strukturell mit dem Eigentumsbegriff unvereinbar.",
+          "ja": "大陸法上の所有権は時間的に無制限です——所有者が譲渡するか、物が滅失するか、収用が行われない限り存続します。内部的な期限はEigentumの概念と構造的に両立しません。"
+        },
+        "caseLaw": {
+          "en": "PENDING SCHOLAR REVIEW",
+          "zh": "PENDING SCHOLAR REVIEW",
+          "de": "PENDING SCHOLAR REVIEW",
+          "ja": "PENDING SCHOLAR REVIEW"
+        },
+        "consequences": {
+          "en": "Reducing duration below 95 introduces a temporal boundary foreign to Eigentum. The configuration shifts toward Erbbaurecht (long but bounded term) or toward a limited real right.",
+          "zh": "将存续期降低到95以下引入了与所有权不相容的时间边界。配置将向建设用地使用权（长期但有限）或有限物权转移。",
+          "de": "Wird die Dauer unter 95 reduziert, entsteht eine dem Eigentum fremde zeitliche Grenze. Die Konfiguration verschiebt sich in Richtung Erbbaurecht (lange, aber begrenzte Laufzeit) oder ein beschränktes dingliches Recht.",
+          "ja": "存続期間を95未満に下げると、Eigentumには異質な時間的境界が導入されます。構成はErbbaurecht（長期だが限定的な期間）または制限物権に移行します。"
+        }
+      }
+    }
   },
   {
     "id": "erbbaurecht",
@@ -66,7 +108,49 @@
       "prc": "民法典344条"
     },
     "common_law_equivalent": "leasehold",
-    "notes": "Structurally a named real right, not a contractual lease. PRC 建设用地使用权 has mandatory maximum terms by use type: residential 70yr, commercial 40yr, industrial 50yr (国务院令第55号 Art. 12). Art. 359 provides for automatic renewal of residential terms, but conditions remain unsettled. Duration and inheritability ranges here span the cross-jurisdictional spread; PRC sits at the lower end."
+    "notes": "Structurally a named real right, not a contractual lease. PRC 建设用地使用权 has mandatory maximum terms by use type: residential 70yr, commercial 40yr, industrial 50yr (国务院令第55号 Art. 12). Art. 359 provides for automatic renewal of residential terms, but conditions remain unsettled. Duration and inheritability ranges here span the cross-jurisdictional spread; PRC sits at the lower end.",
+    "dimensionConstraints": {
+      "duration": {
+        "reasoning": {
+          "en": "Erbbaurecht is defined by a long but bounded term. Unlike Eigentum, it carries an internal time limit — typically 75-99 years in Germany, with mandatory maximum terms in PRC (residential 70yr, commercial 40yr, industrial 50yr).",
+          "zh": "建设用地使用权以长期但有限的期限为定义特征。与所有权不同，它有内部时间限制——在德国通常为75-99年，在中国有强制性最长期限（住宅70年、商业40年、工业50年）。",
+          "de": "Erbbaurecht ist durch eine lange, aber begrenzte Laufzeit definiert. Anders als Eigentum hat es eine interne Zeitbegrenzung — in Deutschland typischerweise 75-99 Jahre, in der VR China mit gesetzlichen Höchstlaufzeiten (Wohnen 70 J., Gewerbe 40 J., Industrie 50 J.).",
+          "ja": "Erbbaurecht（地上権）は長期だが限定的な期間によって定義されます。Eigentumとは異なり、内部的な期限があります——ドイツでは通常75-99年、中国では法定最長期間があります（住宅70年、商業40年、工業50年）。"
+        },
+        "caseLaw": {
+          "en": "§ 1 ErbbauRG (Germany) establishes the heritable building right as a temporally limited real right. PRC Civil Code Art. 344 defines 建设用地使用权 with mandatory terms per 国务院令第55号 Art. 12. Art. 359 provides for automatic renewal of residential terms, but conditions remain legislatively unsettled.",
+          "zh": "《德国地上权法》第1条将可继承建筑权确立为有时间限制的物权。《中国民法典》第344条定义了建设用地使用权，根据国务院令第55号第12条设定强制期限。第359条规定住宅用地自动续期，但条件在立法上尚未确定。",
+          "de": "§ 1 ErbbauRG begründet das Erbbaurecht als zeitlich begrenztes dingliches Recht. Art. 344 des chinesischen Zivilgesetzbuchs definiert 建设用地使用权 mit Pflichtlaufzeiten gemäß Art. 12 der Staatsratsverordnung Nr. 55. Art. 359 sieht automatische Verlängerung für Wohnzwecke vor, die Bedingungen sind aber gesetzlich ungeklärt.",
+          "ja": "ErbbauRG第1条は地上権を時間的に制限された物権として確立しています。中国民法典第344条は建設用地使用権を定義し、国務院令第55号第12条に基づく法定期間を設けています。第359条は住宅用地の自動更新を規定していますが、条件は立法上未確定です。"
+        },
+        "consequences": {
+          "en": "Duration above 90 pushes toward Eigentum (perpetual ownership). Duration below 70 in non-PRC contexts shortens the right beyond typical Erbbaurecht parameters, shifting toward a standard lease or contractual use right.",
+          "zh": "存续期超过90向所有权（永久所有）推移。在非中国语境下，存续期低于70将权利缩短到典型建设用地使用权参数之外，向标准租赁或合同性使用权转移。",
+          "de": "Dauer über 90 verschiebt sich in Richtung Eigentum (ewiges Eigentum). Dauer unter 70 in Nicht-PRC-Kontexten verkürzt das Recht über typische Erbbaurecht-Parameter hinaus in Richtung eines Standardmietvertrags oder vertraglichen Nutzungsrechts.",
+          "ja": "存続期間が90を超えると、Eigentum（永久所有権）に近づきます。中国以外の文脈で70未満の場合、権利は典型的なErbbaurecht（地上権）のパラメータを超えて短縮され、標準的なリースまたは契約上の使用権に移行します。"
+        }
+      },
+      "alienation": {
+        "reasoning": {
+          "en": "Erbbaurecht is a named real right (dingliches Recht) that is freely transferable and mortgageable — unlike usufruct, which is personal and inalienable. This market-facing transferability is structurally higher than most limited real rights.",
+          "zh": "建设用地使用权是一种可自由转让和抵押的指名物权（dingliches Recht）——不同于用益权，后者是人身性的且不可转让。这种面向市场的可转让性在结构上高于大多数限制物权。",
+          "de": "Erbbaurecht ist ein benanntes dingliches Recht, das frei übertragbar und beleihbar ist — anders als der Nießbrauch, der persönlich und unveräußerlich ist. Diese marktbezogene Übertragbarkeit ist strukturell höher als bei den meisten beschränkten dinglichen Rechten.",
+          "ja": "Erbbaurecht（地上権）は自由に譲渡・抵当設定可能な指名物権（dingliches Recht）です——個人的で譲渡不可能な用益権とは異なります。この市場志向の譲渡可能性は、ほとんどの制限物権よりも構造的に高いものです。"
+        },
+        "caseLaw": {
+          "en": "PENDING SCHOLAR REVIEW",
+          "zh": "PENDING SCHOLAR REVIEW",
+          "de": "PENDING SCHOLAR REVIEW",
+          "ja": "PENDING SCHOLAR REVIEW"
+        },
+        "consequences": {
+          "en": "Alienation below 60 removes the market-facing transferability that distinguishes Erbbaurecht from personal use rights. The configuration shifts toward Nießbrauch (inalienable use) or Grunddienstbarkeit (limited servitude).",
+          "zh": "转让低于60移除了区分建设用地使用权与人身性使用权的市场可转让性。配置向用益权（不可转让的使用）或地役权（有限地役权）转移。",
+          "de": "Veräußerbarkeit unter 60 beseitigt die marktbezogene Übertragbarkeit, die Erbbaurecht von persönlichen Nutzungsrechten unterscheidet. Die Konfiguration verschiebt sich in Richtung Nießbrauch (unveräußerliche Nutzung) oder Grunddienstbarkeit (beschränkte Dienstbarkeit).",
+          "ja": "譲渡が60未満になると、Erbbaurecht（地上権）を個人的使用権から区別する市場志向の譲渡可能性が失われます。構成はNießbrauch（譲渡不可能な使用）またはGrunddienstbarkeit（制限された地役権）に移行します。"
+        }
+      }
+    }
   },
   {
     "id": "niessbrauch",
@@ -93,7 +177,49 @@
       "prc": null
     },
     "common_law_equivalent": "life_estate",
-    "notes": "Common law tends to split this profile across life estates, trusts, and occupation rights rather than maintain a single canonical usufruct category."
+    "notes": "Common law tends to split this profile across life estates, trusts, and occupation rights rather than maintain a single canonical usufruct category.",
+    "dimensionConstraints": {
+      "alienation": {
+        "reasoning": {
+          "en": "Nießbrauch is structurally inalienable — § 1059 BGB provides that usufruct is non-transferable. The usufructuary may grant exercise of the right to another (§ 1059 S. 2), but the right itself cannot be assigned. This is the defining structural constraint of Nießbrauch.",
+          "zh": "用益权在结构上不可转让——《德国民法典》第1059条规定用益权不得转让。用益权人可以将权利的行使授予他人（第1059条第2句），但权利本身不能被转让。这是用益权的定义性结构约束。",
+          "de": "Nießbrauch ist strukturell unveräußerlich — § 1059 BGB bestimmt, dass der Nießbrauch nicht übertragbar ist. Der Nießbraucher kann die Ausübung des Rechts einem anderen überlassen (§ 1059 S. 2), aber das Recht selbst kann nicht abgetreten werden. Dies ist die definierende strukturelle Einschränkung des Nießbrauchs.",
+          "ja": "Nießbrauch（用益権）は構造的に譲渡不可能です——BGB第1059条は用益権が譲渡できないと規定しています。用益権者は権利の行使を他者に許可できますが（第1059条第2文）、権利自体は譲渡できません。これはNießbrauchの定義的な構造的制約です。"
+        },
+        "caseLaw": {
+          "en": "§ 1059 BGB: 'Der Nießbrauch ist nicht übertragbar.' (Usufruct is non-transferable.) This statutory prohibition is absolute and cannot be contracted around. It is the sharpest structural difference between Nießbrauch and Erbbaurecht.",
+          "zh": "《德国民法典》第1059条：'用益权不得转让。'这一法定禁止是绝对的，不能通过合同规避。这是用益权与建设用地使用权之间最尖锐的结构差异。",
+          "de": "§ 1059 BGB: 'Der Nießbrauch ist nicht übertragbar.' Dieses gesetzliche Verbot ist absolut und kann vertraglich nicht umgangen werden. Es ist der schärfste strukturelle Unterschied zwischen Nießbrauch und Erbbaurecht.",
+          "ja": "BGB第1059条：'Der Nießbrauch ist nicht übertragbar.'（用益権は譲渡できない。）この法定禁止は絶対的であり、契約によって回避することはできません。これはNießbrauchとErbbaurecht間の最も鋭い構造的相違です。"
+        },
+        "consequences": {
+          "en": "Any alienation above 10 is structurally incompatible with Nießbrauch. The configuration shifts toward Erbbaurecht (if duration and transferability are both high) or a trust beneficial interest.",
+          "zh": "任何超过10的转让与用益权在结构上不相容。配置向建设用地使用权（如果存续期和可转让性都高）或信托受益权转移。",
+          "de": "Jede Veräußerbarkeit über 10 ist strukturell mit dem Nießbrauch unvereinbar. Die Konfiguration verschiebt sich in Richtung Erbbaurecht (wenn Dauer und Übertragbarkeit beide hoch sind) oder eines trust beneficial interest.",
+          "ja": "10を超える譲渡はNießbrauchと構造的に両立しません。構成はErbbaurecht（存続期間と譲渡可能性が共に高い場合）またはtrust beneficial interestに移行します。"
+        }
+      },
+      "income": {
+        "reasoning": {
+          "en": "The core function of Nießbrauch is the right to fruits (Fruchtziehungsrecht). The usufructuary captures the economic output — rents, natural produce, interest — while leaving the substance intact. This is the economic justification for the entire institution.",
+          "zh": "用益权的核心功能是收取孳息的权利（Fruchtziehungsrecht）。用益权人获取经济产出——租金、天然孳息、利息——同时保持物的实体完整。这是整个制度的经济正当性。",
+          "de": "Die Kernfunktion des Nießbrauchs ist das Fruchtziehungsrecht. Der Nießbraucher erfasst die wirtschaftliche Leistung ��� Mieten, Naturalerträge, Zinsen — und lässt die Substanz unberührt. Dies ist die wirtschaftliche Rechtfertigung der gesamten Institution.",
+          "ja": "Nießbrauchの中核機能は果実収取権（Fruchtziehungsrecht）です。用益権者は経済的産出物——賃料、天然果実、利息——を取得しながら、物の実体を完全に保ちます。これが制度全体の経済的正当化です。"
+        },
+        "caseLaw": {
+          "en": "§§ 1030, 1039 BGB establish the usufructuary's comprehensive right to fruits (Früchte) from the encumbered thing, including natural, legal, and civil fruits.",
+          "zh": "《德国民法典》第1030条、第1039条确立了用益权人对被负担物的孳息（Früchte）的全面收取权，包括��然孳息、法定孳息和市民法孳息。",
+          "de": "§§ 1030, 1039 BGB begründen das umfassende Fruchtziehungsrecht des Nießbrauchers an der belasteten Sache, einschließlich natürlicher, gesetzlicher und bürgerlicher Früchte.",
+          "ja": "BGB第1030条、第1039条は、用益権者の負担された物からの果実（Früchte）に対す���包括的権利を確立しています。天然果実、法定果実、市民法上の果実を含みます。"
+        },
+        "consequences": {
+          "en": "Income below 75 weakens the core economic rationale of Nießbrauch. The configuration shifts toward Grunddienstbarkeit (if use is narrow) or a bare occupation right without economic capture.",
+          "zh": "收益低于75弱化了用益权的核心经济理由。配置向地役权（如果使用范围窄）或无经济获取的单纯居住权转移。",
+          "de": "Einkünfte unter 75 schwächen die wirtschaftliche Kernbegründung des Nießbrauchs. Die Konfiguration verschiebt sich in Richtung Grunddienstbarkeit (bei enger Nutzung) oder eines bloßen Wohnrechts ohne wirtschaftliche Erfassung.",
+          "ja": "収益が75未満になると、Nießbrauchの核心的経済根拠が弱まります。構成はGrunddienstbarkeit（使用が狭い場合）または経済的取得のない単純な居住権に移行します。"
+        }
+      }
+    }
   },
   {
     "id": "grunddienstbarkeit",

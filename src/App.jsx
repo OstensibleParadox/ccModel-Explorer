@@ -10,6 +10,7 @@ import SliderPanel from './components/SliderPanel';
 import DualTrackView from './components/DualTrackView';
 import AIFrameworkPanel from './components/AIFrameworkPanel';
 import ViolationAlert from './components/ViolationAlert';
+import ArrangementViolationModal from './components/ArrangementViolationModal';
 import {
   DEFAULT_LOCALE,
   LOCALE_STORAGE_KEY,
@@ -29,23 +30,29 @@ import {
 import { computeConvergence } from './utils/convergenceEngine';
 import {
   computeCivilMatches,
+  getMidpointsWithContext,
   SLIDER_KEYS,
 } from './utils/matchEngine';
-import { computeCommonLawMatches } from './utils/commonLawResolver';
+import {
+  computeCommonLawMatches,
+  getCommonLawMidpointsWithContext,
+  resolveCommonLawRanges,
+} from './utils/commonLawResolver';
 import { computeFrameworkMatches } from './utils/aiMatchEngine';
-import { getSliderAnnotations } from './utils/jurisdictionResolver';
+import { getSliderAnnotations, resolveEffectiveRanges } from './utils/jurisdictionResolver';
 import { checkViolations, computeSliderBounds } from './utils/violationRules';
 import { checkAIViolations, computeAISliderBounds } from './utils/aiViolationRules';
 import { localizeInstrument } from './utils/instrumentLocalization';
 import { filterInstruments } from './utils/instrumentEngine';
+import {
+  detectArrangementViolations,
+  findClosestAlternative,
+} from './utils/arrangementViolation';
 import './App.css';
 
 const MATCH_THRESHOLD = 0.5;
 
 const INITIAL_VALUES = Object.fromEntries(SLIDER_KEYS.map((key) => [key, 50]));
-const INITIAL_SLIDER_LOCKS = Object.fromEntries(
-  SLIDER_KEYS.map((key) => [key, { enabled: false, threshold: null }])
-);
 
 // Default slider configuration for AI Governance mode: Closed API Model midpoints.
 // Triggers value_capture_without_accountability immediately to demonstrate the demo.
@@ -90,21 +97,34 @@ function clampSliderValues(nextValues, sliderBounds) {
   );
 }
 
-function normalizeThreshold(value, fallbackValue) {
-  const parsed = Number(value);
-  const safeValue = Number.isFinite(parsed) ? parsed : fallbackValue;
-  return Math.min(100, Math.max(0, Math.round(safeValue)));
-}
-
 function App() {
   const [locale, setLocale] = useState(resolveInitialLocale);
   const [mode, setMode] = useState('property'); // 'property' | 'ai'
   const [sliderValues, setSliderValues] = useState(INITIAL_VALUES);
-  const [sliderLocks, setSliderLocks] = useState(INITIAL_SLIDER_LOCKS);
+  const [selectedPreset, setSelectedPreset] = useState(null);
+  const [lockedArrangement, setLockedArrangement] = useState(null);
   const [activeCommonLawJurisdiction, setActiveCommonLawJurisdiction] =
     useState(null);
   const [activeCivilJurisdiction, setActiveCivilJurisdiction] = useState(null);
   const [activeAssetType, setActiveAssetType] = useState(null);
+  const [violationModalDimension, setViolationModalDimension] = useState(null);
+
+  const violationModalData = useMemo(() => {
+    if (!violationModalDimension || !lockedArrangement) return null;
+    return arrangementViolations.find(
+      (v) => v.dimension === violationModalDimension
+    ) ?? null;
+  }, [violationModalDimension, lockedArrangement, arrangementViolations]);
+
+  function handleSnapTo(alternative) {
+    const midpoints =
+      lockedArrangement?.track === 'common'
+        ? getCommonLawMidpointsWithContext(alternative.estate, activeCommonLawJurisdiction)
+        : getMidpointsWithContext(alternative.estate, activeCivilJurisdiction, activeAssetType);
+    handleSliderChange(midpoints);
+    setLockedArrangement(null);
+    setSelectedPreset(null);
+  }
 
   const ui = useMemo(() => getUiCopy(locale), [locale]);
   const propertySliderMeta = useMemo(() => getSliderMeta(locale), [locale]);
@@ -149,6 +169,8 @@ function App() {
     setActiveCommonLawJurisdiction((currentJurisdiction) =>
       currentJurisdiction === jurisdiction ? null : jurisdiction
     );
+    setLockedArrangement(null);
+    setSelectedPreset(null);
   }
 
   function handleCivilJurisdictionChange(jurisdiction) {
@@ -156,6 +178,8 @@ function App() {
       activeCivilJurisdiction === jurisdiction ? null : jurisdiction;
 
     setActiveCivilJurisdiction(nextJurisdiction);
+    setLockedArrangement(null);
+    setSelectedPreset(null);
 
     if (nextJurisdiction != 'prc') {
       setActiveAssetType(null);
@@ -166,10 +190,14 @@ function App() {
     setActiveAssetType((currentAssetType) =>
       currentAssetType === assetType ? null : assetType
     );
+    setLockedArrangement(null);
+    setSelectedPreset(null);
   }
 
   function handleModeChange(nextMode) {
     setMode(nextMode);
+    setLockedArrangement(null);
+    setSelectedPreset(null);
     if (nextMode === 'ai') {
       setSliderValues(AI_DEFAULT_VALUES);
       setActiveCommonLawJurisdiction(null);
@@ -179,10 +207,16 @@ function App() {
       setSliderValues(
         clampSliderValues(
           INITIAL_VALUES,
-          computeSliderBounds(INITIAL_VALUES, sliderLocks)
+          computeSliderBounds(INITIAL_VALUES)
         )
       );
     }
+  }
+
+  function handleReset() {
+    handleSliderChange(INITIAL_VALUES);
+    setSelectedPreset(null);
+    setLockedArrangement(null);
   }
 
   function handleSliderChange(nextValues) {
@@ -192,75 +226,49 @@ function App() {
       const nextBounds =
         mode === 'ai'
           ? computeAISliderBounds()
-          : computeSliderBounds(resolvedValues, sliderLocks);
+          : computeSliderBounds(resolvedValues);
 
       return clampSliderValues(resolvedValues, nextBounds);
     });
   }
 
-  function handleSliderLockToggle(key, enabled, fallbackThreshold) {
-    setSliderLocks((currentLocks) => {
-      const currentLock = currentLocks[key] ?? {
-        enabled: false,
-        threshold: null,
-      };
-      const threshold = normalizeThreshold(
-        currentLock.threshold,
-        fallbackThreshold
+  function handlePresetClick(estate, track) {
+    if (lockedArrangement?.id === estate.id && lockedArrangement?.track === track) {
+      // Same pill clicked while locked → unlock (revert to selected)
+      setLockedArrangement(null);
+    } else if (lockedArrangement) {
+      // Different pill clicked while something else is locked → clear lock, select new
+      setLockedArrangement(null);
+      setSelectedPreset({ id: estate.id, track });
+      handleSliderChange(
+        track === 'common'
+          ? getCommonLawMidpointsWithContext(estate, activeCommonLawJurisdiction)
+          : getMidpointsWithContext(estate, activeCivilJurisdiction, activeAssetType)
       );
-      const nextLocks = {
-        ...currentLocks,
-        [key]: {
-          enabled,
-          threshold,
-        },
-      };
-
-      setSliderValues((currentValues) =>
-        clampSliderValues(
-          currentValues,
-          mode === 'ai'
-            ? computeAISliderBounds()
-            : computeSliderBounds(currentValues, nextLocks)
-        )
+    } else if (selectedPreset?.id === estate.id && selectedPreset?.track === track) {
+      // Same pill clicked while selected (not locked) → lock it
+      const resolvedRanges =
+        track === 'common'
+          ? resolveCommonLawRanges(estate, activeCommonLawJurisdiction)
+          : resolveEffectiveRanges(estate, activeCivilJurisdiction, activeAssetType);
+      setLockedArrangement({ id: estate.id, track, estate, resolvedRanges });
+    } else {
+      // Different pill or first click → select (no lock)
+      setLockedArrangement(null);
+      setSelectedPreset({ id: estate.id, track });
+      handleSliderChange(
+        track === 'common'
+          ? getCommonLawMidpointsWithContext(estate, activeCommonLawJurisdiction)
+          : getMidpointsWithContext(estate, activeCivilJurisdiction, activeAssetType)
       );
-
-      return nextLocks;
-    });
-  }
-
-  function handleSliderLockThresholdChange(key, threshold) {
-    setSliderLocks((currentLocks) => {
-      const currentLock = currentLocks[key] ?? {
-        enabled: false,
-        threshold: null,
-      };
-      const nextLocks = {
-        ...currentLocks,
-        [key]: {
-          ...currentLock,
-          threshold,
-        },
-      };
-
-      setSliderValues((currentValues) =>
-        clampSliderValues(
-          currentValues,
-          mode === 'ai'
-            ? computeAISliderBounds()
-            : computeSliderBounds(currentValues, nextLocks)
-        )
-      );
-
-      return nextLocks;
-    });
+    }
   }
 
   const sliderBounds = useMemo(() => {
     return mode === 'ai'
       ? computeAISliderBounds()
-      : computeSliderBounds(sliderValues, sliderLocks);
-  }, [mode, sliderLocks, sliderValues]);
+      : computeSliderBounds(sliderValues);
+  }, [mode, sliderValues]);
 
   const frameworkMatches = useMemo(() => {
     if (mode !== 'ai') return [];
@@ -336,29 +344,6 @@ function App() {
     const annotations = baseSliderAnnotations.map((annotation) =>
       localizeSliderAnnotation(annotation, locale)
     );
-    const manualLockAnnotations =
-      mode === 'property'
-        ? SLIDER_KEYS.flatMap((key) => {
-            const sliderLock = sliderLocks[key];
-
-            if (!sliderLock?.enabled) {
-              return [];
-            }
-
-            const threshold = normalizeThreshold(
-              sliderLock.threshold,
-              sliderValues[key]
-            );
-
-            return [
-              {
-                dimension: key,
-                message: ui.sliderPanel.lockedAt(threshold),
-                severity: 'locked',
-              },
-            ];
-          })
-        : [];
 
     violations.forEach((violation) => {
       if (violation.id === 'abstraktionsprinzip_note') {
@@ -370,8 +355,8 @@ function App() {
       }
     });
 
-    return [...manualLockAnnotations, ...annotations];
-  }, [baseSliderAnnotations, locale, mode, sliderLocks, sliderValues, ui, violations]);
+    return annotations;
+  }, [baseSliderAnnotations, locale, violations]);
 
   const toastViolations = useMemo(() => {
     if (mode === 'ai') {
@@ -385,6 +370,24 @@ function App() {
       violations.find(({ id }) => id === 'numerus_clausus_violation') ?? null
     );
   }, [violations]);
+
+  const arrangementViolations = useMemo(() => {
+    return detectArrangementViolations(sliderValues, lockedArrangement);
+  }, [sliderValues, lockedArrangement]);
+
+  const closestAlternative = useMemo(() => {
+    if (arrangementViolations.length === 0 || !lockedArrangement) return null;
+
+    const matches =
+      lockedArrangement.track === 'common' ? commonLawMatches : civilLawMatches;
+
+    return findClosestAlternative(matches, lockedArrangement.id);
+  }, [
+    arrangementViolations,
+    lockedArrangement,
+    commonLawMatches,
+    civilLawMatches,
+  ]);
 
   const bothTracksMatch = useMemo(() => {
     return (
@@ -467,9 +470,13 @@ function App() {
           sliderBounds={sliderBounds}
           panelNote={mode === 'property' ? sliderPanelNote : null}
           sliderMeta={sliderMeta}
-          sliderLocks={mode === 'property' ? sliderLocks : {}}
-          onSliderLockToggle={handleSliderLockToggle}
-          onSliderLockThresholdChange={handleSliderLockThresholdChange}
+          selectedPreset={mode === 'property' ? selectedPreset : null}
+          lockedArrangement={mode === 'property' ? lockedArrangement : null}
+          onPresetClick={handlePresetClick}
+          onReset={handleReset}
+          arrangementViolations={mode === 'property' ? arrangementViolations : []}
+          closestAlternative={closestAlternative}
+          onOpenViolationModal={setViolationModalDimension}
           ui={ui}
           mode={mode}
           aiFrameworks={localizedAIFrameworks}
@@ -477,6 +484,19 @@ function App() {
       </section>
 
       <ViolationAlert violations={toastViolations} />
+
+      <ArrangementViolationModal
+        open={violationModalData != null}
+        onClose={() => setViolationModalDimension(null)}
+        dimension={violationModalDimension}
+        violation={violationModalData}
+        lockedArrangement={lockedArrangement}
+        closestAlternative={closestAlternative}
+        onSnapTo={handleSnapTo}
+        locale={locale}
+        ui={ui}
+        sliderMeta={sliderMeta}
+      />
 
       <main className="app-main">
         {mode === 'property' ? (

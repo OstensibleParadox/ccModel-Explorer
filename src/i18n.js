@@ -314,15 +314,28 @@ const UI_ENHANCEMENTS = {
       commonLawContext: "Common-Law Context",
       civilLawContext: "Civil-Law Context",
       eigenvalueShare: "Eigenvalue Share",
-      lockButton: "Configure threshold lock",
-      lockEnable: "Enforce cap",
-      lockThreshold: "Threshold",
-      lockedAt: (threshold) =>
-        `Manual cap enabled: this term cannot exceed ${threshold}.`,
+      whyButton: "Why?",
+      becomeMessage: (arrangement, alternative) =>
+        `You are leaving ${arrangement} territory — closest match is now ${alternative}.`,
+      illegalMessage: (arrangement) =>
+        `This configuration has moved outside ${arrangement} and does not match a recognized legal arrangement.`,
+      independentTrackNote:
+        "Each legal track computes matches independently. See the convergence panel below for cross-tradition comparison.",
       commonLawContextHints: {
         uk: "UK context narrows registered-land adverse possession after the Land Registration Act 2002 and treats fee tail as effectively historical.",
         us: "US context keeps adverse possession more operational and fee tail mostly historical, with limited survival in a few states.",
       },
+    },
+    modal: {
+      rangeViolation: (dimension) => `Range Violation: ${dimension}`,
+      requiresRange: (estate, dimension, min, max, current) =>
+        `${estate} requires ${dimension} in range [${min}, ${max}]. Current value: ${current}.`,
+      legalReasoning: "Legal Reasoning",
+      caseLaw: "Case Law",
+      consequences: "Consequences",
+      dismiss: "Dismiss",
+      snapTo: (arrangement) => `Snap to ${arrangement}`,
+      fallbackNote: "Detailed legal analysis is pending for this dimension. The range constraint is derived from cross-jurisdictional estate profiling.",
     },
     termModes: {
       aria: "Terminology lens",
@@ -370,14 +383,28 @@ const UI_ENHANCEMENTS = {
       commonLawContext: "普通法上下文",
       civilLawContext: "大陆法上下文",
       eigenvalueShare: "eigenvalue 占比",
-      lockButton: "设置阈值锁定",
-      lockEnable: "启用上限",
-      lockThreshold: "阈值",
-      lockedAt: (threshold) => `手动锁定已启用：该术语不得超过 ${threshold}。`,
+      whyButton: "为什么？",
+      becomeMessage: (arrangement, alternative) =>
+        `您正在脱离${arrangement}的范围——当前最接近的匹配是${alternative}。`,
+      illegalMessage: (arrangement) =>
+        `此配置已超出${arrangement}的范围，不符合任何已知法律安排。`,
+      independentTrackNote:
+        "两个法律传统的匹配独立计算。请参阅下方的趋同面板进行跨传统比较。",
       commonLawContextHints: {
         uk: "英国法语境会明显收紧登记土地上的逆权占有，并把 fee tail 视为基本只剩历史意义的类别。",
         us: "美国法语境下，逆权占有仍更具操作性；fee tail 在绝大多数州已历史化，但少数州仍留有残迹。",
       },
+    },
+    modal: {
+      rangeViolation: (dimension) => `范围违反：${dimension}`,
+      requiresRange: (estate, dimension, min, max, current) =>
+        `${estate}要求${dimension}在 [${min}, ${max}] 范围内。当前值：${current}。`,
+      legalReasoning: "法律推理",
+      caseLaw: "判例法",
+      consequences: "后果",
+      dismiss: "关闭",
+      snapTo: (arrangement) => `跳转到${arrangement}`,
+      fallbackNote: "该维度的详细法律分析尚待完成。范围约束基于跨法域地产分析得出。",
     },
     termModes: {
       aria: "术语镜头",
@@ -423,15 +450,28 @@ const UI_ENHANCEMENTS = {
       commonLawContext: "Common-Law-Kontext",
       civilLawContext: "Zivilrechtskontext",
       eigenvalueShare: "Eigenwertanteil",
-      lockButton: "Schwellensperre konfigurieren",
-      lockEnable: "Obergrenze erzwingen",
-      lockThreshold: "Schwelle",
-      lockedAt: (threshold) =>
-        `Manuelle Sperre aktiv: Dieser Term darf ${threshold} nicht überschreiten.`,
+      whyButton: "Warum?",
+      becomeMessage: (arrangement, alternative) =>
+        `Sie verlassen den Bereich von ${arrangement} — nächste Übereinstimmung ist jetzt ${alternative}.`,
+      illegalMessage: (arrangement) =>
+        `Diese Konfiguration liegt außerhalb von ${arrangement} und entspricht keiner anerkannten Rechtsform.`,
+      independentTrackNote:
+        "Jede Rechtstradition berechnet Übereinstimmungen unabhängig. Siehe Konvergenz-Panel unten für traditionsübergreifende Vergleiche.",
       commonLawContextHints: {
         uk: "Der UK-Kontext verengt adverse possession bei registriertem Land nach dem Land Registration Act 2002 deutlich und behandelt fee tail praktisch nur noch historisch.",
         us: "Der US-Kontext hält adverse possession operativer; fee tail ist meist historisch, lebt aber in wenigen Staaten in Restformen fort.",
       },
+    },
+    modal: {
+      rangeViolation: (dimension) => `Bereichsverletzung: ${dimension}`,
+      requiresRange: (estate, dimension, min, max, current) =>
+        `${estate} erfordert ${dimension} im Bereich [${min}, ${max}]. Aktueller Wert: ${current}.`,
+      legalReasoning: "Rechtliche Begründung",
+      caseLaw: "Rechtsprechung",
+      consequences: "Folgen",
+      dismiss: "Schließen",
+      snapTo: (arrangement) => `Zu ${arrangement} wechseln`,
+      fallbackNote: "Die ausführliche rechtliche Analyse für diese Dimension steht noch aus. Die Bereichsbeschränkung basiert auf jurisdiktionsübergreifender Analyse.",
     },
     termModes: {
       aria: "Begriffslinse",
@@ -479,15 +519,28 @@ const UI_ENHANCEMENTS = {
       commonLawContext: "コモンロー文脈",
       civilLawContext: "大陸法文脈",
       eigenvalueShare: "eigenvalue 比率",
-      lockButton: "閾値ロックを設定",
-      lockEnable: "上限を適用",
-      lockThreshold: "閾値",
-      lockedAt: (threshold) =>
-        `手動ロックが有効です。この術語は ${threshold} を超えられません。`,
+      whyButton: "なぜ？",
+      becomeMessage: (arrangement, alternative) =>
+        `${arrangement}の範囲を離れています——現在最も近い一致は${alternative}です。`,
+      illegalMessage: (arrangement) =>
+        `この構成は${arrangement}の範囲外であり、認められた法的形態に該当しません。`,
+      independentTrackNote:
+        "各法的伝統は独立してマッチングを計算します。伝統間の比較はコンバージェンスパネルをご覧ください。",
       commonLawContextHints: {
         uk: "UK 文脈では Land Registration Act 2002 以後、登録土地での adverse possession がかなり狭まり、fee tail もほぼ歴史的分類として扱われます。",
         us: "US 文脈では adverse possession がなお実務的で、fee tail は大半の州で歴史化していますが一部には残滓があります。",
       },
+    },
+    modal: {
+      rangeViolation: (dimension) => `範囲違反：${dimension}`,
+      requiresRange: (estate, dimension, min, max, current) =>
+        `${estate}は${dimension}が [${min}, ${max}] の範囲内であることを必要とします。現在値：${current}。`,
+      legalReasoning: "法的推論",
+      caseLaw: "判例法",
+      consequences: "結果",
+      dismiss: "閉じる",
+      snapTo: (arrangement) => `${arrangement}に移行`,
+      fallbackNote: "この次元の詳細な法的分析はまだ準備中です。範囲制約は法域横断的な分析に基づいています。",
     },
     termModes: {
       aria: "術語レンズ",
