@@ -137,18 +137,201 @@ function computeCovarianceMatrixFromSamples(centeredSamples) {
   return centeredSamples.transpose().mmul(centeredSamples).div(denominator);
 }
 
-export function computeEigenstructure(estate) {
-  assertEstate(estate);
+function validateCouplings(couplings) {
+  if (!Array.isArray(couplings) || couplings.length === 0) {
+    return [];
+  }
 
+  const seenPairs = new Set();
+
+  for (const coupling of couplings) {
+    const { dimensions, correlation, doctrine } = coupling;
+
+    if (!Array.isArray(dimensions) || dimensions.length !== 2) {
+      throw new TypeError(
+        'each coupling must have a dimensions array of length 2'
+      );
+    }
+
+    const [dimA, dimB] = dimensions;
+
+    if (!DIMENSIONS.includes(dimA)) {
+      throw new TypeError(`unknown dimension: ${dimA}`);
+    }
+
+    if (!DIMENSIONS.includes(dimB)) {
+      throw new TypeError(`unknown dimension: ${dimB}`);
+    }
+
+    if (dimA === dimB) {
+      throw new RangeError(`coupling dimensions must be distinct: ${dimA}`);
+    }
+
+    if (typeof correlation !== 'number' || !Number.isFinite(correlation)) {
+      throw new TypeError('correlation must be a finite number');
+    }
+
+    if (correlation < -1 || correlation > 1) {
+      throw new RangeError(
+        `correlation must be in [-1, 1], got ${correlation}`
+      );
+    }
+
+    if (typeof doctrine !== 'string' || doctrine.length === 0) {
+      throw new TypeError('doctrine must be a non-empty string');
+    }
+
+    const pairKey = [dimA, dimB].sort().join(':');
+
+    if (seenPairs.has(pairKey)) {
+      throw new RangeError(`duplicate coupling pair: ${dimA}, ${dimB}`);
+    }
+
+    seenPairs.add(pairKey);
+  }
+
+  return couplings;
+}
+
+function buildCovarianceMatrix(estate) {
   const variances = DIMENSIONS.map((key) => uniformVariance(estate.ranges[key]));
-
-  // With only per-dimension ranges and no coupling data, the estate covariance
-  // is the diagonal covariance of seven independent uniform marginals.
   const covarianceMatrix = Matrix.diag(variances);
+
+  const couplings = validateCouplings(estate.dimensionCouplings);
+
+  if (couplings.length === 0) {
+    return { covarianceMatrix, hasCouplings: false };
+  }
+
+  const sigmas = variances.map(Math.sqrt);
+
+  for (const coupling of couplings) {
+    const [dimA, dimB] = coupling.dimensions;
+    const i = DIMENSIONS.indexOf(dimA);
+    const j = DIMENSIONS.indexOf(dimB);
+    const offDiag = cleanNumber(coupling.correlation * sigmas[i] * sigmas[j]);
+    covarianceMatrix.set(i, j, offDiag);
+    covarianceMatrix.set(j, i, offDiag);
+  }
+
+  return { covarianceMatrix, hasCouplings: true };
+}
+
+function ensurePSD(covarianceMatrix) {
+  const size = covarianceMatrix.rows;
+  const sigmas = [];
+
+  for (let i = 0; i < size; i += 1) {
+    sigmas.push(Math.sqrt(Math.max(covarianceMatrix.get(i, i), 0)));
+  }
+
+  const activeIndices = [];
+  const frozenDimensions = [];
+
+  for (let i = 0; i < size; i += 1) {
+    if (sigmas[i] > 1e-12) {
+      activeIndices.push(i);
+    } else {
+      frozenDimensions.push(DIMENSIONS[i]);
+    }
+  }
+
   const decomposition = new EigenvalueDecomposition(covarianceMatrix, {
     assumeSymmetric: true,
   });
-  const eigenpairs = sortEigenpairs(decomposition);
+
+  const minEigenvalue = Math.min(...decomposition.realEigenvalues);
+
+  if (minEigenvalue >= -1e-10) {
+    return {
+      matrix: covarianceMatrix,
+      eigenpairs: sortEigenpairs(decomposition),
+      projected: false,
+      frozenDimensions,
+    };
+  }
+
+  // PSD projection needed — work in correlation space on active submatrix.
+  // Note: spectral clipping does not preserve trace. The returned matrix may
+  // have a different sum-of-variances than the input. The projected flag
+  // signals this to consumers.
+  const n = activeIndices.length;
+  const activeSigmas = activeIndices.map((i) => sigmas[i]);
+
+  // Extract active submatrix and convert to correlation.
+  const corrData = [];
+
+  for (let r = 0; r < n; r += 1) {
+    const row = [];
+
+    for (let c = 0; c < n; c += 1) {
+      row.push(
+        covarianceMatrix.get(activeIndices[r], activeIndices[c]) /
+          (activeSigmas[r] * activeSigmas[c])
+      );
+    }
+
+    corrData.push(row);
+  }
+
+  const corrMatrix = new Matrix(corrData);
+
+  // Eigendecompose correlation, clip negatives, reconstruct.
+  const corrDecomp = new EigenvalueDecomposition(corrMatrix, {
+    assumeSymmetric: true,
+  });
+  const clippedLambdas = corrDecomp.realEigenvalues.map((l) =>
+    Math.max(l, 0)
+  );
+  const Q = corrDecomp.eigenvectorMatrix;
+  const corrPlus = Q.mmul(Matrix.diag(clippedLambdas)).mmul(Q.transpose());
+
+  // Re-normalize to force diagonal to 1.0.
+  // Save diagonal before in-place modification.
+  const diagSqrt = [];
+
+  for (let i = 0; i < n; i += 1) {
+    diagSqrt.push(Math.sqrt(Math.max(corrPlus.get(i, i), 0)));
+  }
+
+  for (let r = 0; r < n; r += 1) {
+    for (let c = 0; c < n; c += 1) {
+      const denom = diagSqrt[r] * diagSqrt[c];
+
+      if (denom > 1e-15) {
+        corrPlus.set(r, c, corrPlus.get(r, c) / denom);
+      }
+    }
+  }
+
+  // Convert back to covariance with original sigmas and re-embed into full matrix.
+  const repairedFull = Matrix.zeros(size, size);
+
+  for (let r = 0; r < n; r += 1) {
+    for (let c = 0; c < n; c += 1) {
+      const covVal = corrPlus.get(r, c) * activeSigmas[r] * activeSigmas[c];
+      repairedFull.set(activeIndices[r], activeIndices[c], cleanNumber(covVal));
+    }
+  }
+
+  const repairedDecomp = new EigenvalueDecomposition(repairedFull, {
+    assumeSymmetric: true,
+  });
+
+  return {
+    matrix: repairedFull,
+    eigenpairs: sortEigenpairs(repairedDecomp),
+    projected: true,
+    frozenDimensions,
+  };
+}
+
+export function computeEigenstructure(estate) {
+  assertEstate(estate);
+
+  const { covarianceMatrix, hasCouplings } = buildCovarianceMatrix(estate);
+  const { eigenpairs, projected, frozenDimensions } =
+    ensurePSD(covarianceMatrix);
 
   return {
     eigenvalues: eigenpairs.map((pair) => pair.eigenvalue),
@@ -159,6 +342,9 @@ export function computeEigenstructure(estate) {
       eigenvector: pair.eigenvector,
       dominantDimension: dominantDimension(pair.eigenvector),
     })),
+    projected,
+    hasCouplings,
+    frozenDimensions,
   };
 }
 

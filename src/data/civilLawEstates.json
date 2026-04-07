@@ -228,7 +228,19 @@
           "ja": "収益が75未満になると、Nießbrauchの核心的経済根拠が弱まります。構成はGrunddienstbarkeit（使用が狭い場合）または経済的取得のない単純な居住権に移行します。"
         }
       }
-    }
+    },
+    "dimensionCouplings": [
+      {
+        "dimensions": ["use", "income"],
+        "correlation": 0.9,
+        "doctrine": "Fruchtziehungsrecht: the institutional purpose of usufruct is use-as-income-extraction (s 1030 BGB)"
+      },
+      {
+        "dimensions": ["alienation", "inheritability"],
+        "correlation": 0.75,
+        "doctrine": "Both blocked: personal, non-transferable, non-descendible right (s 1059, s 1061 BGB)"
+      }
+    ]
   },
   {
     "id": "grunddienstbarkeit",

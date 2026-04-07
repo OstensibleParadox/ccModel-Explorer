@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test": "node --test src/utils/eigenEngine.test.js"
   },
   "dependencies": {
     "ml-matrix": "^6.12.1",

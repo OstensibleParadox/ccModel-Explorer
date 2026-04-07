@@ -143,7 +143,24 @@
           "ja": "譲渡を30以上に引き上げると、life estateが構造的に支持する以上の譲渡可能性が示唆されます。構成はleasehold（期限付きの中程度の譲渡）またはfee simple defeasibleに移行します。"
         }
       }
-    }
+    },
+    "dimensionCouplings": [
+      {
+        "dimensions": ["duration", "inheritability"],
+        "correlation": 0.75,
+        "doctrine": "Both constrained by the measuring-life terminus — the estate dies with the holder"
+      },
+      {
+        "dimensions": ["alienation", "duration"],
+        "correlation": 0.5,
+        "doctrine": "Limited transfer mirrors limited temporal scope — pur autre vie alienation is narrow"
+      },
+      {
+        "dimensions": ["use", "income"],
+        "correlation": 0.75,
+        "doctrine": "Use rights and income extraction track each other during the life"
+      }
+    ]
   },
   {
     "id": "leasehold",
@@ -283,7 +300,19 @@
       "exclusion": [60, 85],
       "duration": [30, 65],
       "inheritability": [5, 25]
-    }
+    },
+    "dimensionCouplings": [
+      {
+        "dimensions": ["possession", "exclusion"],
+        "correlation": 0.9,
+        "doctrine": "Open, notorious, and exclusive possession — factual control and gatekeeping are coterminous"
+      },
+      {
+        "dimensions": ["alienation", "inheritability"],
+        "correlation": 0.5,
+        "doctrine": "Both restricted until limitation period completes and title crystallizes"
+      }
+    ]
   },
   {
     "id": "profit_a_prendre",
@@ -311,7 +340,24 @@
       "exclusion": [80, 95],
       "duration": [85, 100],
       "inheritability": [70, 90]
-    }
+    },
+    "dimensionCouplings": [
+      {
+        "dimensions": ["alienation", "inheritability"],
+        "correlation": -0.9,
+        "doctrine": "De Donis Conditionalibus 1285 — inheritability is enforced by blocking alienation; the two are doctrinally bound in inverse motion"
+      },
+      {
+        "dimensions": ["alienation", "duration"],
+        "correlation": -0.75,
+        "doctrine": "Duration persists precisely because alienation is blocked — the entail preserves the estate across generations"
+      },
+      {
+        "dimensions": ["duration", "inheritability"],
+        "correlation": 0.9,
+        "doctrine": "Lineal descent is the duration mechanism of the entailed estate"
+      }
+    ]
   },
   {
     "id": "future_interest",
@@ -325,6 +371,23 @@
       "exclusion": [0, 5],
       "duration": [60, 95],
       "inheritability": [55, 90]
-    }
+    },
+    "dimensionCouplings": [
+      {
+        "dimensions": ["duration", "inheritability"],
+        "correlation": 0.9,
+        "doctrine": "Vested remainders endure and descend — temporal durability enables transmission"
+      },
+      {
+        "dimensions": ["possession", "use"],
+        "correlation": 0.9,
+        "doctrine": "Both near-zero: the interest is non-possessory by definition until the prior estate terminates"
+      },
+      {
+        "dimensions": ["alienation", "duration"],
+        "correlation": 0.75,
+        "doctrine": "Vested remainders are alienable because they are temporally durable"
+      }
+    ]
   }
 ]
