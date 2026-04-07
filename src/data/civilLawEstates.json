@@ -22,6 +22,15 @@
         "land": {
           "alienation": [0, 0],
           "inheritability": [0, 0]
+        },
+        "movables": {
+          "_note": "PRC private ownership of movables (Art. 240) carries full alienation and inheritability — no override needed from base Eigentum ranges."
+        },
+        "intangibles": {
+          "possession": [20, 50],
+          "duration": [30, 70],
+          "exclusion": [60, 85],
+          "inheritability": [50, 80]
         }
       }
     },
@@ -270,6 +279,14 @@
       "prc": {
         "land": {
           "_note": "PRC mortgages attach to the use right (建设用地使用权), not ownership."
+        },
+        "movables": {
+          "possession": [0, 5],
+          "alienation": [30, 55]
+        },
+        "intangibles": {
+          "possession": [0, 0],
+          "duration": [10, 40]
         }
       }
     },
@@ -299,6 +316,20 @@
       "exclusion": [15, 35],
       "duration": [15, 50],
       "inheritability": [20, 40]
+    },
+    "jurisdictionOverrides": {
+      "prc": {
+        "movables": {
+          "possession": [20, 40],
+          "alienation": [20, 40]
+        },
+        "intangibles": {
+          "possession": [0, 5],
+          "exclusion": [10, 30],
+          "alienation": [15, 40],
+          "duration": [10, 40]
+        }
+      }
     },
     "authorities": {
       "de": "§ 1204 BGB",
@@ -449,6 +480,15 @@
       "exclusion": [35, 55],
       "duration": [10, 35],
       "inheritability": [10, 25]
+    },
+    "jurisdictionOverrides": {
+      "prc": {
+        "movables": {
+          "possession": [50, 70],
+          "exclusion": [40, 60],
+          "income": [5, 20]
+        }
+      }
     },
     "authorities": {
       "de": null,

@@ -109,6 +109,30 @@ const RULES = [
     detail: 'Alienation is high while possession remains materially lower than the transfer signal.',
     condition: (values) => values.alienation > 60 && values.possession < 40,
   },
+  {
+    id: 'prc_movable_pledge_without_possession',
+    severity: 'info',
+    message: 'PRC movable pledge requires actual delivery \u2014 low possession is doctrinally unstable.',
+    detail:
+      'Art. 429 provides that the pledge right arises upon delivery of the movable. Without constitutive possession, the pledge cannot form.',
+    condition: (values, context) =>
+      context.jurisdiction === 'prc' &&
+      context.assetType === 'movables' &&
+      values.possession < 15 &&
+      values.exclusion > 30 &&
+      values.alienation > 15,
+  },
+  {
+    id: 'prc_intangible_perpetual_duration',
+    severity: 'info',
+    message: 'PRC IP rights carry mandatory term limits \u2014 perpetual duration is unavailable.',
+    detail:
+      'Patents expire at 20 yr (invention) or 10 yr (utility/design). Copyright lasts life + 50 yr. Only trademarks are renewable indefinitely (10-yr terms).',
+    condition: (values, context) =>
+      context.jurisdiction === 'prc' &&
+      context.assetType === 'intangibles' &&
+      values.duration > 85,
+  },
 ];
 
 function createDefaultBounds() {
