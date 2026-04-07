@@ -326,6 +326,17 @@ const UI_ENHANCEMENTS = {
         us: "US context keeps adverse possession more operational and fee tail mostly historical, with limited survival in a few states.",
       },
     },
+    modal: {
+      rangeViolation: (dimension) => `Range Violation: ${dimension}`,
+      requiresRange: (estate, dimension, min, max, current) =>
+        `${estate} requires ${dimension} in range [${min}, ${max}]. Current value: ${current}.`,
+      legalReasoning: "Legal Reasoning",
+      caseLaw: "Case Law",
+      consequences: "Consequences",
+      dismiss: "Dismiss",
+      snapTo: (arrangement) => `Snap to ${arrangement}`,
+      fallbackNote: "Detailed legal analysis is pending for this dimension. The range constraint is derived from cross-jurisdictional estate profiling.",
+    },
     termModes: {
       aria: "Terminology lens",
       property: "Property Law",
@@ -384,6 +395,17 @@ const UI_ENHANCEMENTS = {
         us: "美国法语境下，逆权占有仍更具操作性；fee tail 在绝大多数州已历史化，但少数州仍留有残迹。",
       },
     },
+    modal: {
+      rangeViolation: (dimension) => `范围违反：${dimension}`,
+      requiresRange: (estate, dimension, min, max, current) =>
+        `${estate}要求${dimension}在 [${min}, ${max}] 范围内。当前值：${current}。`,
+      legalReasoning: "法律推理",
+      caseLaw: "判例法",
+      consequences: "后果",
+      dismiss: "关闭",
+      snapTo: (arrangement) => `跳转到${arrangement}`,
+      fallbackNote: "该维度的详细法律分析尚待完成。范围约束基于跨法域地产分析得出。",
+    },
     termModes: {
       aria: "术语镜头",
       property: "财产法术语",
@@ -439,6 +461,17 @@ const UI_ENHANCEMENTS = {
         uk: "Der UK-Kontext verengt adverse possession bei registriertem Land nach dem Land Registration Act 2002 deutlich und behandelt fee tail praktisch nur noch historisch.",
         us: "Der US-Kontext hält adverse possession operativer; fee tail ist meist historisch, lebt aber in wenigen Staaten in Restformen fort.",
       },
+    },
+    modal: {
+      rangeViolation: (dimension) => `Bereichsverletzung: ${dimension}`,
+      requiresRange: (estate, dimension, min, max, current) =>
+        `${estate} erfordert ${dimension} im Bereich [${min}, ${max}]. Aktueller Wert: ${current}.`,
+      legalReasoning: "Rechtliche Begründung",
+      caseLaw: "Rechtsprechung",
+      consequences: "Folgen",
+      dismiss: "Schließen",
+      snapTo: (arrangement) => `Zu ${arrangement} wechseln`,
+      fallbackNote: "Die ausführliche rechtliche Analyse für diese Dimension steht noch aus. Die Bereichsbeschränkung basiert auf jurisdiktionsübergreifender Analyse.",
     },
     termModes: {
       aria: "Begriffslinse",
@@ -497,6 +530,17 @@ const UI_ENHANCEMENTS = {
         uk: "UK 文脈では Land Registration Act 2002 以後、登録土地での adverse possession がかなり狭まり、fee tail もほぼ歴史的分類として扱われます。",
         us: "US 文脈では adverse possession がなお実務的で、fee tail は大半の州で歴史化していますが一部には残滓があります。",
       },
+    },
+    modal: {
+      rangeViolation: (dimension) => `範囲違反：${dimension}`,
+      requiresRange: (estate, dimension, min, max, current) =>
+        `${estate}は${dimension}が [${min}, ${max}] の範囲内であることを必要とします。現在値：${current}。`,
+      legalReasoning: "法的推論",
+      caseLaw: "判例法",
+      consequences: "結果",
+      dismiss: "閉じる",
+      snapTo: (arrangement) => `${arrangement}に移行`,
+      fallbackNote: "この次元の詳細な法的分析はまだ準備中です。範囲制約は法域横断的な分析に基づいています。",
     },
     termModes: {
       aria: "術語レンズ",

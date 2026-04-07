@@ -11,6 +11,68 @@
       "exclusion": [90, 100],
       "duration": [95, 100],
       "inheritability": [95, 100]
+    },
+    "dimensionConstraints": {
+      "possession": {
+        "reasoning": {
+          "en": "Fee simple absolute presupposes near-total factual control over the thing. Without strong possession, the holder's claim to full ownership loses its factual foundation — the common law historically treated seisin as the root of title.",
+          "zh": "绝对单纯费要求对物的近乎完全的事实控制。如果没有强占有，持有人对完全所有权的主张将失去事实基础——普通法历史上将seisin（占有）视为产权的根基。",
+          "de": "Fee simple absolute setzt nahezu vollständige tatsächliche Kontrolle über die Sache voraus. Ohne starken Besitz verliert der Anspruch auf volles Eigentum seine tatsächliche Grundlage — das Common Law behandelte seisin historisch als Wurzel des Titels.",
+          "ja": "Fee simple absoluteは物に対するほぼ完全な事実上の支配を前提とします。強い占有がなければ、完全な所有権の主張はその事実的基盤を失います——コモンローは歴史的にseisinを権原の根拠としていました。"
+        },
+        "caseLaw": {
+          "en": "PENDING SCHOLAR REVIEW",
+          "zh": "PENDING SCHOLAR REVIEW",
+          "de": "PENDING SCHOLAR REVIEW",
+          "ja": "PENDING SCHOLAR REVIEW"
+        },
+        "consequences": {
+          "en": "Dropping possession below 90 erodes the factual core of ownership. The configuration drifts toward fee simple defeasible (if other dimensions remain high) or toward a life estate or leasehold (if control is genuinely limited).",
+          "zh": "占有低于90将侵蚀所有权的事实核心。配置将向可撤销���纯费（如果其他维度仍然较高）或向终身地产或租赁权（如果控制确实受限）漂移。",
+          "de": "Sinkt der Besitz unter 90, wird der tatsächliche Kern des Eigentums ausgehöhlt. Die Konfiguration verschiebt sich in Richtung fee simple defeasible (wenn andere Dimensionen hoch bleiben) oder in Richtung life estate oder leasehold (wenn die Kontrolle tatsächlich eingeschränkt ist).",
+          "ja": "占有が90を下回ると、所有権の事実的核心が侵食されます。��成はfee simple defeasible（他の次元��高いままの場合）またはlife estateやleasehold（支配が本当に制限されている場合）に移行します。"
+        }
+      },
+      "alienation": {
+        "reasoning": {
+          "en": "Unrestricted alienability is the market signature of fee simple absolute. The power to transfer the entire estate inter vivos or by will, without requiring anyone's consent, is what distinguishes absolute ownership from conditional or entailed forms.",
+          "zh": "不受限制的可转让性是绝对单纯费的市场标志。无需任何人同意即可在生前或通过遗嘱转让整个地产的权力，正是区分绝对所有权与附条件或限嗣继承形式的关键。",
+          "de": "Uneingeschränkte Veräußerbarkeit ist das Marktkennzeichen des fee simple absolute. Die Befugnis, das gesamte Gut zu Lebzeiten oder durch Testament ohne Zustimmung Dritter zu übertragen, unterscheidet absolutes Eigentum von bedingtem oder gebundenem Eigentum.",
+          "ja": "無制限の譲渡可能性はfee simple absoluteの市場における特徴です。誰の同意も必要とせず、生前または遺言により全財産を移転する権限こそが、絶対的所��権を条件付きまたは限嗣継承形態��区別するものです。"
+        },
+        "caseLaw": {
+          "en": "Quia Emptores (1290): established free alienability of fee simple estates by prohibiting subinfeudation, requiring substitution instead. This statute remains foundational to the principle that fee simple holders may transfer without permission.",
+          "zh": "Quia Emptores法（1290年）：通过禁止分封并要求替代转让，确立了单��费地产的自由可转让性。该法令至今仍是费单纯持有人可无需许可即可转让的基础原则。",
+          "de": "Quia Emptores (1290): Begründete die freie Veräußerbarkeit von Fee-Simple-Gütern durch Verbot der Subinfeudation und Einführung der Substitution. Dieses Statut bleibt grundlegend f��r den Grundsatz, dass Fee-Simple-Inhaber ohne Erlaubnis übertragen dürfen.",
+          "ja": "Quia Emptores（1290年）：下位封建制を禁止し代替を要求することにより、fee simple財産の自由な譲渡可能性を確立しました。この��令は、fee simple保有者が許可なく移転できるという原則の基礎として今も有効です。"
+        },
+        "consequences": {
+          "en": "Restricting alienation below 90 breaks the defining market characteristic of fee simple absolute. The configuration shifts toward fee tail (if inheritability remains high but alienation is blocked) or a trust beneficial interest (if alienation is moderate).",
+          "zh": "将转让限制在90以下打破了绝对单纯费的决定性市场特征。配置将���限嗣继承（如果可继承性仍高但转让被阻止）或信托受益权益（如果转让为中等）转移。",
+          "de": "Wird die Veräußerbarkeit unter 90 eingeschränkt, bricht das definierende Marktkennzeichen des fee simple absolute. Die Konfiguration verschiebt sich in Richtung fee tail (wenn Vererbbarkeit hoch bleibt, aber Veräußerung blockiert ist) oder trust beneficial interest (wenn Veräußerung mäßig ist).",
+          "ja": "譲渡を90未満に制限すると、fee simple absoluteの決定的な市場特性が崩れます。構成はfee tail（相続可能性が高いまま譲渡が阻止される場合）またはtrust beneficial interest（譲渡が中程度の場合）に移行します。"
+        }
+      },
+      "duration": {
+        "reasoning": {
+          "en": "Perpetual or near-perpetual duration is the temporal anchor of fee simple absolute. Unlike life estates or terms of years, fee simple has no internal time limit — it endures indefinitely unless the holder alienates or the line of succession fails.",
+          "zh": "永久或近永久���存续期是绝对单纯费的时间锚点。与终身地产或定期地产不同，绝对单纯费没有内部时间限制——除非持有人转让或继承链断裂，否则无限期存续。",
+          "de": "Ewige oder nahezu ewige Dauer ist der zeitliche Anker des fee simple absolute. Anders als life estates oder Zeitpachten hat das fee simple keine interne Zeitbegrenzung — es besteht unbegrenzt fort, es sei denn, der Inhaber veräußert oder die Erbfolge endet.",
+          "ja": "永久またはほぼ永久の存続期間はfee simple absoluteの時間的基盤です。life estateや定期不動産権とは異なり、fee simpleには内部的な期限がありません——保有者が譲渡するか承継の系統が途絶えない限り、無期限に存続します。"
+        },
+        "caseLaw": {
+          "en": "PENDING SCHOLAR REVIEW",
+          "zh": "PENDING SCHOLAR REVIEW",
+          "de": "PENDING SCHOLAR REVIEW",
+          "ja": "PENDING SCHOLAR REVIEW"
+        },
+        "consequences": {
+          "en": "Reducing duration below 95 introduces a temporal boundary that is structurally incompatible with fee simple absolute. The configuration shifts toward fee simple defeasible (if a conditional time limit) or leasehold (if a fixed term).",
+          "zh": "将存续期降低至95以下引入了与绝对单纯费在结构上不相容的时间边界。配置将向可撤销单纯费（如果是有条件的时间限制）或租赁权（如果是固定期限）转移。",
+          "de": "Wird die Dauer unter 95 reduziert, entsteht eine zeitliche Grenze, die mit fee simple absolute strukturell unvereinbar ist. Die Konfiguration verschiebt sich in Richtung fee simple defeasible (bei bedingter Zeitbegrenzung) oder leasehold (bei fester Laufzeit).",
+          "ja": "存続期間を95未満に減少させると、fee simple absoluteと構造的に両立しない時間的境界が導入されます。構成はfee simple defeasible（条件付きの期限の場合）またはleasehold（固定期間の場合）に移行します。"
+        }
+      }
     }
   },
   {
@@ -39,6 +101,48 @@
       "exclusion": [60, 85],
       "duration": [25, 45],
       "inheritability": [0, 10]
+    },
+    "dimensionConstraints": {
+      "inheritability": {
+        "reasoning": {
+          "en": "A life estate is defined by its non-descendibility: the estate terminates on the death of the measuring life and cannot pass to heirs. This is its structural distinction from fee simple.",
+          "zh": "终身地产的定义特征是不可继承性：地产在被度量生命死亡时终止，不能传给继承人。这是其与单纯费的结构性区别。",
+          "de": "Ein life estate ist durch seine Nichtvererbbarkeit definiert: Das Gut endet mit dem Tod der maßgeblichen Person und kann nicht an Erben übergehen. Dies ist seine strukturelle Unterscheidung vom fee simple.",
+          "ja": "Life estateはその非相続性によって定義されます：その財産は測定対象の生命の死亡時に終了し、相続人に移転することはできません。これがfee simpleとの構造的な区別です。"
+        },
+        "caseLaw": {
+          "en": "PENDING SCHOLAR REVIEW",
+          "zh": "PENDING SCHOLAR REVIEW",
+          "de": "PENDING SCHOLAR REVIEW",
+          "ja": "PENDING SCHOLAR REVIEW"
+        },
+        "consequences": {
+          "en": "Raising inheritability above 10 undermines the defining constraint of a life estate. The configuration shifts toward fee simple defeasible (if other dimensions remain high) or a leasehold with assignment rights.",
+          "zh": "将可继��性提高到10以上会破坏终身地产的定义性约束。配置将向可撤销单纯费（如果其他维度仍高）或具有转让权的租赁权转移。",
+          "de": "Wird die Vererbbarkeit über 10 erhöht, wird die definierende Einschränkung eines life estate untergraben. Die Konfiguration verschiebt sich in Richtung fee simple defeasible (wenn andere Dimensionen hoch bleiben) oder ein leasehold mit Abtretungsrechten.",
+          "ja": "相続可能性を10以上に引き上げると、life estateの定義的制約が損なわれます。構成はfee simple defeasible（他の次元が高いままの場合）または譲渡権付きのleaseholdに移行します。"
+        }
+      },
+      "alienation": {
+        "reasoning": {
+          "en": "A life estate may be assigned, but the assignee receives only the estate pur autre vie — an estate measured by the original life tenant's remaining lifespan. This structural limitation caps the practical transferability of the interest.",
+          "zh": "终身地产可以被转让，但受让人只获得以他人生命为度量的地产——以原始终身租户剩余寿命为期限的地产。这一结构性限制限定了权益的实际可转让性。",
+          "de": "Ein life estate kann abgetreten werden, aber der Erwerber erhält nur ein estate pur autre vie — ein Gut, das am verbleibenden Leben des ursprünglichen Inhabers gemessen wird. Diese strukturelle Einschränkung begrenzt die praktische Übertragbarkeit des Rechts.",
+          "ja": "Life estateは譲渡可能ですが、譲受人はestate pur autre vie（元の終身保有��の残余寿命を基準とする財産）のみを受け取ります。この構造的制限が権益の��際の譲渡可能性を制約します。"
+        },
+        "caseLaw": {
+          "en": "PENDING SCHOLAR REVIEW",
+          "zh": "PENDING SCHOLAR REVIEW",
+          "de": "PENDING SCHOLAR REVIEW",
+          "ja": "PENDING SCHOLAR REVIEW"
+        },
+        "consequences": {
+          "en": "Raising alienation above 30 implies transferability beyond what a life estate structurally supports. The configuration moves toward a leasehold (moderate alienation with term limits) or fee simple defeasible.",
+          "zh": "将转让提高到30以上意味着超出终身地产结构上所支持的���转让性。配置向租赁权（中等转让性加期限限制）或可撤销单纯费移动。",
+          "de": "Wird die Veräußerbarkeit über 30 erhöht, impliziert dies eine Übertragbarkeit jenseits dessen, was ein life estate strukturell unterstützt. Die Konfiguration bewegt sich in Richtung leasehold (mäßige Veräußerbarkeit mit Laufzeitbegrenzung) oder fee simple defeasible.",
+          "ja": "譲渡を30以上に引き上げると、life estateが構造的に支持する以上の譲渡可能性が示唆されます。構成はleasehold（期限付きの中程度の譲渡）またはfee simple defeasibleに移行します。"
+        }
+      }
     }
   },
   {
@@ -53,6 +157,48 @@
       "exclusion": [50, 75],
       "duration": [20, 70],
       "inheritability": [35, 65]
+    },
+    "dimensionConstraints": {
+      "possession": {
+        "reasoning": {
+          "en": "A leasehold grants exclusive possession for the term, but this possession is always derivative — it derives from the landlord’s superior estate and is bounded by the lease covenants. Possession above 85 implies a degree of control that exceeds the tenant’s structural position.",
+          "zh": "租赁权在租期内授予排他性占有，但这种占有始终是派生的——它来源于房东的上位地产并受租赁契约约束。占有超过85意味着超出了承租人结构性地位的控制程度。",
+          "de": "Ein Leasehold gewährt ausschließlichen Besitz für die Laufzeit, aber dieser Besitz ist immer abgeleitet — er leitet sich vom übergeordneten Gut des Vermieters ab und ist durch die Pachtklauseln begrenzt. Besitz über 85 impliziert ein Maß an Kontrolle, das die strukturelle Position des Mieters übersteigt.",
+          "ja": "Leaseholdは期間中の排他的占有を付与しますが、この占有は常に派生的です——賃貸人の上位財産に由来し、賃貸契約の条項によって制限されます。占有が85を超えると、賃借人の構造的地位を超える支配の程度が示唆されます。"
+        },
+        "caseLaw": {
+          "en": "Street v Mountford [1985] AC 809 (HL): established that exclusive possession for a term at a rent creates a tenancy regardless of the label used by the parties. The case confirmed that exclusive possession is the hallmark of a lease, distinguishing it from a mere licence.",
+          "zh": "Street v Mountford [1985] AC 809（上议院）：确立了以租金为对价的定期排他性占有构成租赁关系，不论当事人使用何种名称。该案确认排他性占有是租赁的标志性特征，将其与单纯许可区分开来。",
+          "de": "Street v Mountford [1985] AC 809 (HL): Stellte fest, dass ausschließlicher Besitz für eine Laufzeit gegen Miete unabhängig von der Bezeichnung der Parteien ein Mietverhältnis begründet. Der Fall bestätigte, dass ausschließlicher Besitz das Kennzeichen eines Leasehold ist.",
+          "ja": "Street v Mountford [1985] AC 809（貴族院）：賃料を対価とする期間付き排他的占有は、当事者が使用する名称にかかわらず賃貸借を構成することを確立しました。排他的占有がリースの特徴であることを確認し、単なるライセンスと区別しました。"
+        },
+        "consequences": {
+          "en": "Pushing possession above 85 moves the configuration toward fee simple defeasible or adverse possession. Below 60, the interest loses the exclusive possession that distinguishes a lease from a licence.",
+          "zh": "将占有推高到85以上使配置向可撤销单纯费或逆权占有移动。低于60，权益失去区分租赁与许可的排他性占有。",
+          "de": "Steigt der Besitz über 85, verschiebt sich die Konfiguration in Richtung fee simple defeasible oder adverse possession. Unter 60 verliert das Recht den ausschließlichen Besitz, der ein Leasehold von einer Lizenz unterscheidet.",
+          "ja": "占有を85以上に引き上げると、構成はfee simple defeasibleまたはadverse possessionに移行します。60未満では、リースをライセンスから区別する排他的占有が失われます。"
+        }
+      },
+      "duration": {
+        "reasoning": {
+          "en": "Leasehold duration spans a wide range because leases can run from months to 999 years, but they are always fixed-term or periodic — never perpetual. The upper bound at 70 reflects that even very long leases remain structurally distinct from freehold ownership.",
+          "zh": "租赁存续期跨度很大，因为租赁可以从数月到999年不等，但始终是定期或周期性的——绝非永久。上限70反映了即使是非常长期的租赁在结构上仍与自由保有所有权不同。",
+          "de": "Die Dauer eines Leasehold umfasst eine breite Spanne, da Mietverträge von Monaten bis 999 Jahren reichen können, aber immer befristet oder periodisch sind — niemals ewig. Die Obergrenze bei 70 spiegelt wider, dass selbst sehr lange Mietverträge strukturell vom Freeholder-Eigentum verschieden bleiben.",
+          "ja": "Leaseholdの存続期間は幅広い範囲にわたります。リースは数ヶ月から999年まであり得ますが、常に定期または周期的であり、永久ではありません。上限70は、非常に長期のリースでもフリーホールド所有権と構造的に異なることを反映しています。"
+        },
+        "caseLaw": {
+          "en": "PENDING SCHOLAR REVIEW",
+          "zh": "PENDING SCHOLAR REVIEW",
+          "de": "PENDING SCHOLAR REVIEW",
+          "ja": "PENDING SCHOLAR REVIEW"
+        },
+        "consequences": {
+          "en": "Duration above 70 makes the interest resemble a superficies right (Erbbaurecht) or a fee simple defeasible more than a standard lease. Duration below 20 suggests a licence or a very short periodic tenancy.",
+          "zh": "存续期超过70使权益更像地上权（Erbbaurecht）或可撤销单纯费，而非标准租赁。存续期低于20则暗示许可或非常短的周期性租赁。",
+          "de": "Eine Dauer über 70 lässt das Recht eher einem Erbbaurecht oder fee simple defeasible ähneln als einem Standardmietvertrag. Eine Dauer unter 20 deutet auf eine Lizenz oder ein sehr kurzes periodisches Mietverhältnis hin.",
+          "ja": "存続期間が70を超えると、その権益は標準的なリースよりも地上権（Erbbaurecht）またはfee simple defeasibleに類似します。20未満の場合、ライセンスまたは非常に短い周期的賃貸借が示唆されます。"
+        }
+      }
     }
   },
   {

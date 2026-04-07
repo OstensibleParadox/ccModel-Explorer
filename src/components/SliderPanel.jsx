@@ -65,6 +65,7 @@ export default function SliderPanel({
   onReset,
   arrangementViolations = [],
   closestAlternative = null,
+  onOpenViolationModal,
   ui,
   mode = 'property',
   aiFrameworks = [],
@@ -409,6 +410,15 @@ export default function SliderPanel({
                   <span className="violation-message">
                     {formatViolationMessage(violation)}
                   </span>
+                  {onOpenViolationModal && (
+                    <button
+                      type="button"
+                      className="violation-why-button"
+                      onClick={() => onOpenViolationModal(key)}
+                    >
+                      {ui.sliderPanel.whyButton}
+                    </button>
+                  )}
                 </div>
               )}
 

@@ -10,6 +10,7 @@ import SliderPanel from './components/SliderPanel';
 import DualTrackView from './components/DualTrackView';
 import AIFrameworkPanel from './components/AIFrameworkPanel';
 import ViolationAlert from './components/ViolationAlert';
+import ArrangementViolationModal from './components/ArrangementViolationModal';
 import {
   DEFAULT_LOCALE,
   LOCALE_STORAGE_KEY,
@@ -106,6 +107,24 @@ function App() {
     useState(null);
   const [activeCivilJurisdiction, setActiveCivilJurisdiction] = useState(null);
   const [activeAssetType, setActiveAssetType] = useState(null);
+  const [violationModalDimension, setViolationModalDimension] = useState(null);
+
+  const violationModalData = useMemo(() => {
+    if (!violationModalDimension || !lockedArrangement) return null;
+    return arrangementViolations.find(
+      (v) => v.dimension === violationModalDimension
+    ) ?? null;
+  }, [violationModalDimension, lockedArrangement, arrangementViolations]);
+
+  function handleSnapTo(alternative) {
+    const midpoints =
+      lockedArrangement?.track === 'common'
+        ? getCommonLawMidpointsWithContext(alternative.estate, activeCommonLawJurisdiction)
+        : getMidpointsWithContext(alternative.estate, activeCivilJurisdiction, activeAssetType);
+    handleSliderChange(midpoints);
+    setLockedArrangement(null);
+    setSelectedPreset(null);
+  }
 
   const ui = useMemo(() => getUiCopy(locale), [locale]);
   const propertySliderMeta = useMemo(() => getSliderMeta(locale), [locale]);
@@ -457,6 +476,7 @@ function App() {
           onReset={handleReset}
           arrangementViolations={mode === 'property' ? arrangementViolations : []}
           closestAlternative={closestAlternative}
+          onOpenViolationModal={setViolationModalDimension}
           ui={ui}
           mode={mode}
           aiFrameworks={localizedAIFrameworks}
@@ -464,6 +484,19 @@ function App() {
       </section>
 
       <ViolationAlert violations={toastViolations} />
+
+      <ArrangementViolationModal
+        open={violationModalData != null}
+        onClose={() => setViolationModalDimension(null)}
+        dimension={violationModalDimension}
+        violation={violationModalData}
+        lockedArrangement={lockedArrangement}
+        closestAlternative={closestAlternative}
+        onSnapTo={handleSnapTo}
+        locale={locale}
+        ui={ui}
+        sliderMeta={sliderMeta}
+      />
 
       <main className="app-main">
         {mode === 'property' ? (
