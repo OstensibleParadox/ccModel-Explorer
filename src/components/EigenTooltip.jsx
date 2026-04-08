@@ -7,7 +7,17 @@ export default function EigenTooltip({
   distance,
   categoryLabel,
   distanceLabel,
+  featuresLabel,
+  features,
 }) {
+  function formatFeatureValue(value) {
+    if (Math.abs(value - Math.round(value)) < 1e-6) {
+      return String(Math.round(value));
+    }
+
+    return value.toFixed(1);
+  }
+
   return (
     <div
       className="eigen-tooltip"
@@ -30,6 +40,23 @@ export default function EigenTooltip({
               {distanceLabel}: {distance.toFixed(1)}
             </span>
           </div>
+          {features.length > 0 ? (
+            <div className="eigen-tooltip-features">
+              <div className="eigen-tooltip-section-label">{featuresLabel}</div>
+              <div className="eigen-tooltip-feature-grid">
+                {features.map((feature) => (
+                  <div key={feature.key} className="eigen-tooltip-feature">
+                    <span className="eigen-tooltip-feature-label">
+                      {feature.label}
+                    </span>
+                    <span className="eigen-tooltip-feature-value">
+                      {formatFeatureValue(feature.value)}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ) : null}
         </>
       ) : null}
     </div>
