@@ -521,6 +521,7 @@ function App() {
         <EigenVisualization
           sliderValues={sliderValues}
           allEntities={allEntitiesForPCA}
+          mode={mode}
           locale={locale}
           ui={ui}
         />

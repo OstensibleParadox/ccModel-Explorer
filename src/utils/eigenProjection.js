@@ -1,6 +1,7 @@
 import { computeGlobalPCA } from './eigenEngine.js';
+import { cosineSimilarity } from './isomorphismEngine.js';
 
-const DIMENSIONS = [
+export const DIMENSIONS = [
   'possession',
   'use',
   'income',
@@ -11,13 +12,39 @@ const DIMENSIONS = [
 ];
 
 export const OVERLAP_THRESHOLD = 15;
+export const NORM_HALF_RANGE = 50;
 
 function midpoint([min, max]) {
   return (min + max) / 2;
 }
 
-function entityMidpointVector(entity) {
+export function entityMidpointVector(entity) {
   return DIMENSIONS.map((key) => midpoint(entity.ranges[key]));
+}
+
+export function normalizeCoords(coords, scaleFactors) {
+  return coords.map((value, index) => value * scaleFactors[index]);
+}
+
+export function computeScaleFactors(projectedEntities) {
+  const halfRanges = [0, 1, 2].map((axis) => {
+    const maxAbs = projectedEntities.reduce(
+      (maximum, { coords }) => Math.max(maximum, Math.abs(coords[axis])),
+      1e-6
+    );
+
+    return maxAbs * 1.5;
+  });
+
+  return halfRanges.map((halfRange) => NORM_HALF_RANGE / halfRange);
+}
+
+export function clampUserDisplayCoords(normalized) {
+  const displayLimit = NORM_HALF_RANGE * 1.1;
+
+  return normalized.map((value) =>
+    Math.max(-displayLimit, Math.min(displayLimit, value))
+  );
 }
 
 /**
@@ -106,4 +133,32 @@ export function findOverlaps(
  */
 export function sliderValuesToArray(sliderValues) {
   return DIMENSIONS.map((key) => sliderValues[key]);
+}
+
+export function computeInspectorReport(userSliderArray, entity, basis) {
+  const entityMid = entityMidpointVector(entity);
+  const userCentered = userSliderArray.map((value, index) => value - basis.mean[index]);
+  const entityCentered = entityMid.map((value, index) => value - basis.mean[index]);
+  const cosine7D = cosineSimilarity(userCentered, entityCentered);
+
+  const userCoords = projectPoint(userSliderArray, basis);
+  const entityCoords = projectPoint(entityMid, basis);
+  const pcDeltas = basis.pcs.map((pc, index) => ({
+    component: pc.component,
+    delta: userCoords[index] - entityCoords[index],
+    explainedVarianceRatio: pc.explainedVarianceRatio,
+  }));
+
+  const totalExplained = basis.pcs.reduce(
+    (sum, pc) => sum + pc.explainedVarianceRatio,
+    0
+  );
+  const residual = Math.max(0, 1 - totalExplained);
+
+  return {
+    cosine7D,
+    pcDeltas,
+    totalExplained,
+    residual,
+  };
 }
