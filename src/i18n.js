@@ -363,6 +363,21 @@ const UI_ENHANCEMENTS = {
         ai: "AI Framework",
         user: "Your Config",
       },
+      tooltip: {
+        distance: "Distance",
+      },
+      inspector: {
+        overlapRule: "Overlap rule",
+        distanceThreshold: "Distance / threshold",
+        pcSpaceBreakdown: "PC-space breakdown",
+        topVariance: (percentage) => `Top 3 PCs: ${percentage}% of variance`,
+        discardedVariance: (percentage) =>
+          `Discarded variance (PC4-PC7): ${percentage}%`,
+        residualWarning: (capturedPercentage) =>
+          `3D projection captures only ${capturedPercentage}% of structural variance; matches may not reflect higher-dimensional differences.`,
+        cosine7D: "Full 7D cosine similarity",
+        cosineSecondary: "descriptive, not the trigger mechanism",
+      },
     },
     aiMode: {
       heroKicker: "AI Governance — Constraint Cascade",
@@ -449,6 +464,21 @@ const UI_ENHANCEMENTS = {
         ai: "AI治理框架",
         user: "当前配置",
       },
+      tooltip: {
+        distance: "距离",
+      },
+      inspector: {
+        overlapRule: "重叠规则",
+        distanceThreshold: "距离 / 阈值",
+        pcSpaceBreakdown: "主成分空间拆解",
+        topVariance: (percentage) => `前三个主成分：解释 ${percentage}% 方差`,
+        discardedVariance: (percentage) =>
+          `被舍弃的方差（PC4-PC7）：${percentage}%`,
+        residualWarning: (capturedPercentage) =>
+          `3D 投影仅捕获了 ${capturedPercentage}% 的结构方差；匹配结果可能无法反映更高维度的差异。`,
+        cosine7D: "完整 7D 余弦相似度",
+        cosineSecondary: "描述性指标，不是触发机制",
+      },
     },
     aiMode: {
       heroKicker: "AI治理：约束级联",
@@ -532,6 +562,21 @@ const UI_ENHANCEMENTS = {
         civilLaw: "Zivilrecht",
         ai: "AI-Framework",
         user: "Ihre Konfiguration",
+      },
+      tooltip: {
+        distance: "Distanz",
+      },
+      inspector: {
+        overlapRule: "Überlappungsregel",
+        distanceThreshold: "Distanz / Schwelle",
+        pcSpaceBreakdown: "Aufschlüsselung im PC-Raum",
+        topVariance: (percentage) => `Top-3-PCs: ${percentage}% der Varianz`,
+        discardedVariance: (percentage) =>
+          `Verworfene Varianz (PC4-PC7): ${percentage}%`,
+        residualWarning: (capturedPercentage) =>
+          `Die 3D-Projektion erfasst nur ${capturedPercentage}% der strukturellen Varianz; Treffer spiegeln höherdimensionale Unterschiede möglicherweise nicht wider.`,
+        cosine7D: "Kosinusähnlichkeit im vollständigen 7D-Raum",
+        cosineSecondary: "deskriptiv, nicht der Auslösemechanismus",
       },
     },
     aiMode: {
@@ -618,6 +663,21 @@ const UI_ENHANCEMENTS = {
         civilLaw: "大陸法",
         ai: "AIフレームワーク",
         user: "現在の構成",
+      },
+      tooltip: {
+        distance: "距離",
+      },
+      inspector: {
+        overlapRule: "重なり判定ルール",
+        distanceThreshold: "距離 / しきい値",
+        pcSpaceBreakdown: "PC 空間での内訳",
+        topVariance: (percentage) => `上位 3 主成分: 分散の ${percentage}%`,
+        discardedVariance: (percentage) =>
+          `切り捨てた分散（PC4-PC7）: ${percentage}%`,
+        residualWarning: (capturedPercentage) =>
+          `3D 投影が捉えている構造分散は ${capturedPercentage}% のみであり、高次元での差異を一致結果が反映しない可能性があります。`,
+        cosine7D: "完全な 7D コサイン類似度",
+        cosineSecondary: "説明用であり、判定トリガーではありません",
       },
     },
     aiMode: {

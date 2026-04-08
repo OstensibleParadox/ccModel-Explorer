@@ -25,7 +25,7 @@ function magnitude(vector) {
   return Math.sqrt(dot(vector, vector));
 }
 
-function cosineSimilarity(left, right) {
+export function cosineSimilarity(left, right) {
   const denominator = magnitude(left) * magnitude(right);
 
   if (denominator === 0) {

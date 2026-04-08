@@ -5,9 +5,14 @@ import civilLawEstates from '../data/civilLawEstates.json' with { type: 'json' }
 import aiFrameworks from '../data/aiFrameworks.json' with { type: 'json' };
 import {
   buildProjectionBasis,
+  clampUserDisplayCoords,
+  computeInspectorReport,
+  computeScaleFactors,
+  entityMidpointVector,
   projectPoint,
   projectAllEntities,
   findOverlaps,
+  normalizeCoords,
   sliderValuesToArray,
   OVERLAP_THRESHOLD,
 } from './eigenProjection.js';
@@ -214,5 +219,84 @@ describe('OVERLAP_THRESHOLD', () => {
   it('is a positive number', () => {
     assert.ok(OVERLAP_THRESHOLD > 0);
     assert.ok(Number.isFinite(OVERLAP_THRESHOLD));
+  });
+});
+
+describe('clamping invariance', () => {
+  const basis = buildProjectionBasis(ALL_ENTITIES);
+  const projected = projectAllEntities(ALL_ENTITIES, basis);
+  const scaleFactors = computeScaleFactors(projected);
+
+  it('display clamping does not change overlap results', () => {
+    const extreme = {
+      possession: 100,
+      use: 0,
+      income: 100,
+      alienation: 0,
+      exclusion: 100,
+      duration: 0,
+      inheritability: 100,
+    };
+    const userCoords = projectPoint(sliderValuesToArray(extreme), basis);
+    const overlapsRaw = findOverlaps(userCoords, projected, OVERLAP_THRESHOLD);
+    const userNormalized = normalizeCoords(userCoords, scaleFactors);
+    const displayCoords = clampUserDisplayCoords(userNormalized);
+    const overlapsAfter = findOverlaps(userCoords, projected, OVERLAP_THRESHOLD);
+
+    assert.equal(displayCoords.length, 3);
+    assert.deepEqual(
+      overlapsAfter.map((overlap) => overlap.entity.id),
+      overlapsRaw.map((overlap) => overlap.entity.id),
+      'overlap detection must operate on un-clamped projected coordinates'
+    );
+  });
+});
+
+describe('PC-space distance reconstruction', () => {
+  it('distance from ΔPC components matches raw 3D distance', () => {
+    const basis = buildProjectionBasis(ALL_ENTITIES);
+    const entity = ALL_ENTITIES.find((candidate) => candidate.id === 'fee_simple_absolute');
+    const userVec = [90, 80, 70, 60, 50, 40, 30];
+
+    assert.ok(entity, 'fee_simple_absolute must exist');
+
+    const userCoords = projectPoint(userVec, basis);
+    const entityCoords = projectPoint(entityMidpointVector(entity), basis);
+    const dist3D = Math.sqrt(
+      userCoords.reduce(
+        (sum, value, index) => sum + (value - entityCoords[index]) ** 2,
+        0
+      )
+    );
+
+    const report = computeInspectorReport(userVec, entity, basis);
+    const distFromDeltas = Math.sqrt(
+      report.pcDeltas.reduce((sum, pcDelta) => sum + pcDelta.delta ** 2, 0)
+    );
+
+    assert.ok(Math.abs(dist3D - distFromDeltas) < 1e-10);
+  });
+});
+
+describe('residual variance', () => {
+  it('residual equals 1 minus top-3 explained variance sum', () => {
+    const basis = buildProjectionBasis(ALL_ENTITIES);
+    const entity = ALL_ENTITIES.find((candidate) => candidate.id === 'fee_simple_absolute');
+    const totalExplained = basis.pcs.reduce(
+      (sum, pc) => sum + pc.explainedVarianceRatio,
+      0
+    );
+    
+    assert.ok(entity, 'fee_simple_absolute must exist');
+
+    const report = computeInspectorReport(
+      [90, 80, 70, 60, 50, 40, 30],
+      entity,
+      basis
+    );
+
+    assert.ok(totalExplained > 0 && totalExplained <= 1);
+    assert.ok(1 - totalExplained >= 0);
+    assert.ok(Math.abs(report.residual - (1 - totalExplained)) < 1e-10);
   });
 });

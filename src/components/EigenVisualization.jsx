@@ -1,12 +1,18 @@
-import { useEffect, useMemo, useRef, useCallback } from 'react';
+import { useEffect, useMemo, useRef, useCallback, useState } from 'react';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import EigenInspector from './EigenInspector';
+import EigenTooltip from './EigenTooltip';
 import {
   buildProjectionBasis,
+  clampUserDisplayCoords,
+  computeScaleFactors,
   projectPoint,
   projectAllEntities,
   findOverlaps,
+  normalizeCoords,
   sliderValuesToArray,
+  NORM_HALF_RANGE,
   OVERLAP_THRESHOLD,
 } from '../utils/eigenProjection.js';
 
@@ -20,21 +26,23 @@ const COLORS = {
 const SPHERE_RADIUS = 2;
 const USER_SPHERE_RADIUS = 2.5;
 const AXIS_LENGTH = 120;
-const NORM_HALF_RANGE = 50;
 
-function normalizeCoords(coords, scaleFactors) {
-  return coords.map((v, i) => v * scaleFactors[i]);
+function isRelevantCategory(category, mode) {
+  if (mode === 'ai') {
+    return category === 'ai';
+  }
+
+  return category === 'commonLaw' || category === 'civilLaw';
 }
 
-function computeScaleFactors(projectedEntities) {
-  const halfRanges = [0, 1, 2].map((axis) => {
-    const maxAbs = projectedEntities.reduce(
-      (mx, { coords }) => Math.max(mx, Math.abs(coords[axis])),
-      1e-6
-    );
-    return maxAbs;
-  });
-  return halfRanges.map((hr) => NORM_HALF_RANGE / hr);
+function disposeOverlapLines(lines, scene) {
+  for (const { line, geometry, material } of lines) {
+    if (scene) {
+      scene.remove(line);
+    }
+    geometry.dispose();
+    material.dispose();
+  }
 }
 
 function createAxisLabel(text, position) {
@@ -56,17 +64,27 @@ function createAxisLabel(text, position) {
   return { sprite, texture, material };
 }
 
-export default function EigenVisualization({ sliderValues, allEntities, locale, ui }) {
+export default function EigenVisualization({
+  sliderValues,
+  allEntities,
+  mode,
+  locale,
+  ui,
+}) {
   const containerRef = useRef(null);
   const canvasRef = useRef(null);
   const sceneRef = useRef(null);
   const rendererRef = useRef(null);
   const controlsRef = useRef(null);
+  const cameraRef = useRef(null);
   const animFrameRef = useRef(null);
   const clockRef = useRef(null);
   const userMeshRef = useRef(null);
+  const userCoordsRef = useRef([0, 0, 0]);
   const entityMeshMapRef = useRef(new Map());
   const highlightSetRef = useRef(new Set());
+  const overlapLinesRef = useRef([]);
+  const [hoveredEntity, setHoveredEntity] = useState(null);
 
   // --- PCA basis (static, computed once) ---
   const basis = useMemo(
@@ -106,6 +124,10 @@ export default function EigenVisualization({ sliderValues, allEntities, locale, 
     [userCoords, projected]
   );
 
+  useEffect(() => {
+    userCoordsRef.current = userCoords;
+  }, [userCoords]);
+
   // --- Scene setup (one-time, refs only in animation loop) ---
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -119,6 +141,7 @@ export default function EigenVisualization({ sliderValues, allEntities, locale, 
     const camera = new THREE.PerspectiveCamera(60, 2, 0.1, 2000);
     camera.position.set(70, 50, 70);
     camera.lookAt(0, 0, 0);
+    cameraRef.current = camera;
 
     const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
@@ -136,6 +159,8 @@ export default function EigenVisualization({ sliderValues, allEntities, locale, 
 
     const clock = new THREE.Clock();
     clockRef.current = clock;
+    const raycaster = new THREE.Raycaster();
+    const mouse = new THREE.Vector2();
 
     function handleResize() {
       const { clientWidth: w, clientHeight: h } = container;
@@ -148,6 +173,82 @@ export default function EigenVisualization({ sliderValues, allEntities, locale, 
     const resizeObserver = new ResizeObserver(handleResize);
     resizeObserver.observe(container);
     handleResize();
+
+    function clearHover() {
+      setHoveredEntity((previous) => (previous == null ? previous : null));
+    }
+
+    function handleMouseMove(event) {
+      const rect = canvas.getBoundingClientRect();
+
+      if (rect.width === 0 || rect.height === 0) {
+        clearHover();
+        return;
+      }
+
+      mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+      mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+      raycaster.setFromCamera(mouse, camera);
+
+      const intersections = raycaster.intersectObjects(
+        [...entityMeshMapRef.current.values()],
+        false
+      );
+
+      if (intersections.length === 0) {
+        clearHover();
+        return;
+      }
+
+      const intersection = intersections[0];
+      const mesh = intersection.object;
+      const {
+        entity,
+        category,
+        projectedCoords,
+      } = mesh.userData;
+
+      if (!entity || !projectedCoords) {
+        clearHover();
+        return;
+      }
+
+      const anchorPoint = intersection.point.clone().project(camera);
+      const screenX = ((anchorPoint.x + 1) / 2) * container.clientWidth;
+      const screenY = ((-anchorPoint.y + 1) / 2) * container.clientHeight;
+      const distance = Math.sqrt(
+        userCoordsRef.current.reduce(
+          (sum, value, index) =>
+            sum + (value - projectedCoords[index]) ** 2,
+          0
+        )
+      );
+
+      setHoveredEntity((previous) => {
+        const roundedX = Math.round(screenX);
+        const roundedY = Math.round(screenY);
+        const roundedDistance = Number(distance.toFixed(1));
+
+        if (
+          previous &&
+          previous.id === entity.id &&
+          Math.round(previous.screenX) === roundedX &&
+          Math.round(previous.screenY) === roundedY &&
+          previous.distance === roundedDistance
+        ) {
+          return previous;
+        }
+
+        return {
+          id: entity.id,
+          entity,
+          category,
+          screenX,
+          screenY,
+          distance: roundedDistance,
+        };
+      });
+    }
 
     function animate() {
       animFrameRef.current = requestAnimationFrame(animate);
@@ -167,13 +268,22 @@ export default function EigenVisualization({ sliderValues, allEntities, locale, 
     }
     animate();
 
+    canvas.addEventListener('mousemove', handleMouseMove);
+    canvas.addEventListener('mouseleave', clearHover);
+
     return () => {
+      canvas.removeEventListener('mousemove', handleMouseMove);
+      canvas.removeEventListener('mouseleave', clearHover);
       cancelAnimationFrame(animFrameRef.current);
       resizeObserver.disconnect();
       controls.dispose();
+      disposeOverlapLines(overlapLinesRef.current, scene);
+      overlapLinesRef.current = [];
       renderer.dispose();
       renderer.forceContextLoss();
+      cameraRef.current = null;
       sceneRef.current = null;
+      setHoveredEntity(null);
     };
   }, []);
 
@@ -181,6 +291,7 @@ export default function EigenVisualization({ sliderValues, allEntities, locale, 
   useEffect(() => {
     const scene = sceneRef.current;
     if (!scene || projected.length === 0) return;
+    const entityMeshMap = entityMeshMapRef.current;
 
     const addedObjects = [];
     const localDisposables = [];
@@ -205,9 +316,14 @@ export default function EigenVisualization({ sliderValues, allEntities, locale, 
       const mesh = new THREE.Mesh(sphereGeo, material);
       const norm = normalizeCoords(coords, scaleFactors);
       mesh.position.set(norm[0], norm[1], norm[2]);
-      mesh.userData = { entityId: entity.id, category: entity._category };
+      mesh.userData = {
+        entityId: entity.id,
+        category: entity._category,
+        entity,
+        projectedCoords: coords,
+      };
       trackAdd(mesh);
-      entityMeshMapRef.current.set(entity.id, mesh);
+      entityMeshMap.set(entity.id, mesh);
 
       if (entity.special) {
         const sourceGeo = new THREE.SphereGeometry(SPHERE_RADIUS * 1.5, 12, 12);
@@ -262,7 +378,10 @@ export default function EigenVisualization({ sliderValues, allEntities, locale, 
 
     // User sphere
     const userGeo = new THREE.SphereGeometry(USER_SPHERE_RADIUS, 16, 16);
-    const userMat = new THREE.MeshStandardMaterial({ color: COLORS.user });
+    const userMat = new THREE.MeshStandardMaterial({
+      color: COLORS.user,
+      transparent: true,
+    });
     const userMesh = new THREE.Mesh(userGeo, userMat);
     trackAdd(userMesh);
     userMeshRef.current = userMesh;
@@ -275,20 +394,85 @@ export default function EigenVisualization({ sliderValues, allEntities, locale, 
       for (const d of localDisposables) {
         if (d.dispose) d.dispose();
       }
-      entityMeshMapRef.current.clear();
+      disposeOverlapLines(overlapLinesRef.current, scene);
+      overlapLinesRef.current = [];
+      entityMeshMap.clear();
       userMeshRef.current = null;
+      setHoveredEntity(null);
     };
   }, [projected, scaleFactors, basis]);
+
+  // --- Mode-specific entity dimming ---
+  useEffect(() => {
+    for (const [, mesh] of entityMeshMapRef.current) {
+      mesh.material.setValues({
+        opacity: isRelevantCategory(mesh.userData.category, mode) ? 0.8 : 0.15,
+      });
+    }
+  }, [mode, projected]);
 
   // --- Update user sphere position ---
   useEffect(() => {
     if (!userMeshRef.current) return;
+
+    const displayCoords = clampUserDisplayCoords(userNormalized);
     userMeshRef.current.position.set(
-      userNormalized[0],
-      userNormalized[1],
-      userNormalized[2]
+      displayCoords[0],
+      displayCoords[1],
+      displayCoords[2]
     );
+    const wasClamped = displayCoords.some(
+      (value, index) => value !== userNormalized[index]
+    );
+    userMeshRef.current.material.opacity = wasClamped ? 0.6 : 1;
   }, [userNormalized]);
+
+  // --- Recompute tooltip position/distance when the user point changes ---
+  useEffect(() => {
+    if (!hoveredEntity?.id || !cameraRef.current || !containerRef.current) {
+      return;
+    }
+
+    const mesh = entityMeshMapRef.current.get(hoveredEntity.id);
+
+    if (!mesh) {
+      return;
+    }
+
+    const projectedPoint = mesh.position.clone().project(cameraRef.current);
+    const screenX = ((projectedPoint.x + 1) / 2) * containerRef.current.clientWidth;
+    const screenY = ((-projectedPoint.y + 1) / 2) * containerRef.current.clientHeight;
+    const distance = Math.sqrt(
+      userCoords.reduce(
+        (sum, value, index) =>
+          sum + (value - mesh.userData.projectedCoords[index]) ** 2,
+        0
+      )
+    );
+
+    setHoveredEntity((previous) => {
+      if (!previous || previous.id !== hoveredEntity.id) {
+        return previous;
+      }
+
+      const roundedDistance = Number(distance.toFixed(1));
+
+      if (
+        Math.round(previous.screenX) === Math.round(screenX) &&
+        Math.round(previous.screenY) === Math.round(screenY) &&
+        previous.distance === roundedDistance
+      ) {
+        return previous;
+      }
+
+      return {
+        ...previous,
+        screenX,
+        screenY,
+        distance: roundedDistance,
+      };
+    });
+  }, [hoveredEntity?.id, userCoords]);
 
   // --- Highlight overlapping entities ---
   useEffect(() => {
@@ -317,6 +501,53 @@ export default function EigenVisualization({ sliderValues, allEntities, locale, 
     }
   }, [overlaps]);
 
+  // --- Draw lines between the user point and overlapping entities ---
+  useEffect(() => {
+    const scene = sceneRef.current;
+
+    if (!scene) {
+      return undefined;
+    }
+
+    disposeOverlapLines(overlapLinesRef.current, scene);
+    overlapLinesRef.current = [];
+
+    if (!userMeshRef.current || overlaps.length === 0) {
+      return undefined;
+    }
+
+    const userPosition = userMeshRef.current.position;
+
+    for (const { entity } of overlaps) {
+      const targetMesh = entityMeshMapRef.current.get(entity.id);
+
+      if (!targetMesh) {
+        continue;
+      }
+
+      const geometry = new THREE.BufferGeometry().setFromPoints([
+        userPosition.clone(),
+        targetMesh.position.clone(),
+      ]);
+      const material = new THREE.LineDashedMaterial({
+        color: COLORS.user,
+        dashSize: 2,
+        gapSize: 1,
+        transparent: true,
+        opacity: 0.6,
+      });
+      const line = new THREE.Line(geometry, material);
+      line.computeLineDistances();
+      scene.add(line);
+      overlapLinesRef.current.push({ line, geometry, material });
+    }
+
+    return () => {
+      disposeOverlapLines(overlapLinesRef.current, scene);
+      overlapLinesRef.current = [];
+    };
+  }, [overlaps]);
+
   const resolveEntityName = useCallback(
     (entity) => {
       if (entity.names) {
@@ -327,12 +558,15 @@ export default function EigenVisualization({ sliderValues, allEntities, locale, 
     [locale]
   );
 
-  const legendLabels = ui?.eigenspacePanel?.legend ?? {
-    commonLaw: 'Common Law',
-    civilLaw: 'Civil Law',
-    ai: 'AI Framework',
-    user: 'Your Config',
-  };
+  const legendLabels = useMemo(
+    () => ui?.eigenspacePanel?.legend ?? {
+      commonLaw: 'Common Law',
+      civilLaw: 'Civil Law',
+      ai: 'AI Framework',
+      user: 'Your Config',
+    },
+    [ui]
+  );
 
   const categoryLabel = useCallback(
     (cat) => legendLabels[cat] ?? cat,
@@ -365,42 +599,31 @@ export default function EigenVisualization({ sliderValues, allEntities, locale, 
             </span>
           ))}
         </div>
+
+        <EigenTooltip
+          visible={hoveredEntity != null}
+          x={hoveredEntity?.screenX ?? 0}
+          y={hoveredEntity?.screenY ?? 0}
+          name={
+            hoveredEntity?.entity
+              ? resolveEntityName(hoveredEntity.entity)
+              : ''
+          }
+          category={hoveredEntity?.category ?? ''}
+          categoryLabel={categoryLabel}
+          distance={hoveredEntity?.distance ?? 0}
+          distanceLabel={ui?.eigenspacePanel?.tooltip?.distance ?? 'Distance'}
+        />
       </div>
 
-      <div
-        className={`eigen-info-panel ${overlaps.length > 0 ? 'eigen-info-panel--active' : ''}`}
-      >
-        {overlaps.length > 0 ? (
-          <>
-            <p className="eigen-iso-label">
-              {ui?.eigenspacePanel?.isomorphicTo ??
-                'Your configuration is isomorphic to'}:
-            </p>
-            <ul className="eigen-match-list">
-              {overlaps.map(({ entity, distance }) => (
-                <li key={entity.id} className="eigen-match-item">
-                  <span className="eigen-match-name">
-                    {resolveEntityName(entity)}
-                  </span>
-                  <span
-                    className={`eigen-match-category eigen-match-category--${entity._category}`}
-                  >
-                    {categoryLabel(entity._category)}
-                  </span>
-                  <span className="eigen-match-distance">
-                    d={distance.toFixed(1)}
-                  </span>
-                </li>
-              ))}
-            </ul>
-          </>
-        ) : (
-          <p className="eigen-no-match">
-            {ui?.eigenspacePanel?.noMatch ??
-              'Move sliders to explore the eigenspace'}
-          </p>
-        )}
-      </div>
+      <EigenInspector
+        overlaps={overlaps}
+        sliderValues={sliderValues}
+        basis={basis}
+        ui={ui}
+        resolveEntityName={resolveEntityName}
+        categoryLabel={categoryLabel}
+      />
     </section>
   );
 }
