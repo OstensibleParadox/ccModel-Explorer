@@ -7,11 +7,9 @@ import {
   buildProjectionBasis,
   clampUserDisplayCoords,
   computeScaleFactors,
-  entityMidpointVector,
   projectPoint,
   projectAllEntities,
   findOverlaps,
-  DIMENSIONS,
   normalizeCoords,
   sliderValuesToArray,
   NORM_HALF_RANGE,
@@ -595,38 +593,6 @@ export default function EigenVisualization({
     [legendLabels]
   );
 
-  const tooltipCopy = useMemo(
-    () => ui?.eigenspacePanel?.tooltip ?? {},
-    [ui]
-  );
-
-  const tooltipDimensionLabels = useMemo(
-    () => tooltipCopy.dimensions ?? {
-      possession: 'Possession',
-      use: 'Use',
-      income: 'Income',
-      alienation: 'Alienation',
-      exclusion: 'Exclusion',
-      duration: 'Duration',
-      inheritability: 'Inheritability',
-    },
-    [tooltipCopy]
-  );
-
-  const hoveredFeatures = useMemo(() => {
-    if (!hoveredEntity?.entity) {
-      return [];
-    }
-
-    const midpointVector = entityMidpointVector(hoveredEntity.entity);
-
-    return DIMENSIONS.map((key, index) => ({
-      key,
-      label: tooltipDimensionLabels[key] ?? key,
-      value: midpointVector[index],
-    }));
-  }, [hoveredEntity, tooltipDimensionLabels]);
-
   return (
     <section className="panel-eigenspace">
       <div className="eigen-header">
@@ -666,9 +632,7 @@ export default function EigenVisualization({
           category={hoveredEntity?.category ?? ''}
           categoryLabel={categoryLabel}
           distance={hoveredEntity?.distance ?? 0}
-          distanceLabel={tooltipCopy.distance ?? 'Distance'}
-          featuresLabel={tooltipCopy.features ?? 'Features'}
-          features={hoveredFeatures}
+          distanceLabel={ui?.eigenspacePanel?.tooltip?.distance ?? 'Distance'}
         />
       </div>
 

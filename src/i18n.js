@@ -365,16 +365,6 @@ const UI_ENHANCEMENTS = {
       },
       tooltip: {
         distance: "Distance",
-        features: "Features",
-        dimensions: {
-          possession: "Possession",
-          use: "Use",
-          income: "Income",
-          alienation: "Alienation",
-          exclusion: "Exclusion",
-          duration: "Duration",
-          inheritability: "Inheritability",
-        },
       },
       inspector: {
         overlapRule: "Overlap rule",
@@ -476,16 +466,6 @@ const UI_ENHANCEMENTS = {
       },
       tooltip: {
         distance: "距离",
-        features: "特征",
-        dimensions: {
-          possession: "占有",
-          use: "使用",
-          income: "收益",
-          alienation: "处分",
-          exclusion: "排他",
-          duration: "存续",
-          inheritability: "继承",
-        },
       },
       inspector: {
         overlapRule: "重叠规则",
@@ -585,16 +565,6 @@ const UI_ENHANCEMENTS = {
       },
       tooltip: {
         distance: "Distanz",
-        features: "Merkmale",
-        dimensions: {
-          possession: "Besitz",
-          use: "Nutzung",
-          income: "Ertrag",
-          alienation: "Veräußerung",
-          exclusion: "Ausschluss",
-          duration: "Dauer",
-          inheritability: "Vererbbarkeit",
-        },
       },
       inspector: {
         overlapRule: "Überlappungsregel",
@@ -696,16 +666,6 @@ const UI_ENHANCEMENTS = {
       },
       tooltip: {
         distance: "距離",
-        features: "特徴",
-        dimensions: {
-          possession: "占有",
-          use: "使用",
-          income: "収益",
-          alienation: "処分",
-          exclusion: "排他",
-          duration: "存続",
-          inheritability: "相続",
-        },
       },
       inspector: {
         overlapRule: "重なり判定ルール",
