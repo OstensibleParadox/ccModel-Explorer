@@ -351,6 +351,19 @@ const UI_ENHANCEMENTS = {
       property: "Property Law Mode",
       ai: "AI Governance Mode",
     },
+    eigenspaceToggle: "Eigenspace View",
+    eigenspacePanel: {
+      title: "Eigenspace Projection",
+      isomorphicTo: "Your configuration is isomorphic to",
+      varianceExplained: "Variance explained",
+      noMatch: "Move sliders to explore the eigenspace",
+      legend: {
+        commonLaw: "Common Law",
+        civilLaw: "Civil Law",
+        ai: "AI Framework",
+        user: "Your Config",
+      },
+    },
     aiMode: {
       heroKicker: "AI Governance — Constraint Cascade",
       heroText:
@@ -424,6 +437,19 @@ const UI_ENHANCEMENTS = {
       property: "财产法模式",
       ai: "AI治理模式",
     },
+    eigenspaceToggle: "特征空间视图",
+    eigenspacePanel: {
+      title: "特征空间投影",
+      isomorphicTo: "当前配置同构于",
+      varianceExplained: "方差解释率",
+      noMatch: "移动滑块以探索特征空间",
+      legend: {
+        commonLaw: "普通法",
+        civilLaw: "大陆法",
+        ai: "AI治理框架",
+        user: "当前配置",
+      },
+    },
     aiMode: {
       heroKicker: "AI治理：约束级联",
       heroText:
@@ -494,6 +520,19 @@ const UI_ENHANCEMENTS = {
       aria: "Explorer-Modus",
       property: "Sachenrechtsmodus",
       ai: "AI-Governance-Modus",
+    },
+    eigenspaceToggle: "Eigenraum-Ansicht",
+    eigenspacePanel: {
+      title: "Eigenraum-Projektion",
+      isomorphicTo: "Ihre Konfiguration ist isomorph zu",
+      varianceExplained: "Erklärte Varianz",
+      noMatch: "Bewegen Sie die Slider, um den Eigenraum zu erkunden",
+      legend: {
+        commonLaw: "Common Law",
+        civilLaw: "Zivilrecht",
+        ai: "AI-Framework",
+        user: "Ihre Konfiguration",
+      },
     },
     aiMode: {
       heroKicker: "AI-Governance — Constraint Cascade",
@@ -567,6 +606,19 @@ const UI_ENHANCEMENTS = {
       aria: "探索モード",
       property: "財産法モード",
       ai: "AIガバナンスモード",
+    },
+    eigenspaceToggle: "固有空間ビュー",
+    eigenspacePanel: {
+      title: "固有空間投影",
+      isomorphicTo: "この構成は以下と同型です",
+      varianceExplained: "説明された分散",
+      noMatch: "スライダーを動かして固有空間を探索してください",
+      legend: {
+        commonLaw: "コモン・ロー",
+        civilLaw: "大陸法",
+        ai: "AIフレームワーク",
+        user: "現在の構成",
+      },
     },
     aiMode: {
       heroKicker: "AIガバナンス：制約カスケード",

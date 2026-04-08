@@ -10,6 +10,7 @@ import SliderPanel from './components/SliderPanel';
 import DualTrackView from './components/DualTrackView';
 import AIFrameworkPanel from './components/AIFrameworkPanel';
 import ViolationAlert from './components/ViolationAlert';
+import EigenVisualization from './components/EigenVisualization';
 import ArrangementViolationModal from './components/ArrangementViolationModal';
 import {
   DEFAULT_LOCALE,
@@ -108,6 +109,7 @@ function App() {
   const [activeCivilJurisdiction, setActiveCivilJurisdiction] = useState(null);
   const [activeAssetType, setActiveAssetType] = useState(null);
   const [violationModalDimension, setViolationModalDimension] = useState(null);
+  const [showEigenspace, setShowEigenspace] = useState(false);
 
   const arrangementViolations = useMemo(() => {
     return detectArrangementViolations(sliderValues, lockedArrangement);
@@ -135,6 +137,12 @@ function App() {
   const aiSliderMetaMemo = useMemo(() => getAISliderMeta(locale), [locale]);
   const sliderMeta = mode === 'ai' ? aiSliderMetaMemo : propertySliderMeta;
   const languageOption = useMemo(() => getLanguageOption(locale), [locale]);
+
+  const allEntitiesForPCA = useMemo(() => [
+    ...commonLawEstates.map((e) => ({ ...e, _category: 'commonLaw' })),
+    ...civilLawEstates.map((e) => ({ ...e, _category: 'civilLaw' })),
+    ...aiFrameworks.map((e) => ({ ...e, _category: 'ai' })),
+  ], []);
 
   useEffect(() => {
     if (typeof document === 'undefined') {
@@ -429,6 +437,14 @@ function App() {
 
             <ModeSwitcher mode={mode} onChange={handleModeChange} ui={ui} />
 
+            <button
+              type="button"
+              className={`mode-tab ${showEigenspace ? 'is-active' : ''}`}
+              onClick={() => setShowEigenspace((prev) => !prev)}
+            >
+              {ui.eigenspaceToggle ?? 'Eigenspace View'}
+            </button>
+
             {mode === 'property' && (
               <div className="hero-metrics">
                 <span className="metric-chip">{ui.heroMetrics.commonLaw}</span>
@@ -500,6 +516,15 @@ function App() {
         ui={ui}
         sliderMeta={sliderMeta}
       />
+
+      {showEigenspace && (
+        <EigenVisualization
+          sliderValues={sliderValues}
+          allEntities={allEntitiesForPCA}
+          locale={locale}
+          ui={ui}
+        />
+      )}
 
       <main className="app-main">
         {mode === 'property' ? (
