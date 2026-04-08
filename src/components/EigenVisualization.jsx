@@ -82,8 +82,11 @@ export default function EigenVisualization({
   const userMeshRef = useRef(null);
   const userCoordsRef = useRef([0, 0, 0]);
   const entityMeshMapRef = useRef(new Map());
+  const entityVisualMapRef = useRef(new Map());
   const highlightSetRef = useRef(new Set());
   const overlapLinesRef = useRef([]);
+  const hoveredEntityRef = useRef(null);
+  const syncHoveredEntityRef = useRef(() => {});
   const [hoveredEntity, setHoveredEntity] = useState(null);
 
   // --- PCA basis (static, computed once) ---
@@ -128,6 +131,10 @@ export default function EigenVisualization({
     userCoordsRef.current = userCoords;
   }, [userCoords]);
 
+  useEffect(() => {
+    hoveredEntityRef.current = hoveredEntity;
+  }, [hoveredEntity]);
+
   // --- Scene setup (one-time, refs only in animation loop) ---
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -168,13 +175,87 @@ export default function EigenVisualization({
       camera.aspect = w / h;
       camera.updateProjectionMatrix();
       renderer.setSize(w, h, false);
+      syncHoveredEntityRef.current();
     }
 
     const resizeObserver = new ResizeObserver(handleResize);
     resizeObserver.observe(container);
+
+    function syncHoveredEntity(mesh, anchorPoint = mesh.position) {
+      const {
+        entity,
+        category,
+        projectedCoords,
+      } = mesh.userData;
+
+      if (!entity || !projectedCoords) {
+        return;
+      }
+
+      const projectedPoint = anchorPoint.clone().project(camera);
+      const screenX = ((projectedPoint.x + 1) / 2) * container.clientWidth;
+      const screenY = ((-projectedPoint.y + 1) / 2) * container.clientHeight;
+      const distance = Math.sqrt(
+        userCoordsRef.current.reduce(
+          (sum, value, index) =>
+            sum + (value - projectedCoords[index]) ** 2,
+          0
+        )
+      );
+
+      setHoveredEntity((previous) => {
+        const roundedX = Math.round(screenX);
+        const roundedY = Math.round(screenY);
+        const roundedDistance = Number(distance.toFixed(1));
+
+        if (
+          previous &&
+          previous.id === entity.id &&
+          Math.round(previous.screenX) === roundedX &&
+          Math.round(previous.screenY) === roundedY &&
+          previous.distance === roundedDistance
+        ) {
+          hoveredEntityRef.current = previous;
+          return previous;
+        }
+
+        const nextHoveredEntity = {
+          id: entity.id,
+          entity,
+          category,
+          screenX,
+          screenY,
+          distance: roundedDistance,
+        };
+
+        hoveredEntityRef.current = nextHoveredEntity;
+        return nextHoveredEntity;
+      });
+    }
+
+    function syncHoveredFromCurrentMesh() {
+      const hoveredId = hoveredEntityRef.current?.id;
+
+      if (!hoveredId) {
+        return;
+      }
+
+      const mesh = entityMeshMapRef.current.get(hoveredId);
+
+      if (!mesh) {
+        hoveredEntityRef.current = null;
+        setHoveredEntity((previous) => (previous == null ? previous : null));
+        return;
+      }
+
+      syncHoveredEntity(mesh);
+    }
+
+    syncHoveredEntityRef.current = syncHoveredFromCurrentMesh;
     handleResize();
 
     function clearHover() {
+      hoveredEntityRef.current = null;
       setHoveredEntity((previous) => (previous == null ? previous : null));
     }
 
@@ -202,52 +283,12 @@ export default function EigenVisualization({
 
       const intersection = intersections[0];
       const mesh = intersection.object;
-      const {
-        entity,
-        category,
-        projectedCoords,
-      } = mesh.userData;
-
-      if (!entity || !projectedCoords) {
+      if (!mesh.userData.entity || !mesh.userData.projectedCoords) {
         clearHover();
         return;
       }
 
-      const anchorPoint = intersection.point.clone().project(camera);
-      const screenX = ((anchorPoint.x + 1) / 2) * container.clientWidth;
-      const screenY = ((-anchorPoint.y + 1) / 2) * container.clientHeight;
-      const distance = Math.sqrt(
-        userCoordsRef.current.reduce(
-          (sum, value, index) =>
-            sum + (value - projectedCoords[index]) ** 2,
-          0
-        )
-      );
-
-      setHoveredEntity((previous) => {
-        const roundedX = Math.round(screenX);
-        const roundedY = Math.round(screenY);
-        const roundedDistance = Number(distance.toFixed(1));
-
-        if (
-          previous &&
-          previous.id === entity.id &&
-          Math.round(previous.screenX) === roundedX &&
-          Math.round(previous.screenY) === roundedY &&
-          previous.distance === roundedDistance
-        ) {
-          return previous;
-        }
-
-        return {
-          id: entity.id,
-          entity,
-          category,
-          screenX,
-          screenY,
-          distance: roundedDistance,
-        };
-      });
+      syncHoveredEntity(mesh, intersection.point);
     }
 
     function animate() {
@@ -268,12 +309,15 @@ export default function EigenVisualization({
     }
     animate();
 
+    controls.addEventListener('change', syncHoveredFromCurrentMesh);
     canvas.addEventListener('mousemove', handleMouseMove);
     canvas.addEventListener('mouseleave', clearHover);
 
     return () => {
+      syncHoveredEntityRef.current = () => {};
       canvas.removeEventListener('mousemove', handleMouseMove);
       canvas.removeEventListener('mouseleave', clearHover);
+      controls.removeEventListener('change', syncHoveredFromCurrentMesh);
       cancelAnimationFrame(animFrameRef.current);
       resizeObserver.disconnect();
       controls.dispose();
@@ -283,6 +327,7 @@ export default function EigenVisualization({
       renderer.forceContextLoss();
       cameraRef.current = null;
       sceneRef.current = null;
+      hoveredEntityRef.current = null;
       setHoveredEntity(null);
     };
   }, []);
@@ -292,6 +337,7 @@ export default function EigenVisualization({
     const scene = sceneRef.current;
     if (!scene || projected.length === 0) return;
     const entityMeshMap = entityMeshMapRef.current;
+    const entityVisualMap = entityVisualMapRef.current;
 
     const addedObjects = [];
     const localDisposables = [];
@@ -321,9 +367,11 @@ export default function EigenVisualization({
         category: entity._category,
         entity,
         projectedCoords: coords,
+        baseOpacity: 0.8,
       };
       trackAdd(mesh);
       entityMeshMap.set(entity.id, mesh);
+      const visuals = [mesh];
 
       if (entity.special) {
         const sourceGeo = new THREE.SphereGeometry(SPHERE_RADIUS * 1.5, 12, 12);
@@ -335,9 +383,17 @@ export default function EigenVisualization({
         });
         const wireframe = new THREE.LineSegments(edgesGeo, edgesMat);
         wireframe.position.copy(mesh.position);
+        wireframe.userData = {
+          entityId: entity.id,
+          category: entity._category,
+          baseOpacity: 0.4,
+        };
         trackAdd(wireframe);
+        visuals.push(wireframe);
         localDisposables.push(sourceGeo, edgesGeo, edgesMat);
       }
+
+      entityVisualMap.set(entity.id, visuals);
     }
 
     // Axis lines using CylinderGeometry
@@ -397,6 +453,7 @@ export default function EigenVisualization({
       disposeOverlapLines(overlapLinesRef.current, scene);
       overlapLinesRef.current = [];
       entityMeshMap.clear();
+      entityVisualMap.clear();
       userMeshRef.current = null;
       setHoveredEntity(null);
     };
@@ -404,10 +461,15 @@ export default function EigenVisualization({
 
   // --- Mode-specific entity dimming ---
   useEffect(() => {
-    for (const [, mesh] of entityMeshMapRef.current) {
-      mesh.material.setValues({
-        opacity: isRelevantCategory(mesh.userData.category, mode) ? 0.8 : 0.15,
-      });
+    for (const [, visuals] of entityVisualMapRef.current) {
+      for (const visual of visuals) {
+        const baseOpacity = visual.userData.baseOpacity ?? 1;
+        const opacity = isRelevantCategory(visual.userData.category, mode)
+          ? baseOpacity
+          : baseOpacity * 0.2;
+
+        visual.material.setValues({ opacity });
+      }
     }
   }, [mode, projected]);
 
@@ -429,50 +491,8 @@ export default function EigenVisualization({
 
   // --- Recompute tooltip position/distance when the user point changes ---
   useEffect(() => {
-    if (!hoveredEntity?.id || !cameraRef.current || !containerRef.current) {
-      return;
-    }
-
-    const mesh = entityMeshMapRef.current.get(hoveredEntity.id);
-
-    if (!mesh) {
-      return;
-    }
-
-    const projectedPoint = mesh.position.clone().project(cameraRef.current);
-    const screenX = ((projectedPoint.x + 1) / 2) * containerRef.current.clientWidth;
-    const screenY = ((-projectedPoint.y + 1) / 2) * containerRef.current.clientHeight;
-    const distance = Math.sqrt(
-      userCoords.reduce(
-        (sum, value, index) =>
-          sum + (value - mesh.userData.projectedCoords[index]) ** 2,
-        0
-      )
-    );
-
-    setHoveredEntity((previous) => {
-      if (!previous || previous.id !== hoveredEntity.id) {
-        return previous;
-      }
-
-      const roundedDistance = Number(distance.toFixed(1));
-
-      if (
-        Math.round(previous.screenX) === Math.round(screenX) &&
-        Math.round(previous.screenY) === Math.round(screenY) &&
-        previous.distance === roundedDistance
-      ) {
-        return previous;
-      }
-
-      return {
-        ...previous,
-        screenX,
-        screenY,
-        distance: roundedDistance,
-      };
-    });
-  }, [hoveredEntity?.id, userCoords]);
+    syncHoveredEntityRef.current();
+  }, [userCoords]);
 
   // --- Highlight overlapping entities ---
   useEffect(() => {
