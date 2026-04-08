@@ -90,6 +90,7 @@ export default function EigenVisualization({
   const hoveredEntityRef = useRef(null);
   const syncHoveredEntityRef = useRef(() => {});
   const [hoveredEntity, setHoveredEntity] = useState(null);
+  const [showCategoryTags, setShowCategoryTags] = useState(false);
 
   // --- PCA basis (static, computed once) ---
   const basis = useMemo(
@@ -641,6 +642,40 @@ export default function EigenVisualization({
 
       <div className="eigen-canvas-container" ref={containerRef}>
         <canvas ref={canvasRef} className="eigen-canvas" />
+        {showCategoryTags && (
+          <div className="eigen-tags-overlay">
+            {Array.from(entityVisualMapRef.current.entries()).map(([entityId, visuals]) => {
+              const mesh = visuals[0];
+              if (!mesh) return null;
+              const entity = mesh.userData.entity;
+              const category = mesh.userData.category;
+              const pos = mesh.position;
+
+              if (!cameraRef.current || !rendererRef.current) return null;
+
+              const vector = pos.clone().project(cameraRef.current);
+              const canvas = canvasRef.current;
+              if (!canvas) return null;
+
+              const x = (vector.x * 0.5 + 0.5) * canvas.clientWidth;
+              const y = -(vector.y * 0.5 - 0.5) * canvas.clientHeight;
+
+              return (
+                <span
+                  key={entityId}
+                  className="eigen-tag"
+                  style={{
+                    left: `${x}px`,
+                    top: `${y}px`,
+                    color: `#${COLORS[category].toString(16).padStart(6, '0')}`,
+                  }}
+                >
+                  {legendLabels[category]}
+                </span>
+              );
+            })}
+          </div>
+        )}
 
         <div className="eigen-legend">
           {['commonLaw', 'civilLaw', 'ai', 'user'].map((key) => (
@@ -652,6 +687,13 @@ export default function EigenVisualization({
               {legendLabels[key]}
             </span>
           ))}
+          <button
+            className="eigen-tag-toggle"
+            onClick={() => setShowCategoryTags(!showCategoryTags)}
+            title="Toggle category labels on entities"
+          >
+            [{showCategoryTags ? '✕' : '+'}] tags
+          </button>
         </div>
 
         <EigenTooltip
