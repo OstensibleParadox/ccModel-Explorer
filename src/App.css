@@ -1695,3 +1695,134 @@
   max-width: 860px;
   margin: 0 auto;
 }
+
+/* ─── Eigenspace Visualization ─────────────────────────────────────────── */
+
+.panel-eigenspace {
+  margin-bottom: 1.25rem;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--surface-raised);
+  overflow: hidden;
+}
+
+.eigen-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.5rem 0.5rem;
+}
+
+.eigen-variance {
+  font-size: 0.78rem;
+  color: var(--text-secondary, rgba(0, 0, 0, 0.55));
+  font-variant-numeric: tabular-nums;
+}
+
+.eigen-canvas-container {
+  position: relative;
+  width: 100%;
+  height: 420px;
+}
+
+.eigen-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.eigen-legend {
+  position: absolute;
+  top: 0.75rem;
+  left: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  pointer-events: none;
+}
+
+.eigen-legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.72rem;
+  color: rgba(248, 243, 231, 0.75);
+}
+
+.eigen-legend-dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.eigen-info-panel {
+  padding: 0.75rem 1.5rem;
+  border-top: 1px solid var(--line);
+  min-height: 2.5rem;
+  transition: background-color 200ms ease;
+}
+
+.eigen-info-panel--active {
+  background: rgba(255, 51, 51, 0.06);
+}
+
+.eigen-iso-label {
+  font-size: 0.82rem;
+  font-weight: 600;
+  margin-bottom: 0.4rem;
+}
+
+.eigen-match-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.eigen-match-item {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.82rem;
+}
+
+.eigen-match-name {
+  font-weight: 600;
+}
+
+.eigen-match-category {
+  font-size: 0.72rem;
+  padding: 0.1rem 0.5rem;
+  border-radius: 999px;
+  font-weight: 500;
+}
+
+.eigen-match-category--commonLaw {
+  background: rgba(74, 144, 217, 0.15);
+  color: #4a90d9;
+}
+
+.eigen-match-category--civilLaw {
+  background: rgba(80, 184, 96, 0.15);
+  color: #50b860;
+}
+
+.eigen-match-category--ai {
+  background: rgba(232, 168, 56, 0.15);
+  color: #e8a838;
+}
+
+.eigen-match-distance {
+  margin-left: auto;
+  font-size: 0.72rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-secondary, rgba(0, 0, 0, 0.55));
+}
+
+.eigen-no-match {
+  font-size: 0.82rem;
+  color: var(--text-secondary, rgba(0, 0, 0, 0.55));
+}
