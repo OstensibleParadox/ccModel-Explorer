@@ -1,0 +1,85 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Governance Framework Schema",
+  "description": "Schema for validating uploaded governance frameworks (flat or composite).",
+  "oneOf": [
+    {
+      "$ref": "#/definitions/flatFramework"
+    },
+    {
+      "$ref": "#/definitions/compositeTheory"
+    }
+  ],
+  "definitions": {
+    "ranges": {
+      "type": "object",
+      "required": [
+        "possession",
+        "use",
+        "income",
+        "alienation",
+        "exclusion",
+        "duration",
+        "inheritability"
+      ],
+      "properties": {
+        "possession": { "$ref": "#/definitions/rangeValue" },
+        "use": { "$ref": "#/definitions/rangeValue" },
+        "income": { "$ref": "#/definitions/rangeValue" },
+        "alienation": { "$ref": "#/definitions/rangeValue" },
+        "exclusion": { "$ref": "#/definitions/rangeValue" },
+        "duration": { "$ref": "#/definitions/rangeValue" },
+        "inheritability": { "$ref": "#/definitions/rangeValue" }
+      },
+      "additionalProperties": false
+    },
+    "rangeValue": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 2,
+      "items": {
+        "type": "number",
+        "minimum": 0,
+        "maximum": 100
+      }
+    },
+    "flatFramework": {
+      "type": "object",
+      "required": ["id", "name", "ranges", "authority"],
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "ranges": { "$ref": "#/definitions/ranges" },
+        "authority": { "type": "string" },
+        "jurisdiction": { "type": "string" },
+        "notes": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+    "compositeTheory": {
+      "type": "object",
+      "required": ["id", "name", "components", "authority"],
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "components": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": ["name", "ranges"],
+            "properties": {
+              "name": { "type": "string" },
+              "ranges": { "$ref": "#/definitions/ranges" }
+            },
+            "additionalProperties": false
+          }
+        },
+        "authority": { "type": "string" },
+        "jurisdiction": { "type": "string" },
+        "notes": { "type": "string" }
+      },
+      "additionalProperties": false
+    }
+  }
+}
