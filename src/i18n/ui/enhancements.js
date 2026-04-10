@@ -79,6 +79,13 @@ export const UI_ENHANCEMENTS = {
           `3D projection captures only ${capturedPercentage}% of structural variance; matches may not reflect higher-dimensional differences.`,
         cosine7D: "Full 7D cosine similarity",
         cosineSecondary: "descriptive, not the trigger mechanism",
+        humanitiesExplanation: {
+          title: "What does this mean?",
+          distance: "The engine plots your custom sliders and the established legal frameworks as dots in a multi-dimensional space. The shorter the 'Distance', the more similar they are.",
+          pcBreakdown: "We compress 7 complex dimensions into 3 primary ones (PC1, 2, 3) so they can be drawn on screen. These three capture most of the legal differences.",
+          residual: "The 'discarded' part is the nuance lost when flattening a 7-dimensional concept into a 3D picture. If this is high, the shapes might look close here but differ in details.",
+          cosine: "A pure mathematical angle comparison between the two 7D shapes, confirming the match without any compression loss."
+        },
       },
     },
     aiMode: {
@@ -190,6 +197,13 @@ export const UI_ENHANCEMENTS = {
           `3D 投影仅捕获了 ${capturedPercentage}% 的结构方差；匹配结果可能无法反映更高维度的差异。`,
         cosine7D: "完整 7D 余弦相似度",
         cosineSecondary: "描述性指标，不是触发机制",
+        humanitiesExplanation: {
+          title: "这是什么意思？",
+          distance: "系统将您设定的参数和既有框架均转化为多维空间中的坐标点。“距离”越短，意味着两者的内在结构越相似。",
+          pcBreakdown: "为了在屏幕上绘图，我们将7个复杂的权利维度降维为3个核心成分（PC1、2、3），它们捕捉了大部分的实质性差异。",
+          residual: "“被舍弃的方差”指7维概念被拍平成3D图像时丢失的细微差别。若该数值较高，意味着两者在图上看起来接近，但在某些深层维度上仍有分歧。",
+          cosine: "一种不受降维压缩影响的纯数学计算，它在完整的7维空间中验证两者的最终形态相似度。"
+        },
       },
     },
     aiMode: {
@@ -299,6 +313,13 @@ export const UI_ENHANCEMENTS = {
           `Die 3D-Projektion erfasst nur ${capturedPercentage}% der strukturellen Varianz; Treffer spiegeln höherdimensionale Unterschiede möglicherweise nicht wider.`,
         cosine7D: "Kosinusähnlichkeit im vollständigen 7D-Raum",
         cosineSecondary: "deskriptiv, nicht der Auslösemechanismus",
+        humanitiesExplanation: {
+          title: "Was bedeutet das?",
+          distance: "Die Engine stellt Ihre Regler und die Rechtsrahmen als Punkte in einem mehrdimensionalen Raum dar. Je kürzer die 'Distanz', desto ähnlicher sind sie.",
+          pcBreakdown: "Wir komprimieren 7 komplexe Dimensionen zu 3 Hauptkomponenten (PC1, 2, 3), um sie auf dem Bildschirm darzustellen. Diese erfassen die wesentlichen Unterschiede.",
+          residual: "Der 'verworfene' Teil sind Nuancen, die verloren gehen, wenn ein 7D-Konzept in ein 3D-Bild abgeflacht wird. Ist dieser Wert hoch, weichen sie im Detail ab.",
+          cosine: "Ein rein mathematischer Winkelvergleich im vollen 7D-Raum, der die Übereinstimmung ohne Kompressionsverluste bestätigt."
+        },
       },
     },
     aiMode: {
@@ -403,13 +424,20 @@ export const UI_ENHANCEMENTS = {
         overlapRule: "重なり判定ルール",
         distanceThreshold: "距離 / しきい値",
         pcSpaceBreakdown: "PC 空間での内訳",
-        topVariance: (percentage) => `上位 3 主成分: 分散の ${percentage}%`,
+        topVariance: (percentage) => `上位 3 主成分:  分散の ${percentage}%`,
         discardedVariance: (percentage) =>
           `切り捨てた分散（PC4-PC7）: ${percentage}%`,
         residualWarning: (capturedPercentage) =>
           `3D 投影が捉えている構造分散は ${capturedPercentage}% のみであり、高次元での差異を一致結果が反映しない可能性があります。`,
         cosine7D: "完全な 7D コサイン類似度",
         cosineSecondary: "説明用であり、判定トリガーではありません",
+        humanitiesExplanation: {
+          title: "これは何を意味しますか？",
+          distance: "エンジンは、スライダー設定と既存の枠組みを多次元空間の点としてプロットします。「距離」が短いほど、両者の構造が類似していることを意味します。",
+          pcBreakdown: "画面に描画するため、7つの複雑な次元を3つの主成分（PC1、2、3）に圧縮しています。これら3つで、違いの大部分を捉えています。",
+          residual: "「切り捨てられた分散」は、7次元の概念を3Dに平坦化する際に失われるニュアンスです。この値が高い場合、図上では近くても詳細が異なります。",
+          cosine: "圧縮による情報の損失なしに、完全な7次元空間において両者の形状の一致を確認するための純粋な数学的角度の比較です。"
+        },
       },
     },
     aiMode: {
