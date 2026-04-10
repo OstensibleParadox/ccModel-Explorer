@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useState, useCallback } from 'react';
 import commonLawEstates from './data/commonLawEstates.json';
 import civilLawEstates from './data/civilLawEstates.json';
 import aiFrameworks from './data/aiFrameworks.json';
@@ -8,6 +8,7 @@ import ControlSurface from './components/ControlSurface';
 import MainDisplay from './components/MainDisplay';
 import ViolationAlert from './components/ViolationAlert';
 import EigenVisualization from './components/EigenVisualization';
+import FrameworkLoader from './components/FrameworkLoader';
 
 import { useLegalState } from './hooks/useLegalState';
 import { useLegalEngine } from './hooks/useLegalEngine';
@@ -37,7 +38,12 @@ const DOCUMENT_TITLES = {
 
 function App() {
   const state = useLegalState();
+  const [uploadedFrameworks, setUploadedFrameworks] = useState([]);
   const localizedData = useLegalLocalization(state.locale, state.mode);
+
+  const handleFrameworkLoad = useCallback((analyzableEntries) => {
+    setUploadedFrameworks((prev) => [...prev, ...analyzableEntries]);
+  }, []);
   const {
     ui,
     sliderMeta,
@@ -56,7 +62,10 @@ function App() {
     activeAssetType: state.activeAssetType,
     localizedCommonLawEstates: localizedData.localizedCommonLawEstates,
     localizedCivilLawEstates: localizedData.localizedCivilLawEstates,
-    localizedAIFrameworks: localizedData.localizedAIFrameworks,
+    localizedAIFrameworks: useMemo(() => [
+      ...localizedData.localizedAIFrameworks,
+      ...uploadedFrameworks
+    ], [localizedData.localizedAIFrameworks, uploadedFrameworks]),
   });
 
   // UI-specific derived state
@@ -100,7 +109,8 @@ function App() {
     ...commonLawEstates.map((e) => ({ ...e, _category: 'commonLaw' })),
     ...civilLawEstates.map((e) => ({ ...e, _category: 'civilLaw' })),
     ...aiFrameworks.map((e) => ({ ...e, _category: 'ai' })),
-  ], []);
+    ...uploadedFrameworks.map((e) => ({ ...e, _category: 'ai_uploaded' })),
+  ], [uploadedFrameworks]);
 
   // Sync document title and html lang
   useEffect(() => {
@@ -208,6 +218,10 @@ function App() {
           locale={state.locale}
           ui={ui}
         />
+      )}
+
+      {state.mode === 'ai' && (
+        <FrameworkLoader onFrameworkLoad={handleFrameworkLoad} />
       )}
 
       <MainDisplay
