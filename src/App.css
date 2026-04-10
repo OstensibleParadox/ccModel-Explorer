@@ -1722,7 +1722,8 @@
 .eigen-canvas-container {
   position: relative;
   width: 100%;
-  height: 420px;
+  height: 65vh;
+  overflow: hidden;
 }
 
 .eigen-canvas {
