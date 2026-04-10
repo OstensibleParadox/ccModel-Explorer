@@ -11,51 +11,6 @@ const DIMENSIONS = [
   'inheritability',
 ];
 
-const EXAMPLE_JSON = {
-  "id": "yang_xianbin_three_rights_separation",
-  "name": "Yang Xianbin's 数据产权三权分置",
-  "components": [
-    {
-      "name": "持有权",
-      "ranges": {
-        "possession": [60, 90],
-        "use": [40, 70],
-        "income": [30, 60],
-        "alienation": [20, 50],
-        "exclusion": [50, 80],
-        "duration": [50, 90],
-        "inheritability": [30, 70]
-      }
-    },
-    {
-      "name": "使用权",
-      "ranges": {
-        "possession": [20, 50],
-        "use": [70, 100],
-        "income": [30, 60],
-        "alienation": [10, 40],
-        "exclusion": [30, 60],
-        "duration": [40, 70],
-        "inheritability": [10, 40]
-      }
-    },
-    {
-      "name": "经营权",
-      "ranges": {
-        "possession": [40, 70],
-        "use": [60, 90],
-        "income": [70, 100],
-        "alienation": [40, 70],
-        "exclusion": [50, 80],
-        "duration": [40, 70],
-        "inheritability": [20, 50]
-      }
-    }
-  ],
-  "authority": "杨显滨,《数据产权分置的制度困境与优化路径》,现代法学2025年第6期",
-  "jurisdiction": "prc_data_law"
-};
-
 export default function FrameworkLoader({ onFrameworkLoad }) {
   const [fileText, setFileText] = useState('');
   const [validationErrors, setValidationErrors] = useState(null);
@@ -177,10 +132,6 @@ export default function FrameworkLoader({ onFrameworkLoad }) {
     }
   };
 
-  const copyExample = () => {
-    navigator.clipboard.writeText(JSON.stringify(EXAMPLE_JSON, null, 2));
-  };
-
   return (
     <div className="framework-loader track-panel" style={{ marginTop: '1.25rem' }}>
       <div className="track-heading">
@@ -251,30 +202,6 @@ export default function FrameworkLoader({ onFrameworkLoad }) {
           ✓ Framework loaded successfully!
         </p>
       )}
-
-      <details className="match-card" style={{ cursor: 'pointer' }}>
-        <summary style={{ fontWeight: '600', padding: '0.5rem' }}>
-          Try: Yang Xianbin's 三权分置
-        </summary>
-        <div style={{ padding: '1rem', borderTop: '1px solid var(--line)' }}>
-          <button 
-            onClick={copyExample}
-            className="violation-why-button"
-            style={{ marginBottom: '1rem' }}
-          >
-            Copy example
-          </button>
-          <pre style={{ 
-            fontSize: '0.75rem', 
-            background: 'var(--surface-soft)', 
-            padding: '1rem', 
-            borderRadius: '8px', 
-            overflowX: 'auto' 
-          }}>
-            {JSON.stringify(EXAMPLE_JSON, null, 2)}
-          </pre>
-        </div>
-      </details>
     </div>
   );
 }
