@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState } from 'react';
 import { normalizeUploadedFramework } from '../utils/normalizeUploadedFramework';
 
 const DIMENSIONS = [
