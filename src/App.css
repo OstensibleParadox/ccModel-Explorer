@@ -2030,3 +2030,60 @@
   font-size: 0.82rem;
   color: var(--text-secondary, rgba(0, 0, 0, 0.55));
 }
+
+/* ─── Eigen Inspector Dual Column Layout ──────────────────────────────────── */
+
+.eigen-inspector-columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin-top: 0.5rem;
+}
+
+.eigen-inspector-technical {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.eigen-inspector-humanities {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  padding-left: 1.5rem;
+  border-left: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.humanities-title {
+  margin: 0 0 0.25rem 0;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.humanities-block strong {
+  display: block;
+  font-size: 0.76rem;
+  color: var(--text-secondary);
+  margin-bottom: 0.2rem;
+}
+
+.humanities-block p {
+  margin: 0;
+  font-size: 0.78rem;
+  line-height: 1.45;
+  color: var(--text-muted);
+}
+
+@media (max-width: 768px) {
+  .eigen-inspector-columns {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  .eigen-inspector-humanities {
+    padding-left: 0;
+    border-left: none;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(0, 0, 0, 0.08);
+  }
+}

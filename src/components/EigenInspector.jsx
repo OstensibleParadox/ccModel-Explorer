@@ -62,94 +62,127 @@ export default function EigenInspector({
                     </span>
                   </div>
 
-                  <div className="eigen-inspector-section">
-                    <div className="eigen-inspector-heading">
-                      {resolveCopy(
-                        inspectorCopy.overlapRule,
-                        'Overlap rule'
-                      )}
-                    </div>
-                    <div className="eigen-inspector-subheading">
-                      {resolveCopy(
-                        inspectorCopy.distanceThreshold,
-                        'Distance / threshold'
-                      )}
-                    </div>
-                    <div className="eigen-inspector-distance-bar">
-                      <div
-                        className="eigen-inspector-distance-fill"
-                        style={{ width: `${distanceRatio * 100}%` }}
-                      />
-                      <span className="eigen-inspector-threshold-marker" />
-                    </div>
-                    <div className="eigen-inspector-distance-metric">
-                      {distance.toFixed(1)} / {OVERLAP_THRESHOLD.toFixed(1)} (
-                      {distancePercentage}%)
-                    </div>
-                  </div>
-
-                  <div className="eigen-inspector-section">
-                    <div className="eigen-inspector-heading">
-                      {resolveCopy(
-                        inspectorCopy.pcSpaceBreakdown,
-                        'PC-space breakdown'
-                      )}
-                    </div>
-                    <div className="eigen-inspector-summary">
-                      {resolveCopy(
-                        inspectorCopy.topVariance,
-                        `Top 3 PCs: ${totalExplainedPct}% of variance`,
-                        totalExplainedPct
-                      )}
-                    </div>
-                    {report.pcDeltas.map((pcDelta) => (
-                      <div
-                        key={pcDelta.component}
-                        className="eigen-inspector-pc-row"
-                      >
-                        <span className="eigen-inspector-pc-label">
-                          ΔPC{pcDelta.component}
-                        </span>
-                        <span className="eigen-inspector-pc-value">
-                          Δ = {formatSigned(pcDelta.delta)}
-                        </span>
-                        <span className="eigen-inspector-pc-variance">
-                          ({(pcDelta.explainedVarianceRatio * 100).toFixed(0)}%)
-                        </span>
+                  <div className="eigen-inspector-columns">
+                    <div className="eigen-inspector-technical">
+                      <div className="eigen-inspector-section">
+                        <div className="eigen-inspector-heading">
+                          {resolveCopy(
+                            inspectorCopy.overlapRule,
+                            'Overlap rule'
+                          )}
+                        </div>
+                        <div className="eigen-inspector-subheading">
+                          {resolveCopy(
+                            inspectorCopy.distanceThreshold,
+                            'Distance / threshold'
+                          )}
+                        </div>
+                        <div className="eigen-inspector-distance-bar">
+                          <div
+                            className="eigen-inspector-distance-fill"
+                            style={{ width: `${distanceRatio * 100}%` }}
+                          />
+                          <span className="eigen-inspector-threshold-marker" />
+                        </div>
+                        <div className="eigen-inspector-distance-metric">
+                          {distance.toFixed(1)} / {OVERLAP_THRESHOLD.toFixed(1)} (
+                          {distancePercentage}%)
+                        </div>
                       </div>
-                    ))}
-                  </div>
 
-                  <div className="eigen-inspector-section">
-                    <div className="eigen-inspector-residual">
-                      {resolveCopy(
-                        inspectorCopy.discardedVariance,
-                        `Discarded variance (PC4-PC7): ${residualPct}%`,
-                        residualPct
-                      )}
-                    </div>
-                    {report.residual > 0.3 ? (
-                      <div className="eigen-inspector-residual eigen-inspector-residual--warning">
+                      <div className="eigen-inspector-section">
+                        <div className="eigen-inspector-heading">
+                          {resolveCopy(
+                            inspectorCopy.pcSpaceBreakdown,
+                            'PC-space breakdown'
+                          )}
+                        </div>
+                        <div className="eigen-inspector-summary">
+                          {resolveCopy(
+                            inspectorCopy.topVariance,
+                            `Top 3 PCs: ${totalExplainedPct}% of variance`,
+                            totalExplainedPct
+                          )}
+                        </div>
+                        {report.pcDeltas.map((pcDelta) => (
+                          <div
+                            key={pcDelta.component}
+                            className="eigen-inspector-pc-row"
+                          >
+                            <span className="eigen-inspector-pc-label">
+                              ΔPC{pcDelta.component}
+                            </span>
+                            <span className="eigen-inspector-pc-value">
+                              Δ = {formatSigned(pcDelta.delta)}
+                            </span>
+                            <span className="eigen-inspector-pc-variance">
+                              ({(pcDelta.explainedVarianceRatio * 100).toFixed(0)}%)
+                            </span>
+                          </div>
+                        ))}
+                      </div>
+
+                      <div className="eigen-inspector-section">
+                        <div className="eigen-inspector-residual">
+                          {resolveCopy(
+                            inspectorCopy.discardedVariance,
+                            `Discarded variance (PC4-PC7): ${residualPct}%`,
+                            residualPct
+                          )}
+                        </div>
+                        {report.residual > 0.3 ? (
+                          <div className="eigen-inspector-residual eigen-inspector-residual--warning">
+                            {resolveCopy(
+                              inspectorCopy.residualWarning,
+                              `3D projection captures only ${totalExplainedPct}% of structural variance; matches may not reflect higher-dimensional differences.`,
+                              totalExplainedPct
+                            )}
+                          </div>
+                        ) : null}
+                      </div>
+
+                      <div className="eigen-inspector-cosine-secondary">
                         {resolveCopy(
-                          inspectorCopy.residualWarning,
-                          `3D projection captures only ${totalExplainedPct}% of structural variance; matches may not reflect higher-dimensional differences.`,
-                          totalExplainedPct
+                          inspectorCopy.cosine7D,
+                          'Full 7D cosine similarity'
+                        )}{' '}
+                        (
+                        {resolveCopy(
+                          inspectorCopy.cosineSecondary,
+                          'descriptive, not the trigger mechanism'
                         )}
+                        ): <strong>{report.cosine7D.toFixed(3)}</strong>
                       </div>
-                    ) : null}
-                  </div>
+                    </div>
 
-                  <div className="eigen-inspector-cosine-secondary">
-                    {resolveCopy(
-                      inspectorCopy.cosine7D,
-                      'Full 7D cosine similarity'
-                    )}{' '}
-                    (
-                    {resolveCopy(
-                      inspectorCopy.cosineSecondary,
-                      'descriptive, not the trigger mechanism'
-                    )}
-                    ): <strong>{report.cosine7D.toFixed(3)}</strong>
+                    <div className="eigen-inspector-humanities">
+                      <h4 className="humanities-title">
+                        {resolveCopy(
+                          inspectorCopy.humanitiesExplanation?.title,
+                          'What does this mean?'
+                        )}
+                      </h4>
+                      
+                      <div className="humanities-block">
+                        <strong>{resolveCopy(inspectorCopy.overlapRule, 'Overlap rule')}</strong>
+                        <p>{resolveCopy(inspectorCopy.humanitiesExplanation?.distance, "The engine plots your custom sliders and the established legal frameworks as dots in a multi-dimensional space. The shorter the 'Distance', the more similar they are.")}</p>
+                      </div>
+
+                      <div className="humanities-block">
+                        <strong>{resolveCopy(inspectorCopy.pcSpaceBreakdown, 'PC-space breakdown')}</strong>
+                        <p>{resolveCopy(inspectorCopy.humanitiesExplanation?.pcBreakdown, "We compress 7 complex dimensions into 3 primary ones (PC1, 2, 3) so they can be drawn on screen. These three capture most of the legal differences.")}</p>
+                      </div>
+
+                      <div className="humanities-block">
+                        <strong>{resolveCopy(inspectorCopy.discardedVariance, `Discarded variance (PC4-PC7): ${residualPct}%`, residualPct)}</strong>
+                        <p>{resolveCopy(inspectorCopy.humanitiesExplanation?.residual, "The 'discarded' part is the nuance lost when flattening a 7-dimensional concept into a 3D picture. If this is high, the shapes might look close here but differ in details.")}</p>
+                      </div>
+
+                      <div className="humanities-block">
+                        <strong>{resolveCopy(inspectorCopy.cosine7D, 'Full 7D cosine similarity')}</strong>
+                        <p>{resolveCopy(inspectorCopy.humanitiesExplanation?.cosine, "A pure mathematical angle comparison between the two 7D shapes, confirming the match without any compression loss.")}</p>
+                      </div>
+                    </div>
                   </div>
                 </li>
               );
