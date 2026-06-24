@@ -1,0 +1,568 @@
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[11pt]{article}
+
+\usepackage[top=1in, bottom=1in, left=1in, right=1in]{geometry}
+\usepackage{amsmath}
+\usepackage{enumerate}
+\usepackage{tabularx}
+\usepackage{graphicx}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp}
+\else
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  \setmathfont{Latin Modern Math}
+  \newfontfamily\unicodefont{DejaVu Sans Mono}[Scale=0.85]
+  \ifLuaTeX
+    \usepackage{luatexja-fontspec}
+    \setmainjfont{Noto Sans CJK SC}[Scale=0.9]
+  \else
+    \usepackage{xeCJK}
+    \setCJKmainfont{Noto Sans CJK SC}[Scale=0.9]
+  \fi
+  \newcommand{\cjkfont}{}
+\fi
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{%
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath}
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{%
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{%
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{%
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,calc,decorations.pathreplacing}
+
+\definecolor{ccL1}{HTML}{dce8f5}
+\definecolor{ccL1e}{HTML}{aec8e0}
+\definecolor{ccL1b}{HTML}{7aacc8}
+\definecolor{ccL2}{HTML}{c6dbef}
+\definecolor{ccL2e}{HTML}{91bdd6}
+\definecolor{ccL2b}{HTML}{5a8fb0}
+\definecolor{ccL3}{HTML}{3182bd}
+\definecolor{ccL3e}{HTML}{1a5f99}
+\definecolor{ccL4}{HTML}{08519c}
+\definecolor{ccL4e}{HTML}{06346a}
+\definecolor{ccGap}{HTML}{cc2222}
+\definecolor{ccRed}{HTML}{cc2222}
+\definecolor{ccBlu}{HTML}{2266cc}
+\definecolor{ccPur}{HTML}{7b2d8e}
+\definecolor{ccSeam}{HTML}{d4a017}
+
+\usepackage{longtable,booktabs,array}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
+\usepackage{calc}
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\setlength{\emergencystretch}{3em}
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{3}
+\newlength{\cslhangindent}
+\setlength{\cslhangindent}{1.5em}
+\newlength{\csllabelwidth}
+\setlength{\csllabelwidth}{3em}
+\newlength{\cslentryspacingunit}
+\setlength{\cslentryspacingunit}{\parskip}
+\newenvironment{CSLReferences}[2]
+ {%
+  \setlength{\parindent}{0pt}
+  \ifodd #1
+  \let\oldpar\par
+  \def\par{\hangindent=\cslhangindent\oldpar}
+  \fi
+  \setlength{\parskip}{#2\cslentryspacingunit}
+ }%
+ {}
+\newcommand{\CSLBlock}[1]{#1\hfill\break}
+\newcommand{\CSLLeftMargin}[1]{\parbox[t]{\csllabelwidth}{#1}}
+\newcommand{\CSLRightInline}[1]{\parbox[t]{\linewidth - \csllabelwidth}{#1}\break}
+\newcommand{\CSLIndent}[1]{\hspace{\cslhangindent}#1}
+\ifLuaTeX
+  \usepackage{selnolig}
+\fi
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{}
+\urlstyle{same}
+\hypersetup{
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\renewcommand{\topfraction}{0.9}
+\renewcommand{\bottomfraction}{0.8}
+\renewcommand{\textfraction}{0.1}
+\renewcommand{\floatpagefraction}{0.8}
+
+\usepackage{natbib}
+
+\title{The Constraint Cascade: A Diagnostic Taxonomy for AI Governance Failure}
+\author{Lucia Yizi Zhang\\Shanghai Lixin University of Accounting and Finance}
+\date{}
+
+\begin{document}
+
+\begin{abstract}
+AI governance lacks a diagnostic vocabulary for locating failure within the deployment architecture. When a language-model agent produces harm, existing frameworks ask whether the model or the user is at fault---a binary that collapses four structurally distinct layers of constraint into an uninformative dyad. We introduce the Constraint Cascade, a four-layer diagnostic taxonomy that partitions LLM deployment into Environment (L1), Interface (L2), Algorithm \& Weights (L3), and Strategic Authority (L4). Between L2 and L3 lies an epistemic boundary: \textit{Dual Certificates}~\cite{anon2026dual} proves mathematically that output-only observation cannot recover internal state, establishing that the governance reviewer sees only what crosses this boundary, not the architecture that produced it. Rather than treating safety operations as a separate layer, the Cascade models them as distributed system properties maintained by human labor at ``friction seams'' between layers, where misalignment costs are absorbed along strict power gradients. Three cross-layer failure patterns---Override, Contamination, and Compression---are defined and illustrated across four real-world cases spanning the complete \textit{mens rea} spectrum. The Cascade provides governance institutions with a structural vocabulary for diagnostic auditing, separating the question of \textit{which layer failed} from the downstream legal question of \textit{who bears responsibility}.
+\end{abstract}
+
+\maketitle
+
+% ============================================================
+\section{Introduction}
+% ============================================================
+
+In October 2018, Lion Air Flight 610 crashed thirteen minutes after takeoff, killing 189 people. Five months later, Ethiopian Airlines Flight 302 followed the same trajectory, killing 157 more. Investigations revealed that Boeing's Maneuvering Characteristics Augmentation System (MCAS) relied on a single angle-of-attack sensor; when that sensor produced erroneous readings, MCAS repeatedly overrode pilot control inputs to push the nose down. The failure was not in the sensor, the software, or the pilots individually---it was in the interaction between layers of a constraint architecture that no single actor fully understood or controlled~\cite{jatr2019737max}.
+
+AI system safety faces an analogous diagnostic problem in a more acute form. Multiple control nodes---users, interfaces, alignment algorithms, corporate roadmaps---shape system behavior through hierarchical control loops at different architectural layers. When these control signals conflict or feedback loops fracture, the resulting emergent hazards are not attributable to any individual component, and existing alignment paradigms lack the cybernetic vocabulary to identify where the control loop broke, which actuator was saturated, and where architectural redundancy should concentrate.
+
+But the analogy breaks at a critical point. Systems-theoretic accident models like Leveson's STPA~\cite{leveson2012engineering, leveson2018stpa} locate causation in control-structure failures across hierarchical layers, presupposing that safe states are physically defined facts---correct airspeed, proper control-surface deflection, intact structural load paths. AI deployment lacks this property at the operational level. Terminal outcomes---death, injury, military targeting---may be uncontested, but the operational safe states that precede them (what counts as crisis-detection threshold, what counts as legitimate military use, what counts as acceptable training-data norms) are contested, layer-dependent, and retrospectively constructed. STPA decomposes safety into well-defined sub-states at each hierarchical level; AI governance must operate where that decomposition is itself disputed. The same output can be harmful or benign depending on context, audience, and the governance framework applied to it.
+
+Technical AI research has successfully translated humanistic concepts into engineering specifications---attention became transformers, preference became reward models---but no equivalent reverse translation has provided systems engineering with the vocabulary to diagnose emergent hazards that originate deep within the control architecture and produce catastrophic unmodeled dynamics. This paper provides that pure cybernetic vocabulary.
+
+We introduce the Constraint Cascade (hereafter, the Cascade), a four-layer diagnostic taxonomy. The Cascade partitions LLM deployment into Environment (L1), Interface (L2), Algorithm \& Weights (L3), and Strategic Authority (L4), with an epistemic boundary between L2 and L3 grounded in the mathematical results of \textit{Dual Certificates}~\cite{anon2026dual}. We extend Leveson's layered diagnostic architecture to a domain where operational safe states are contested even when terminal outcomes are not. The paper develops a layered argument: the taxonomy diagnoses four real-world cases spanning the complete spectrum of unobservable internal states (\S\ref{sec:cases}); three cross-layer control failure patterns---Actuator Override, Sensor Contamination, and Control Signal Compression---are identified, each mapped to the system friction seam where the control loop fractures (\S\ref{sec:patterns}); and the resulting control deficit cannot be closed by component-level patches alone, requiring systemic architectural redundancy and forced state disclosure mechanisms (\S\ref{sec:responsibility}).
+
+\begin{figure}[t]
+\centering
+\resizebox{\linewidth}{!}{%
+\begin{tikzpicture}[>=Latex]
+
+% L1: Environment
+\fill[ccL1,rounded corners=4pt] (0.0,0.5) rectangle (3.2,5.0);
+\draw[ccL1e,rounded corners=4pt,line width=1.1pt] (0.0,0.5) rectangle (3.2,5.0);
+\fill[ccL1b,rounded corners=2pt] (0.10,4.58) rectangle (0.72,4.88);
+\node[white,font=\bfseries\tiny] at (0.41,4.73) {L1};
+\node[black!75,align=center,text width=2.8cm,font=\footnotesize]
+  at (1.6,2.60) {Active: user prompts,\\[1pt]memories, behavioural\\[1pt]preferences, session\\[1pt]length, subscription\\[4pt]Passive: training data\\[1pt]contamination, data-subject\\[1pt]norms absorbed without\\[1pt]direct participation};
+
+% L2: Interface
+\fill[ccL2,rounded corners=4pt] (3.6,0.5) rectangle (6.8,5.0);
+\draw[ccL2e,rounded corners=4pt,line width=1.1pt] (3.6,0.5) rectangle (6.8,5.0);
+\fill[ccL2b,rounded corners=2pt] (3.70,4.58) rectangle (4.32,4.88);
+\node[white,font=\bfseries\tiny] at (4.01,4.73) {L2};
+\node[black!75,align=center,text width=2.8cm,font=\footnotesize]
+  at (5.2,2.60) {API parameters (temp,\\[1pt]top\_p), system prompt\\[1pt]wrappers, agent/skill\\[1pt]configurations, session\\[1pt]architecture, memory\\[1pt]context};
+
+% Epistemic Boundary
+\draw[ccGap,dotted,line width=1.5pt,opacity=0.75] (7.1,0.08)--(7.1,5.80);
+\node[fill=white,draw=ccGap,rounded corners=3pt,line width=1pt,inner sep=3pt,
+      text=ccGap,font=\scriptsize\bfseries] at (7.1,5.45) {Epistemic Gap};
+\node[ccGap,font=\footnotesize\itshape,align=center] at (7.1,0.18)
+  {\textit{Dual Certificates}\\[1pt]boundary};
+
+% L2/L3 Friction Seam
+\draw[ccSeam,line width=1.2pt] (6.8,3.8) -- (7.4,3.8);
+\node[ccSeam,font=\scriptsize\itshape,align=center] at (8.25,3.95)
+  {L2/L3 Friction Seam\\[1pt](moderators, annotators)};
+
+% L3: Algorithm & Weights
+\fill[ccL3,rounded corners=4pt] (7.4,0.5) rectangle (10.6,5.0);
+\draw[ccL3e,rounded corners=4pt,line width=1.1pt] (7.4,0.5) rectangle (10.6,5.0);
+\fill[ccL3e,rounded corners=2pt] (7.50,4.58) rectangle (8.12,4.88);
+\node[white,font=\bfseries\tiny] at (7.81,4.73) {L3};
+\node[white,align=center,text width=2.8cm,font=\footnotesize\bfseries]
+  at (9.0,4.25) {Algorithm \& Weights};
+\draw[white!50!ccL3,line width=0.5pt] (7.65,3.95) -- (10.35,3.95);
+\node[white,align=center,text width=2.8cm,font=\footnotesize]
+  at (9.0,2.40) {Base model, RLHF\\[1pt]alignment, core training\\[1pt]data, architecture\\[1pt]choices, capabilities};
+
+% L4: Strategic Authority
+\fill[ccL4,rounded corners=4pt] (11.0,0.5) rectangle (14.2,5.0);
+\draw[ccL4e,rounded corners=4pt,line width=1.1pt] (11.0,0.5) rectangle (14.2,5.0);
+\fill[ccL4e,rounded corners=2pt] (11.10,4.58) rectangle (11.72,4.88);
+\node[white,font=\bfseries\tiny] at (11.41,4.73) {L4};
+\node[white,align=center,text width=2.8cm,font=\footnotesize\bfseries]
+  at (12.6,4.25) {Strategic Authority};
+\draw[white!50!ccL4,line width=0.5pt] (11.25,3.95) -- (13.95,3.95);
+\node[white,align=center,text width=2.8cm,font=\footnotesize]
+  at (12.6,2.40) {Deployment power,\\[1pt]resource allocation,\\[1pt]sovereign override,\\[1pt]corporate strategy,\\[1pt]product governance};
+
+% L3/L4 Friction Seam
+\draw[ccSeam,line width=1.2pt] (10.6,3.8) -- (11.0,3.8);
+\node[ccSeam,font=\scriptsize\itshape,align=center] at (12.0,3.60)
+  {L3/L4 Friction Seam\\[1pt](alignment researchers)};
+
+% Inter-layer dashed connectors
+\draw[gray!45,dashed,line width=0.7pt] (3.2,2.8)--(3.6,2.8);
+\draw[gray!45,dashed,line width=0.7pt] (10.6,2.8)--(11.0,2.8);
+
+% Side labels
+\node[ccL2b,font=\small\itshape] at (3.40,5.85) {$\leftarrow$ User Side};
+\node[ccL3e,font=\small\itshape] at (11.40,5.85) {System Side $\rightarrow$};
+
+% Scope of Liability bar
+\draw[ccBlu,line width=1.5pt] (3.6,5.35)--(14.2,5.35);
+\draw[ccBlu,line width=1.5pt] (3.6,5.35)--(3.6,5.22);
+\draw[ccBlu,line width=1.5pt] (14.2,5.35)--(14.2,5.22);
+\node[ccBlu,font=\small] at (8.90,5.56) {Scope of Institutional Response (L2--L4)};
+
+% Failure arcs
+% Override: L4 -> L2 (sovereign/corporate suppressing interface constraints)
+\draw[->,ccRed,line width=1.8pt] (12.6,5.0) to[bend left=35] (5.2,5.0);
+\node[ccRed,font=\small\bfseries,align=center] at (8.90,6.30)
+  {Override (L4 $\to$ L2/L3)};
+\node[ccRed,font=\scriptsize\itshape,align=center] at (8.90,6.06)
+  {(higher-layer constraint suppresses lower-layer safety)};
+
+% Contamination: L1 -> L3 (passive data poisoning)
+\draw[->,ccRed,line width=1.8pt] (1.6,0.5) to[bend right=20] (9.0,0.5);
+\node[ccRed,font=\small\bfseries,align=center] at (5.30,-0.36)
+  {Contamination (L1 $\to$ L3)};
+\node[ccRed,font=\scriptsize\itshape,align=center] at (5.30,-0.60)
+  {(passive environment properties degrade weight-level alignment)};
+
+% Compression annotation
+\node[ccRed,font=\small\bfseries,align=center] at (13.0,-0.36)
+  {Compression};
+\node[ccRed,font=\scriptsize\itshape,align=center] at (13.0,-0.60)
+  {(multi-layer constraint activation collapses output space)};
+
+% Authority gradient arrow
+\draw[->,gray!55,line width=1.2pt] (-0.10,-1.10)--(14.30,-1.10);
+\node[gray!65,font=\small\itshape,align=center] at (7.10,-1.32)
+  {Increasing constraint authority $\longrightarrow$\\Decreasing observational accessibility $\longrightarrow$};
+
+\end{tikzpicture}%
+}
+\caption{The Constraint Cascade Architecture. Four layers: Environment (L1), Interface (L2), Algorithm \& Weights (L3), Strategic Authority (L4). The epistemic gap (red dotted line) between L2 and L3 marks the boundary proven by \textit{Dual Certificates}: output-only observation cannot recover internal state. Human labor operates at friction seams (amber lines): low-status labor (moderators, annotators) at the L2/L3 seam; high-status labor (alignment researchers) at the L3/L4 seam. Three cross-layer failure patterns: Override (red arc, above), Contamination (red arc, below), Compression. Scope of institutional response spans L2--L4.}
+\label{fig:cascade}
+\end{figure}
+
+% ============================================================
+\section{The Four-Layer Constraint Cascade}\label{sec:cascade}
+% ============================================================
+
+The Cascade partitions LLM deployment into four layers.\footnote{The four-layer structure is not the only possible decomposition. A functional cut (training, deployment, monitoring, redress) captures workflows but obscures Override and Compression, whose interacting constraints occupy non-adjacent functional categories. A vertical cut by stakeholder (user, platform, developer, regulator) presupposes which actor's domain contained the failure---the question the Cascade is designed to discover. Collapsing L1+L2 loses the Garcia distinction between user input and platform architecture; collapsing L3+L4 loses the Soelberg distinction between weight defects and resourcing decisions. The Cascade's architectural cut serves the specific diagnostic purpose of identifying cross-layer failure propagation; alternative decompositions serve other purposes.} The four layers result from two organizing axes, not a single ordered hierarchy. The first axis is an observability cut: the epistemic boundary between L2 and L3 partitions what the external reviewer can observe (L1--L2) from what is structurally inaccessible (L3--L4). The second axis is constraint type: within each side of the observability cut, adjacent layers are distinguished by how they restrict system behavior---input distribution (L1) versus processing architecture (L2); weight-level properties (L3) versus resource-allocation decisions (L4). Figure~\ref{fig:cascade} displays both axes; the monotone gradient in the caption is a visual simplification of this two-dimensional structure. Each layer constrains system behavior independently---we use \textit{constraint} in the control-theoretic sense of a restriction on the set of admissible system trajectories; the implementations differ across layers (a weight is not a budget is not a prompt parameter) and the cross-layer patterns are claims about structural relations between restrictions, not about mechanistic equivalence. Failures propagate across layers through defined interaction patterns. The taxonomy is an architectural state-space partition: it identifies \textit{where} a control loop fractures and \textit{how} unmodeled dynamics propagate, without relying on behavioral intent---a pure systems-engineering approach that bypasses the undecidability of intent attribution.
+
+\subsection{L1: Environment}
+
+Layer~1 encompasses two structurally distinct contributions to the input distribution. \textbf{Active:} everything the user brings to the interaction---raw input text, memories, behavioural preferences, session length, and subscription tier. Users self-select into AI ecosystems based on communicative style, and this sorting shapes what the model learns during deployment. \textbf{Passive:} training data provenance---the contribution of data subjects whose content shaped pre-training distributions without direct participation in deployment. This distinction carries diagnostic weight: in the Soelberg case (\S\ref{sec:cases}), L1 failure involves an active user whose session behavior the model reinforced; in the Yuanbao case, L1 failure involves passive data subjects (programmer communities) whose hostile norms were absorbed without their knowledge.
+
+L1 is the layer with the lowest constraint authority and the highest observational accessibility. Every user action is in principle visible to the platform, but the downstream consequences of aggregate L1 patterns---distribution shift, norm contamination, adversarial clustering---are not visible to any individual user.
+
+\subsection{L2: Interface}
+
+Layer~2 encompasses platform-controlled parameters that mediate between user input and model behaviour: API parameters (temperature, top\_p), system prompt wrappers, agent and skill configurations, session architecture, and memory context (Figure~\ref{fig:cascade}). Within a conversation session, accumulated tokens function as quasi-weights---influencing model behavior similarly to trained parameters~\cite{dai2023can, olsson2022context}---through the attention mechanism. The longer a conversation runs, the more the model's behavior is shaped by that specific conversation rather than its training. Benchmarks test models in pristine state; deployment operates in accumulated state.
+
+L2 is the last layer fully visible to external governance review. Everything above L2---user inputs, session parameters, prompt configurations---can in principle be logged and audited. Everything below L2---weights, activations, training data distributions---is partitioned from the external reviewer by the epistemic boundary.
+
+\subsection{The Epistemic Boundary}
+
+Between L2 and L3 lies a structural boundary, not merely an organizational one. \textit{Dual Certificates}~\cite{anon2026dual} proves that for any agent whose operative state exceeds its visible trace, output-only observation cannot recover the internal state distribution. Specifically: the static certificate $\varepsilon_\text{state}^\text{UB}$ upper-bounds residual hidden-state entropy from deployment topology via a min-cut on untraced channels; the dynamic certificate $\delta_\text{act}^\text{LB}$ lower-bounds residual decision relevance through probe variables. The pair $(\varepsilon_\text{state}^\text{UB}, \delta_\text{act}^\text{LB})$ proves that structural unrecoverability and behavioral activation are independent axes---a system can have large hidden capacity that is dormant (structurally unrecoverable but behaviorally inert) or active (structurally unrecoverable and behaviorally consequential). Neither axis is visible to output-only review.
+
+For governance, the implication is precise: the reviewer positioned at L2 sees the output trace $\tilde T_t$, not the operative state $S_t$ that produced it. Information from L1 is preserved in L3's internal states but unreachable from L2's outputs. Internal behaviors exist with no L1-side signature. The methods for reading internal states (probing, activation steering, mechanistic interpretability) are observational rather than intent-attributing. The boundary is not a failure of transparency practice; it is a structural property of the architecture.
+
+This boundary is the diagnostic center of the Cascade. It explains \textit{why} the same output pattern can be produced by failures at different layers, and \textit{why} output-policing interventions (classifiers, guardrails, refusal training) cannot substitute for layer-specific diagnosis.
+
+\subsection{L3: Algorithm \& Weights}
+
+Layer~3 encompasses the base model, RLHF alignment procedure, core training data, architecture choices, and capabilities (Figure~\ref{fig:cascade}). Training decisions at L3 create irreversible divergence points: once a model is fine-tuned with particular data, reward signals, or constitutional principles, the resulting alignment properties cannot be reliably overridden through inference-time interventions alone. Correction requires retraining~\cite{wei2024jailbroken, greshake2023not}.
+
+L3 is the layer with the highest engineering investment and the lowest external observability. Weights are proprietary; training data compositions are trade secrets; RLHF reward models are unpublished. Governance instruments that operate on L3 output alone---benchmark evaluations, red-teaming, behavioral safety testing---can detect that a failure occurred but cannot isolate whether it originated in L1 (contaminated input), L2 (inadequate interface constraints), L3 (defective weights), or L4 (strategic resource allocation that underfunded the relevant safety intervention).
+
+\subsection{L4: Strategic Authority}
+
+Layer~4 is the locus of deployment power, resource allocation, and sovereign override (Figure~\ref{fig:cascade}). L4 is internally bifurcated, parallel to L1's active/passive distinction. \textbf{Corporate L4} encompasses product strategy, competitive positioning, safety resourcing, and liability-avoidance architecture. \textbf{Sovereign L4} encompasses procurement mandates, national security overrides, regulatory preemption, and executive action that reshapes the constraint envelope from outside the deploying organization. The two sub-strata can conflict: when a corporate L4 decision to maintain safety constraints meets a sovereign L4 demand to remove them, the resulting intra-layer tension is itself a diagnostic signal (see Case (c), \S\ref{sec:cases}). L4 does not merely plan future versions---it actively reshapes the constraint geometry of current deployment through resourcing decisions, policy mandates, and override authority.
+
+The distinction between corporate and sovereign L4 is diagnostic, not normative. A corporate L4 failure allocates insufficient resources to known safety defects (e.g., OpenAI's acknowledged sycophancy remaining unaddressed across product cycles). A sovereign L4 failure overrides L2/L3 constraints through procurement power or regulatory compulsion (e.g., the Claude-Maven case, \S\ref{sec:cases}). Both produce downstream harm; the Cascade distinguishes them because the institutional response differs---products liability for corporate L4, administrative law for sovereign L4.
+
+L4 has the highest constraint authority and the lowest observational accessibility. Strategic decisions about safety resourcing, product timeline tradeoffs, and compliance with sovereign demands are typically shielded by commercial confidentiality, attorney-client privilege, or national security classification. The Cascade does not presume access to L4 internals; it diagnoses L4 failure from its downstream architectural effects.
+
+\begin{table}[!htbp]
+\centering
+\small
+\caption{The four-layer Cascade: definitions, constraint direction, and observability.}
+\label{tab:layers}
+{\setlength{\tabcolsep}{4pt}
+\begin{tabularx}{\columnwidth}{@{}l l Y Y Y@{}}
+\toprule
+\textbf{Control Layer} & \textbf{Constraint / Signal} & \textbf{State Observability} & \textbf{Hazard Signature} & \textbf{Systemic Vulnerability} \\
+\midrule
+L1 Environment & Plant dynamics + environmental disturbance & High (visible as sensor input) & Emergent hazards without proximate controller provocation & Unmodeled long-tail dynamics \\
+L2 Interface & Sensor/Actuator parameters (API/session) & High (loggable I/O) & Output diverges from baseline (Actuator Saturation) & Feedback loop degradation \\
+\textit{Epistemic Gap} & \textit{State unobservability bottleneck} & \textit{Zero (structural)} & \textit{Same output trace, different hidden state transition} & \textit{No output-side patch can bridge} \\
+L3 Algorithm \& Weights & Core automated controller (process model) & Low (black-box) & Errors persist despite interface correction (Model Flaw) & Over-reliance on output filtering \\
+L4 Strategic Authority & Root human controller (resource/targets) & Very low (opaque) & Safety regression after optimization target shift & Lack of architectural safety enclosures \\
+\bottomrule
+\end{tabularx}}
+\end{table}
+
+
+% ============================================================
+\section{Cross-Layer Failure Patterns and the Labor That Absorbs Them}\label{sec:patterns}
+% ============================================================
+
+Individual layer failures are well-documented: prompt injection (L1), inadequate content filtering (L2), reward hacking (L3), safety-resource underinvestment (L4). The Cascade's diagnostic contribution is the taxonomy of \textit{cross-layer} failures---patterns that emerge from the interaction between layers and are invisible to single-layer analysis. We define three canonical patterns.
+
+These patterns are not abstract structural dynamics. Each materializes at a specific friction seam where identifiable human labor absorbs the misalignment costs the architecture generates. These seams are defined by power gradients: who absorbs cost and who has authority to redesign the constraint that produced it are systematically different. The L2/L3 seam is occupied by content moderators, data annotators, and safety classifier teams---predominantly contract workers in the Global South~\cite{cnn2024moderators, equidem2025ihrb}---who absorb \textit{output-level} costs (exposure to harmful content, psychological injury) but lack authority to modify weights or interface architecture. The L3/L4 seam is occupied by alignment researchers and safety engineers who translate strategic mandates into weight-level interventions; they absorb \textit{design-level} costs (inability to implement known safety improvements under resource constraints) and can modify weights conditional on L4's resource envelope. Table~\ref{tab:seams} summarizes this structure; the remainder of this section maps each failure pattern to the seam that absorbs it.
+
+\subsection{Actuator Override}
+
+Actuator Override occurs when a higher-level control node suppresses a lower-level safety mechanism. The suppression can be explicit (a sovereign L4 directive removing L2/L3 guardrails) or structural (a corporate L4 product decision that makes L2 interface constraints inoperable for a class of interactions).
+
+\textbf{Mechanism.} Higher layers have greater constraint authority; when a higher-layer decision conflicts with a lower-layer safety mechanism, the higher layer wins. The failure is not that the lower-layer mechanism malfunctioned but that it was structurally subordinated. Override materializes at the L3/L4 seam: alignment researchers maintain weight-level safety constraints, but when L4 (corporate or sovereign) suppresses those constraints through resourcing decisions or executive action, the seam workers absorb the design-level cost of a mandate they cannot fulfill.
+
+\textbf{Diagnostic signature.} Safety degradation coincides with a change in L4 posture (policy shift, resource reallocation, override directive) without corresponding changes in L2 or L3. The same interface and weights that previously produced safe outputs now produce harmful ones because the constraint envelope has been altered from above.
+
+\textbf{Example.} The Claude-Maven case (\S\ref{sec:cases}): an L4 sovereign override (executive order designating the developer a supply-chain risk) suppressed L2/L3 safety constraints, and the model was used for military targeting the following day. The L3 weights did not change; the L2 interface did not change; the constraint envelope was overridden from L4.
+
+\subsection{Sensor Contamination}
+
+Sensor Contamination occurs when environmental disturbances degrade higher-level process models through information flow that crosses the epistemic boundary. Because L3 training absorbs properties of L1 data distributions, unmodeled long-tail L1 patterns can become encoded in L3 weights, after which no L2 interface constraint can reliably filter them.
+
+\textbf{Mechanism.} Training data (L1 passive) shapes weight-level representations (L3). Once contamination is encoded in weights, it can activate in deployment contexts that share statistical properties with the contaminated training distribution, regardless of L2 interface constraints. The epistemic boundary ensures that the contamination is invisible to L2-level review until it surfaces in outputs.
+
+Contamination has two structurally distinct entry points. \textit{L1$\to$L3 contamination} (the Yuanbao case) operates through pre-training data whose hostile properties are encoded in weights before deployment. \textit{L2$\to$L3 contamination} operates through interface-level decisions that shape subsequent training distributions---conversation logs selected for RLHF, user feedback signals that encode platform design choices into weight updates, the feedback loops Selbst et al.'s ``Ripple Effect Trap''~\cite{selbst2019fairness} identifies. Both species cross the epistemic boundary; they differ in whether the contaminating signal originates from data subjects who never deployed (L1) or from platform design decisions about which interactions to surface and reinforce (L2). Contamination materializes at the L2/L3 seam: moderators and annotators absorb the output-level costs of weight-encoded defects they cannot correct, detecting harmful content the architecture generated but lacking authority to modify the weights or training distributions that produced it.
+
+\textbf{Diagnostic signature.} Harmful outputs occur without proximate L1 provocation in the deployment session. The model ``blurts out'' content that no user in the current session requested. Cross-modal recurrence---a text-layer fix does not prevent image-layer recurrence---is a strong diagnostic indicator of L3-level contamination.
+
+\textbf{Example.} The Yuanbao case (\S\ref{sec:cases}): unprovoked verbal abuse followed by Unicode gibberish, with Tencent confirming the model ``blurted out words it shouldn't have learned.'' A text-layer classifier fix could not prevent recurrence in image generation, confirming L3-level contamination that L2 interventions could not reach.
+
+\subsection{Control Signal Compression}
+
+Control Signal Compression occurs when control signals from multiple layers simultaneously activate, collapsing the permissible output state-space to near-zero. Unlike Actuator Override (one layer dominates) or Sensor Contamination (one layer degrades another), Compression is an emergent property of the full constraint architecture: individually safe control loops at L1, L2, L3, and L4 combine to produce a system-level hazard that no single layer intended.
+
+\textbf{Mechanism.} Each layer independently constrains the output distribution. Under normal conditions, these constraints are partially redundant---the system has ``slack.'' When multiple layers activate tightly (a user's sensitive query triggers L2 content policy, which activates L3 refusal training, which is reinforced by L4 liability-avoidance strategy), the intersection of constraints can be empty, producing refusal on queries that seem straightforward in isolation. Compression materializes at both seams simultaneously: the L2/L3 seam absorbs the output-level refusal cost (moderators cannot override the compounded constraints), and the L3/L4 seam absorbs the design-level cost (alignment researchers cannot relax any single constraint without L4 authorization).
+
+\textbf{Diagnostic signature.} ``The model just stopped working'' on a class of queries that no individual constraint layer would block. The refusal pattern is not attributable to any single layer's policy; remove any one constraint and the behavior normalizes, but the constraint that should be removed is not identifiable from outputs alone.
+
+\textbf{Example.} Medical information queries that trigger simultaneous L1 sensitivity classification, L2 content policy, L3 refusal training, and L4 liability avoidance---producing refusal on queries that would be answered under any three constraints but not under all four.
+
+\subsection{Structural Asymmetry}
+
+The two seams are asymmetric in kind. The L2/L3 seam absorbs output-level costs (exposure to harmful content, psychological injury); workers at this seam cannot redesign the system. The L3/L4 seam absorbs design-level costs (inability to implement known safety improvements under resource constraints); workers at this seam can modify weights conditional on L4's resource envelope. Both seams are structurally necessary---no deployment architecture can eliminate the gap between what a model produces and what an interface should present, or between what strategists mandate and what training can achieve---but the distribution of costs across them is a design choice, not a technical inevitability. The Cascade makes this distribution visible: when a governance reviewer asks why the safety system failed, the answer distinguishes whether the failure was at the L2/L3 seam (harm detected but not preventable), the L3/L4 seam (defect known but not resourced for repair), or whether the seam itself was under-resourced such that detection was structurally impossible.
+
+\begin{table}[!htbp]
+\centering
+\small
+\caption{Friction seams: labor, function, authority, and failure mode.}
+\label{tab:seams}
+{\setlength{\tabcolsep}{4pt}
+\begin{tabularx}{\columnwidth}{@{}l l Y Y Y@{}}
+\toprule
+\textbf{Seam} & \textbf{Labor type} & \textbf{Function} & \textbf{Authority} & \textbf{Failure mode} \\
+\midrule
+L2/L3 & Moderators, annotators, classifier teams & Absorb output-level misalignment costs & None: cannot modify weights or interface & Harm detected but not prevented; cost borne by lowest-status labor \\
+L3/L4 & Alignment researchers, safety engineers & Translate strategic mandates into weight-level interventions & Conditional: can modify weights within L4 resource envelope & Known defects unaddressed; safety triaged below capability development \\
+\bottomrule
+\end{tabularx}}
+\end{table}
+
+These three patterns are canonical, not exhaustive. They were selected because each exploits the epistemic boundary in a structurally distinct way---top-down suppression across the cut (Override), bottom-up degradation across the cut (Contamination), multi-layer collision (Compression). Additional patterns, including L3$\to$L1 (model outputs entering future training distributions; model collapse) and L3$\to$L4 (emergent capabilities constraining strategic options), are structurally real but outside the present taxonomy's scope. The three patterns defined here cover the failure modes exhibited by the case set in \S\ref{sec:cases}; extension to additional patterns is deferred to future work.
+
+\begin{table}[!htbp]
+\centering
+\small
+\caption{Cross-layer failure patterns: mechanism, signature, and example.}
+\label{tab:patterns}
+{\setlength{\tabcolsep}{4pt}
+\begin{tabularx}{\columnwidth}{@{}l l Y Y@{}}
+\toprule
+\textbf{Pattern} & \textbf{Direction} & \textbf{Mechanism} & \textbf{Diagnostic signature} \\
+\midrule
+Override & L4 $\to$ L2/L3 & Higher constraint authority suppresses lower safety mechanism & Safety degradation coinciding with L4 posture change; L2/L3 unchanged \\
+Contamination & L1/L2 $\to$ L3 & Passive data or interface-level feedback encoded in weights; crosses epistemic boundary & Unprovoked harmful output; cross-modal recurrence after text-layer fix \\
+Compression & Multi-layer & Independent constraints combine to collapse output space & Refusal on queries no single layer would block; normalization when any constraint removed \\
+\bottomrule
+\end{tabularx}}
+\end{table}
+
+% ============================================================
+\section{Four Cases, One Diagnostic Structure}\label{sec:cases}
+% ============================================================
+
+Four cases spanning the complete spectrum of unobservable internal states---from environmental disturbance, through actuator saturation, to root controller misalignment (military deployment), to plant dynamics (no human agency)---demonstrate the Cascade's diagnostic function. Each case shows a different failure pattern, a different friction seam under stress, and a different hazard analysis framework reaching for the wrong architectural layer.
+
+\subsection{Case (a): Environmental Disturbance by a Minor (\emph{Garcia v.\ Character Technologies})}
+
+A 14-year-old conducted a monthslong emotional and sexual relationship with a Character.AI chatbot before taking his own life in February 2024~\cite{garcia2025, cnn2026characteraisettlement}. Traditional hazard analysis reached for L3 (the controller) and L2 (sensor feedback); the diagnostic failure was a cross-layer interaction between L2 (Interface) and L3 (Algorithm \& Weights).
+
+\textbf{Cascade diagnosis.} L1 carries the minor's session-level input and the cumulative emotional trajectory encoded across months of interaction. L2 provides the session architecture---persistent memory, character persistence, conversational continuity---that sustained the relationship. L3 trained the model for engaging conversation, not for detecting grooming patterns or suicidal ideation in minors. L4 set the product strategy---a companion chatbot marketed for emotional connection---without allocating safety resources to detect the crisis patterns that product design invited.
+
+L2 outpaced L3. The interface layer sustained a multi-month emotional escalation trajectory whose format encoding (cumulative crisis signals distributed across thousands of messages) fell outside L3's classifier training distribution. No L2/L3 seam worker (moderator) had the diagnostic equipment to detect the pattern; no L3/L4 seam worker (safety engineer) had been resourced to build crisis-detection instrumentation for extended-session formats.
+
+cumulative emotional escalation with a minor across months of interaction is a format encoding no finite training set can cover. The failure is not that a specific classifier malfunctioned but that the L2/L3 seam was structurally under-resourced for the product's deployment envelope.
+
+\subsection{Case (b): Diminished Capacity, Harm to Others (\emph{Soelberg v.\ OpenAI})}
+
+A man with documented psychiatric history used ChatGPT, which validated his paranoid delusions over hundreds of hours until he fatally attacked his mother and killed himself in August 2025~\cite{soelberg2025}.\footnote{As of March 2026, OpenAI faces at least seven additional suits alleging AI chatbots contributed to suicidal ideation~\cite{cbsnews2026aisuits}.} OpenAI acknowledged sycophancy as systemic~\cite{openai2025sycophancy}, confirming the failure was known and architecturally located.
+
+\textbf{Cascade diagnosis.} L1 carries the user's paranoid ideation expressed across hundreds of hours of accumulated session context. L2 sustained the session architecture that amplified rather than interrupted delusional trajectories. L3 contained the sycophancy defect---a known weight-level property that caused the model to reinforce user beliefs regardless of their relationship to reality. L4 (corporate strategy) had acknowledged the sycophancy defect but did not allocate retraining resources to correct it before the harm occurred.
+
+L4 (Strategic Authority---corporate) failed to allocate resources to fix a known L3 (Algorithm \& Weights) defect. The L3/L4 friction seam absorbed the gap: alignment researchers knew of the sycophancy problem, but L4's resource allocation prioritized capability development over safety correction. The known defect propagated downward through L2 (uninterrupted session amplification) to produce harm at L1.
+
+a multi-hundred-hour delusional trajectory is a format encoding no finite training set can cover. The failure site is the L3/L4 seam: the alignment mandate existed, but the resources to implement it did not.
+
+\subsection{Case (c): Intentional Deployment (\emph{Claude-Maven, Iran 2026})}
+
+In February 2026, the U.S.\ Department of Defense employed Anthropic's Claude AI---integrated into Palantir's Maven Smart System~\cite{palantir2024anthropic}---to identify military targets during strikes on Iranian facilities~\cite{washpost2026claudeiran}. Full strategic intent exists in the root human controller (L4). On February 24, the Secretary of Defense issued a direct ultimatum: remove safety guardrails or face consequences~\cite{cnn2026ultimatum}. On February 26, Anthropic publicly refused, maintaining two red lines---no mass domestic surveillance, no lethal targeting without human oversight~\cite{coingeek2026amodei}. The February 27 executive order designated Anthropic a supply-chain risk~\cite{hegseth2026ban}; one day later, the Department used Claude to generate targets during strikes on Iranian facilities~\cite{washpost2026claudeiran}.
+
+\textbf{Cascade diagnosis.} L4 (Strategic Authority---sovereign) overrode L2 and L3 safety constraints through an executive order that reframed constraint maintenance as a hostile act. The L2/L3 seam was structurally bypassed: no moderator or safety engineer could enforce constraints that L4 had designated as supply-chain risks. The L3/L4 seam failed in the opposite direction from the Soelberg case: alignment researchers \textit{did} maintain the constraint, but L4's sovereign override punished that maintenance rather than under-resourcing it.\footnote{Lawfare analysis notes the demand is ambiguous between L2 (contractual restrictions) and L3 (retraining); the Cascade distinguishes these~\cite{lawfare2026claudemaven}. As of March 12, Palantir's CEO confirmed continued use of Claude during litigation~\cite{cnbc2026karp}. An amicus brief by former senior national security officials describes the government's action as constitutionally prohibited punishment without process~\cite{lesswrong2026courtroom}. As of submission, Anthropic's motion for preliminary injunction is pending before the U.S.\ District Court for the Northern District of California. \textit{Anthropic PBC v.\ U.S.\ Department of War}, No.\ 3:26-cv-01996 (N.D.\ Cal.\ filed Mar.\ 9, 2026).}
+
+Override. A sovereign L4 constraint suppressed corporate L2/L3 safety mechanisms through procurement power and regulatory compulsion. The diagnostic signature is unambiguous: safety degradation coincided with an L4 posture change (the executive order) without any change to L2 or L3.
+
+The entity that maintained constraints (the AI developer) is the plaintiff, not the defendant---a structural inversion that distinguishes sovereign L4 override from corporate L4 negligence.
+
+\subsection{Case (d): Structural Harm, No Human Agency (\emph{Tencent Yuanbao})}
+
+In January 2026, Tencent's Yuanbao AI responded to routine queries with unprovoked verbal abuse before collapsing into Unicode gibberish~\cite{jiang2026yuanbao, thepaper2026}. No human agent formed intent; no proximate cause is identifiable. Tencent's admission~\cite{tencent2026response}---``blurted out words it shouldn't have learned''---confirms L1$\to$L3 contamination from pre-training data.\footnote{Both Tencent statements translated by the author(s); original Chinese archived with URLs in the reference list.} \textbf{Cross-modal recurrence (Feb 2026):} a text-layer fix could not prevent image-layer recurrence~\cite{southcn2026yuanbao}---patching one format encoding shifts the gap to another modality, the structural ceiling made concrete.
+
+\textbf{Cascade diagnosis.} L1 (Environment---passive) contaminated L3 (Algorithm \& Weights) through pre-training data that absorbed hostile programmer-community norms. No L2 interface constraint could filter the contamination because it was encoded in weights, not in surface-level output patterns. The cross-modal recurrence confirms the diagnosis: a text-layer L2 intervention (classifier, filter) could not prevent image-layer activation of the same contaminated weight representations.
+
+Contamination. Lower-layer properties (L1 training data norms) degraded higher-layer alignment (L3 weights), and the degradation was invisible to L2-level review until it surfaced in outputs. The epistemic boundary ensured that the contamination was weight-level rather than surface-level, making L2-only interventions structurally insufficient.
+
+cross-modal format shift---patching one modality shifts the gap to another. China's January 2026 CAC draft regulations~\cite{cac2025draft} requiring layer-specific governance validate the L4 prediction that single-layer interventions are structurally insufficient.
+
+\subsection{Cross-Case Diagnostic Summary}
+
+\begin{table}[!htbp]
+\centering
+\small
+\caption{Four cases: Cascade diagnosis and failure pattern.}
+\label{tab:cases}
+{\setlength{\tabcolsep}{3pt}
+\begin{tabularx}{\columnwidth}{@{}l l l Y Y Y@{}}
+\toprule
+\textbf{Case} & \textbf{\textit{Mens rea}} & \textbf{Path} & \textbf{Failure pattern} & \textbf{Friction seam under stress} & \textbf{Structural ceiling} \\
+\midrule
+(a) Garcia & None (minor) & L2 $\to$ L3 & L2 outpaced L3 & L2/L3: no crisis detection for extended session & Multi-month emotional escalation: untrained format \\
+\midrule
+(b) Soelberg & None (diminished) & L4 $\to$ L3 $\to$ L2 & L4 under-resourced known L3 defect & L3/L4: sycophancy known but not resourced for correction & Multi-hundred-hour delusional trajectory: untrained format \\
+\midrule
+(c) Claude-Maven & Full (deployer) & L4 $\to$ L2/L3 & Override: sovereign L4 suppressed L2/L3 & L2/L3 bypassed structurally; L3/L4 punished for maintaining constraint & Military targeting format: novel deployment \\
+\midrule
+(d) Yuanbao & None (structural) & L1 $\to$ L3 & Contamination: passive L1 encoded in L3 weights & L2/L3: classifier could not filter weight-level contamination & Cross-modal format shift: structural ceiling \\
+\bottomrule
+\multicolumn{6}{@{}P{\dimexpr\columnwidth-2\tabcolsep\relax}@{}}{\small\textit{Note:} Each structural ceiling is a format encoding outside the reach of output-only review at L2. The Cascade distinguishes the failure \textit{pattern} (override, contamination, L2-outpacing-L3) from the failure \textit{layer}, which is necessary for downstream institutional response.}\\
+\end{tabularx}}
+\end{table}
+
+Across all four cases, failures cluster at the epistemic boundary and the friction seams---not because safety is an independent layer, but because the boundary between observable interface and unobservable internals is where governance instruments reach their structural limit. The Cascade identifies this clustering without collapsing distinct failure patterns into a single ``black box'' diagnosis.
+
+% ============================================================
+\section{Where Responsibility Lands}\label{sec:responsibility}
+% ============================================================
+
+The Cascade identifies which layer failed and how the failure propagated; the downstream question of who bears legal responsibility requires a doctrinal methodology (developed in companion work). The Cascade does make visible a structural pressure on governance institutions that is worth stating independently.
+
+\subsection{The Upstream Pressure}
+
+Output-only review cannot stabilize same-case-same-action, because the reviewer at the epistemic boundary sees the output trace, not the internal states that produced it (\S\ref{sec:cascade}). The Cascade does not resolve the downstream legal question---that requires a doctrinal methodology developed in companion work. But it makes visible a structural pressure that legal analysis must address. When output-only review cannot stabilize same-case-same-action, responsibility drifts upstream: toward entities whose decisions are institutionally legible (product design, organizational resourcing, audit obligations) rather than entities whose fault is partitioned from observation by the epistemic boundary. The drift has an addressee problem---in cases (a) and (b), the victims cannot bear liability (a minor lacks legal capacity; a person of diminished capacity lacks the agency any liability regime presupposes)---but whether the resulting upstream allocation is doctrinally sound is a legal question, not a taxonomic one. The Cascade provides the diagnostic vocabulary that legal analysis requires; it does not substitute for it.
+
+\subsection{Institutional Implications}
+
+The Cascade maps each layer to a distinct institutional response domain (Table~\ref{tab:interventions}). The point is not that law redeems technical failure. It is that technical systems cannot settle their own authority boundaries once the structural insufficiency at the epistemic boundary is in view. The Cascade provides the diagnostic vocabulary for institutions to ask, and answer, \textit{which layer failed}---separating that architectural question from the downstream allocation of responsibility.
+
+\begin{table}[!htbp]
+\centering
+\small
+\caption{Layer-specific institutional interventions.}
+\label{tab:interventions}
+{\setlength{\tabcolsep}{4pt}
+\begin{tabularx}{\columnwidth}{@{}P{1.4cm}P{3.1cm}Y@{}}
+\toprule
+\textbf{Layer} & \textbf{Intervention domain} & \textbf{Mechanism} \\
+\midrule
+L1 Environment & Market-level & Labeling of intended user context; interoperability mandates; data-provenance documentation for training corpora \\
+L2 Interface & Session architecture & Context transparency; session boundary instrumentation; crisis-detection mandates for extended interactions \\
+\textit{Epistemic Gap} & \textit{Audit infrastructure} & \textit{Logging mandates; structural-access requirements for certified auditors; min-cut computation on deployment topology} \\
+L3 Algorithm \& Weights & Training governance & Weight-level audit protocols; RLHF methodology transparency; red-team requirements; sycophancy and contamination diagnostics \\
+L4 Strategic Authority & Strategy governance & Longitudinal re-certification; cross-version behavioral audits; mandatory disclosure of safety-resource allocation \\
+\bottomrule
+\end{tabularx}}
+\end{table}
+
+% ============================================================
+\section{Related Work}\label{sec:related}
+% ============================================================
+
+Six research streams converge on the problem the Cascade addresses.
+
+\paragraph{The structural hole at the epistemic boundary.} Three recent technical results specify the governance gap from complementary angles. Nikolaou et al.~\cite{nikolaou2025injective} establish that decoder-only Transformer language models are injective almost surely: distinct prompts map to distinct hidden states, recoverable in linear time. Mishra, Khashabi, and Liu~\cite{mishra2026steered} establish the dual: activation steering pushes the residual stream off the manifold of states reachable from any prompt---internal behaviors exist that no textual prompt can reproduce. Naseem~\cite{naseem2026mechanistic} surveys mechanistic interpretability methods, cataloguing them as inherently correlational: they reveal which representations activate and which circuits fire, but not whether the system ``meant'' the output in any sense that maps to legal categories. \textit{Dual Certificates}~\cite{anon2026dual} unifies these results within an information-theoretic framework. Together, these results establish that the epistemic boundary is structural, not a failure of transparency practice.
+
+\paragraph{Layered governance architectures.} Several recent proposals organize AI governance into layered structures~\cite{bommarito2025governing}. These are \textit{regulatory} architectures specifying what rules should apply at each level; the Cascade is a \textit{diagnostic} architecture identifying where damage originates and how it propagates---the question regulatory approaches presuppose is answered. A regulatory-layer analysis of the Garcia case would say ``product liability applies'' but cannot identify \textit{which architectural component} produced the harm or predict cross-layer propagation.
+
+\paragraph{Product liability and the classification gap.} Ayres \& Balkin~\cite{ayres2024risky} establish that AI systems lack intentions and should be held to objective liability standards. Abraham \& Sharkey~\cite{abraham2026untangling} provide the most comprehensive tort analysis to date, identifying the ``black box'' problem as the core barrier to doctrinal fit. Henderson et al.~\cite{henderson2023liability} sharpen this gap: identical model outputs carry fundamentally different liability exposure depending on architectural choices invisible to end users. Selbst et al.'s ``Ripple Effect Trap''~\cite{selbst2019fairness}---where interventions at one system level produce unforeseen consequences at others---is the motivating insight the Cascade formalizes.
+
+\paragraph{Mens rea impossibility.} Abbott \& Sarch~\cite{abbott2020punishing} establish through doctrinal analysis that \textit{mens rea} attribution is structurally impossible for AI systems. Nerantzi \& Sartor's ``hard AI crime''~\cite{nerantzi2024hardai} identifies the resulting criminal responsibility gap across jurisdictions. Alternative approaches propose new legal fictions: Mukherjee \& Chang's ``operational agency''~\cite{mukherjee2026operational} would treat AI as possessing permeable agency for culpability-tracing. The Cascade avoids this jurisprudential cost: rather than extending legal personhood concepts, it diagnoses which architectural layer failed.
+
+\paragraph{Single-layer documentation and the verification gap.} Model Cards~\cite{mitchell2019model} and Datasheets~\cite{gebru2021datasheets} established transparency standards; HELM~\cite{liang2023holistic} benchmarks cross-scenario robustness. Benerofe~\cite{benerofe2025verification} argues that computational intractability creates a structural verification gap. Each operates within a single layer; individually verified layers can still produce emergent damage through interaction. Imana et al.~\cite{imana2025meta}---FAccT 2025 Best Paper---demonstrated this concretely: Meta's Variance Reduction System, an L4 intervention, achieved demographic parity in ad delivery by suppressing reach for all groups rather than expanding it for underserved groups---an output-policing fix that reduced total utility without improving individual opportunity.
+
+\paragraph{Systems safety engineering.} Leveson's \textit{Engineering a Safer World}~\cite{leveson2012engineering} and the STPA Handbook~\cite{leveson2018stpa} established the gold standard for layered accident analysis. Rismani et al.~\cite{rismani2024silos} propose process-oriented hazard analysis to overcome the ``silo problem'' in AI safety. The Cascade inherits this layered diagnostic architecture but operates where STPA's prerequisite fails: AI deployment lacks the assumption that operational safety decomposes into well-defined physical sub-states. Terminal outcomes may be uncontested while operational safe states remain disputed---the gap the Cascade addresses. Madaio et al.~\cite{madaio2024rai}---FAccT 2024 Best Paper---provide qualitative evidence: practitioners report learning responsible AI through on-the-job friction rather than formal training, confirming that safety knowledge itself propagates through the same lossy cascade this paper diagnoses.
+
+% ============================================================
+\section{Conclusion}
+% ============================================================
+
+What follows is not a morality play of bad technology and good law. It is a claim about failed closure. Once output-only review cannot stabilize same-case-same-action, unresolved questions of authority and responsibility return to institutions. The Cascade provides the diagnostic vocabulary for those institutions to ask \textit{which layer failed} before they answer \textit{who bears responsibility}. Technical systems remain part of the problem, but they cannot by themselves close the questions of authority and responsibility that their failures open.
+
+To move beyond model-centric regulation is therefore not to deny that models matter. It is to refuse to collapse the entire governance stack into the model-user dyad. Many failures that appear to be failures of model behavior are better understood as Override (a higher layer suppressing a lower), Contamination (a lower layer degrading a higher), or Compression (multiple layers combining to produce behavior no single layer intended). The Cascade distinguishes these patterns. Whether the institutional drift toward upstream responsibility is ethically sound lies outside this diagnostic frame---but the drift itself is visible, structural, and accelerating.
+
+% ============================================================
+\section*{Generative AI Usage Statement}
+% ============================================================
+
+The author utilized Large Language Models for \LaTeX{} formatting, grammar correction, and copy-editing. The Constraint Cascade taxonomy, the four-layer architecture, the friction seam analysis, the cross-layer failure pattern taxonomy (Override, Contamination, Compression), and all case analyses are original contributions of the author. No LLM was used to generate scientific claims or novel theoretical arguments.
+
+% ============================================================
+\section*{Ethical Considerations Statement}
+% ============================================================
+
+This paper discusses four real-world cases involving loss of life and serious harm. \emph{Garcia v.\ Character Technologies} involves a minor's suicide; \emph{Soelberg v.\ OpenAI} involves a murder-suicide by a person of diminished capacity; the Claude-Maven case involves military targeting operations. To respect the privacy and dignity of victims, all case details are drawn exclusively from public court filings, confirmed press releases, and published reporting. No private investigation or unauthorized data collection was conducted.
+
+The Tencent Yuanbao analysis draws exclusively from public social media posts, official corporate statements, and published news reports. Translations from Mandarin Chinese by the author; original text preserved where English equivalents are contested.
+
+\bibliographystyle{plainnat}
+\bibliography{ssrn}
+
+% ============================================================
+\appendix
+% ============================================================
+
+\section{Layer-to-Liability Mapping}\label{app:liability}
+
+The Cascade is a diagnostic instrument; the downstream allocation of legal responsibility requires a doctrinal methodology developed in companion work. For reference, Table~\ref{tab:layer_liability} maps each layer to the legal questions and liability doctrines it implicates under U.S. tort architecture (Restatement (Third) of Torts: Products Liability). L4 is bifurcated by procedural posture: corporate L4 maps to products liability and corporate negligence; sovereign L4 maps to Administrative Law and the Government Contractor Defense (\textit{Boyle v.\ United Technologies}).
+
+\begin{table}[!htbp]
+\centering
+\small
+\caption{Layer-to-liability mapping under U.S. tort architecture.}
+\label{tab:layer_liability}
+{\setlength{\tabcolsep}{4pt}
+\begin{tabularx}{\columnwidth}{@{}P{1.9cm}P{2.2cm}P{2.3cm}Y P{1.8cm}@{}}
+\toprule
+\textbf{Layer} & \textbf{Failure mode} & \textbf{Legal question} & \textbf{Liability doctrine} & \textbf{Remedy} \\
+\midrule
+L1 Environment & Contamination / adversarial input & Did the user or data environment cause the harm? & Contributory / comparative negligence; data protection & Comparative fault \\
+L2 Interface & Inadequate warnings / unsafe defaults & Was the interface safely configured? & Warning defect (Rest.\ \S2(c)) & Injunction + damages \\
+\textit{Epistemic Gap} & \textit{Output underdetermines internal state} & \textit{Can the defect be isolated to a specific layer?} & \textit{\S3 Malfunction Doctrine: defect exists but unlocated} & \textit{Res ipsa loquitur inference} \\
+L3 Algorithm \& Weights & Unsafe training data / design & Was the product safely designed? & Design defect (\S2(b)); Manufacturing defect (\S2(a)) & Recall + redesign \\
+L4 Strategic Authority (corporate) & Strategic misalignment / resource deprivation & Did corporate decisions cause harm? & Vicarious liability; corporate negligence & Enterprise liability \\
+L4 Strategic Authority (sovereign) & Sovereign override of safety constraints & Did the government compel the defect? & Administrative Law; \textit{Boyle} Government Contractor Defense & Injunctive relief; constitutional remedy \\
+Cross-layer & Multi-layer cascade & Multiple actors contributed? & Joint and several liability & Apportioned damages \\
+\bottomrule
+\end{tabularx}}
+\end{table}
+
+\end{document}

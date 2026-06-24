@@ -1,0 +1,46 @@
+This is BibTeX, Version 0.99e (TeX Live 2026)
+Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
+The top-level auxiliary file: The_Constraint_Cascade_Model.aux
+The style file: plainnat.bst
+Database file #1: ssrn.bib
+You've used 46 entries,
+            2773 wiz_defined-function locations,
+            825 strings with 16584 characters,
+and the built_in function-call counts, 19108 in all, are:
+= -- 1688
+> -- 1177
+< -- 36
++ -- 410
+- -- 363
+* -- 1343
+:= -- 2994
+add.period$ -- 170
+call.type$ -- 46
+change.case$ -- 257
+chr.to.int$ -- 45
+cite$ -- 92
+duplicate$ -- 822
+empty$ -- 1558
+format.name$ -- 426
+if$ -- 4030
+int.to.chr$ -- 2
+int.to.str$ -- 1
+missing$ -- 15
+newline$ -- 264
+num.names$ -- 184
+pop$ -- 615
+preamble$ -- 1
+purify$ -- 209
+quote$ -- 0
+skip$ -- 686
+stack$ -- 0
+substring$ -- 281
+swap$ -- 97
+text.length$ -- 4
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 501
+warning$ -- 0
+while$ -- 156
+width$ -- 0
+write$ -- 635
