@@ -1,4 +1,4 @@
-\begin{thebibliography}{42}
+\begin{thebibliography}{46}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -17,6 +17,14 @@ Kenneth~S. Abraham and Catherine~M. Sharkey.
 \newblock Forthcoming; argues that different AI harms call for different
   liability regimes and identifies the black-box problem as the central barrier
   to doctrinal fit.
+
+\bibitem[Amann et~al.(2020)Amann, Blasimme, Vayena, Frey, and Madai]{amann2020}
+Julia Amann, Alessandro Blasimme, Effy Vayena, Dietmar Frey, and Vince~I.
+  Madai.
+\newblock Explainability for artificial intelligence in healthcare: A
+  multidisciplinary perspective.
+\newblock \emph{BMC Medical Informatics and Decision Making}, 20\penalty0
+  (1):\penalty0 310, 2020.
 
 \bibitem[{Associated Press}(2026)]{ap2026hegsethanthropic}
 {Associated Press}.
@@ -105,6 +113,13 @@ Timnit Gebru, Jamie Morgenstern, Briana Vecchione, Jennifer~Wortman Vaughan,
 \newblock Datasheets for datasets.
 \newblock \emph{Communications of the ACM}, 64\penalty0 (12):\penalty0 86--92,
   2021.
+
+\bibitem[Ghassemi et~al.(2021)Ghassemi, Oakden-Rayner, and Beam]{ghassemi2021}
+Marzyeh Ghassemi, Luke Oakden-Rayner, and Andrew~L. Beam.
+\newblock The false hope of current approaches to explainable artificial
+  intelligence in health care.
+\newblock \emph{The Lancet Digital Health}, 3\penalty0 (11):\penalty0
+  e745--e750, 2021.
 
 \bibitem[Greshake et~al.(2023)Greshake, Abdelnabi, Mishra, Endres, Holz, and
   Fritz]{greshake2023not}
@@ -242,6 +257,11 @@ Catherine Olsson, Nelson Elhage, Neel Nanda, Nicholas Joseph, Nova DasSarma,
 \newblock URL
   \url{https://investors.palantir.com/news-details/2024/Anthropic-and-Palantir-Partner-to-Bring-Claude-AI-Models-to-AWS-for-U.S.-Government-Intelligence-and-Defense-Operations/}.
 
+\bibitem[Pearl(2009)]{pearl2009}
+Judea Pearl.
+\newblock \emph{Causality: Models, Reasoning, and Inference}.
+\newblock Cambridge University Press, 2nd edition, 2009.
+
 \bibitem[Rismani et~al.(2024)Rismani, Dobbe, and Moon]{rismani2024silos}
 Shalaleh Rismani, Roel Dobbe, and AJung Moon.
 \newblock From silos to systems: Process-oriented hazard analysis for {AI}
@@ -313,6 +333,15 @@ Andrew~D. Selbst, danah boyd, Sorelle~A. Friedler, Suresh Venkatasubramanian,
   low-probability abnormal model output.
 \newblock ThePaper.cn, January 2026.
 \newblock Archived at https://archive.ph/cGtz8.
+
+\bibitem[Tonekaboni et~al.(2019)Tonekaboni, Joshi, McCradden, and
+  Goldenberg]{tonekaboni2019}
+Sana Tonekaboni, Shalmali Joshi, Melissa~D. McCradden, and Anna Goldenberg.
+\newblock What clinicians want: Contextualizing explainable machine learning
+  for clinical end use.
+\newblock In \emph{Proceedings of the 4th Machine Learning for Healthcare
+  Conference (MLHC)}, volume 106 of \emph{Proceedings of Machine Learning
+  Research}, pages 359--380, 2019.
 
 \bibitem[{U.S. District Court, Middle District of Florida}(2025)]{garcia2025}
 {U.S. District Court, Middle District of Florida}.

@@ -336,7 +336,6 @@ INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/lm/lmsy7.tfm
 INPUT /usr/local/texlive/2026/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc
 INPUT /usr/local/texlive/2026/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc
 INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/lm/ec-lmbxi10.tfm
-INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/lm/ec-lmbxi10.tfm
 INPUT ./The_Constraint_Cascade_Model.bbl
 INPUT ./The_Constraint_Cascade_Model.bbl
 INPUT The_Constraint_Cascade_Model.bbl

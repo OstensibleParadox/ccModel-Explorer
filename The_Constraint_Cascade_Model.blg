@@ -3,44 +3,44 @@ Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
 The top-level auxiliary file: The_Constraint_Cascade_Model.aux
 The style file: plainnat.bst
 Database file #1: ssrn.bib
-You've used 42 entries,
+You've used 46 entries,
             2773 wiz_defined-function locations,
-            807 strings with 15964 characters,
-and the built_in function-call counts, 18393 in all, are:
-= -- 1612
-> -- 1223
-< -- 30
-+ -- 420
-- -- 378
-* -- 1353
-:= -- 2891
-add.period$ -- 155
-call.type$ -- 42
-change.case$ -- 251
-chr.to.int$ -- 42
-cite$ -- 84
-duplicate$ -- 764
-empty$ -- 1432
-format.name$ -- 437
-if$ -- 3861
+            833 strings with 16810 characters,
+and the built_in function-call counts, 20464 in all, are:
+= -- 1790
+> -- 1350
+< -- 33
++ -- 463
+- -- 417
+* -- 1534
+:= -- 3202
+add.period$ -- 167
+call.type$ -- 46
+change.case$ -- 276
+chr.to.int$ -- 46
+cite$ -- 92
+duplicate$ -- 860
+empty$ -- 1599
+format.name$ -- 480
+if$ -- 4297
 int.to.chr$ -- 1
 int.to.str$ -- 1
-missing$ -- 15
-newline$ -- 241
-num.names$ -- 168
-pop$ -- 583
+missing$ -- 20
+newline$ -- 261
+num.names$ -- 184
+pop$ -- 634
 preamble$ -- 1
-purify$ -- 207
+purify$ -- 228
 quote$ -- 0
-skip$ -- 655
+skip$ -- 728
 stack$ -- 0
-substring$ -- 273
-swap$ -- 87
-text.length$ -- 4
+substring$ -- 353
+swap$ -- 103
+text.length$ -- 6
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 457
+type$ -- 496
 warning$ -- 0
-while$ -- 144
+while$ -- 162
 width$ -- 0
-write$ -- 581
+write$ -- 634

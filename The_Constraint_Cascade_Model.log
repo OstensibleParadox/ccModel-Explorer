@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026) (preloaded format=pdflatex 2026.4.12)  27 JUN 2026 11:15
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026) (preloaded format=pdflatex 2026.4.12)  27 JUN 2026 13:13
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -931,59 +931,27 @@ LaTeX Font Info:    External font `lmex10' loaded for size
 (Font)              <9> on input line 186.
  [3{/usr/local/texlive/2026/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc}] [4{/u
 sr/local/texlive/2026/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}{/usr/local/texli
-ve/2026/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}] [5] [6]
-Overfull \hbox (3.80591pt too wide) in paragraph at lines 260--260
-[]|\T1/lmr/bx/n/10 (-20) Systemic 
- []
-
-
-Overfull \hbox (1.06558pt too wide) in paragraph at lines 260--260
-[]|\T1/lmr/m/n/10 (-20) Emergent 
- []
-
-
-Overfull \hbox (8.53317pt too wide) in paragraph at lines 260--260
-[]|\T1/lmr/m/n/10 (-20) Unmodeled 
- []
-
-[7] [8] [9] [10] [11] [12] [13] [14] [15]
-Overfull \hbox (2.17807pt too wide) in paragraph at lines 470--470
-[]|\T1/lmr/m/it/10 (-20) Epistemic 
- []
-
-[16] [17] (./The_Constraint_Cascade_Model.bbl [18] [19] [20]
-Underfull \hbox (badness 1859) in paragraph at lines 311--316
+ve/2026/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}] [5] [6] [7] [8] [9] [10] 
+[11] [12]
+[13] [14] [15] [16] [17] [18] [19] (./The_Constraint_Cascade_Model.bbl [20]
+[21] [22]
+Underfull \hbox (badness 1859) in paragraph at lines 331--336
 \T1/lmr/m/n/10.95 (+20) low-probability ab-nor-mal model out-put.  TheP-a-per.c
 n, Jan-uary 2026.  Archived at
  []
 
-) [21]
-Overfull \hbox (1.37013pt too wide) in paragraph at lines 542--542
-[]|\T1/lmr/m/n/10 (-20) Contamination 
- []
-
-
-Overfull \hbox (3.79524pt too wide) in paragraph at lines 542--542
-[]|\T1/lmr/m/n/10 (-20) Comparative 
- []
-
-
-Overfull \hbox (2.71765pt too wide) in paragraph at lines 542--542
-[]|\T1/lmr/m/n/10 (-20) Apportioned 
- []
-
-[22] (./The_Constraint_Cascade_Model.aux)
+) [23] [24] (./The_Constraint_Cascade_Model.aux)
  ***********
 LaTeX2e <2025-11-01>
 L3 programming layer <2026-01-19>
  ***********
  ) 
 Here is how much of TeX's memory you used:
- 25157 strings out of 467525
- 471300 string characters out of 5418982
- 903640 words of memory out of 5000000
- 53250 multiletter control sequences out of 15000+600000
- 731587 words of font info for 224 fonts, out of 8000000 for 9000
+ 25181 strings out of 467525
+ 471657 string characters out of 5418982
+ 906126 words of memory out of 5000000
+ 53261 multiletter control sequences out of 15000+600000
+ 727524 words of font info for 225 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  84i,11n,94p,2300b,916s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/local/texlive/2026/texmf-dist/fonts/type1/public/lm/lmbx10.pfb></usr/lo
@@ -1002,10 +970,10 @@ mr9.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/lm/lmri10.pfb></
 usr/local/texlive/2026/texmf-dist/fonts/type1/public/lm/lmri8.pfb></usr/local/t
 exlive/2026/texmf-dist/fonts/type1/public/lm/lmsy10.pfb></usr/local/texlive/202
 6/texmf-dist/fonts/type1/public/lm/lmsy8.pfb>
-Output written on The_Constraint_Cascade_Model.pdf (22 pages, 436307 bytes).
+Output written on The_Constraint_Cascade_Model.pdf (24 pages, 450348 bytes).
 PDF statistics:
- 567 PDF objects out of 1000 (max. 8388607)
- 494 compressed objects within 5 object streams
- 114 named destinations out of 1000 (max. 500000)
- 53477 words of extra memory for PDF output out of 61914 (max. 10000000)
+ 618 PDF objects out of 1000 (max. 8388607)
+ 535 compressed objects within 6 object streams
+ 123 named destinations out of 1000 (max. 500000)
+ 51437 words of extra memory for PDF output out of 51595 (max. 10000000)
 
