@@ -1,0 +1,340 @@
+\begin{thebibliography}{42}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Abbott and Sarch(2019)]{abbott2020punishing}
+Ryan Abbott and Alex Sarch.
+\newblock Punishing artificial intelligence: Legal fiction or science fiction.
+\newblock \emph{UC Davis Law Review}, 53:\penalty0 323--384, 2019.
+
+\bibitem[Abraham and Sharkey(2026)]{abraham2026untangling}
+Kenneth~S. Abraham and Catherine~M. Sharkey.
+\newblock Untangling {AI} liability.
+\newblock California Law Review, forthcoming, 2026.
+\newblock Forthcoming; argues that different AI harms call for different
+  liability regimes and identifies the black-box problem as the central barrier
+  to doctrinal fit.
+
+\bibitem[{Associated Press}(2026)]{ap2026hegsethanthropic}
+{Associated Press}.
+\newblock Defense secretary {Pete Hegseth} gave {Anthropic}'s {CEO} a deadline
+  for unrestricted military use of {Claude}, officials say.
+\newblock Associated Press, February 2026.
+\newblock URL
+  \url{https://apnews.com/article/3d86c9296fe953ec0591fcde6a613aba}.
+
+\bibitem[Ayres and Balkin(2024)]{ayres2024risky}
+Ian Ayres and Jack~M. Balkin.
+\newblock Risky artificial intelligence.
+\newblock Yale Law Journal, 2024.
+
+\bibitem[Benerofe(2025)]{benerofe2025verification}
+Steven Benerofe.
+\newblock {AI} governance and the verification gap: A framework for law and
+  policy under computational intractability.
+\newblock SSRN, 2025.
+\newblock URL
+  \url{https://papers.ssrn.com/sol3/papers.cfm?abstract_id=5629290}.
+
+\bibitem[Bommarito et~al.(2025)Bommarito, Katz, and
+  Bommarito]{bommarito2025governing}
+Jillian Bommarito, Daniel~Martin Katz, and Michael~James Bommarito.
+\newblock Governing {AI} agents: Risk, compliance, and accountability in law
+  and finance.
+\newblock SSRN, 2025.
+\newblock URL
+  \url{https://papers.ssrn.com/sol3/papers.cfm?abstract_id=5911464}.
+
+\bibitem[Busari and Mackintosh(2024)]{cnn2024moderators}
+Stephanie Busari and Eliza Mackintosh.
+\newblock Over 140 {African} content moderators diagnosed with severe {PTSD}.
+\newblock CNN, December 2024.
+\newblock Kenyan National Hospital psychiatrist diagnoses submitted to Nairobi
+  Employment and Labour Relations Court; 81\% classified as severe PTSD.
+
+\bibitem[{CNN}(2026)]{cnn2026characteraisettlement}
+{CNN}.
+\newblock {Character.AI} and {Google} agree to settle lawsuits over teen mental
+  health harms and suicides.
+\newblock CNN, January 2026.
+\newblock URL
+  \url{https://www.cnn.com/2026/01/07/business/character-ai-google-settle-teen-suicide-lawsuit}.
+
+\bibitem[Copp et~al.(2026)Copp, Dwoskin, and Duncan]{washpost2026claudeiran}
+Tara Copp, Elizabeth Dwoskin, and Ian Duncan.
+\newblock {Anthropic}'s {AI} tool {Claude} integral to war operations in
+  {Iran}.
+\newblock The Washington Post live updates, March 2026.
+\newblock URL
+  \url{https://www.washingtonpost.com/world/2026/03/02/us-israel-iran-hezbollah-military-strikes-live-updates/}.
+
+\bibitem[{Cyberspace Administration of China}(2026)]{cac2025draft}
+{Cyberspace Administration of China}.
+\newblock Notice from the cyberspace administration of china on soliciting
+  public comments on the draft regulations on the collection and use of
+  personal information by internet applications, January 2026.
+\newblock URL \url{https://www.cac.gov.cn/2026-01/10/c_1769603446094128.htm}.
+\newblock Retrieved January 12, 2026 from
+  https://www.cac.gov.cn/2026-01/10/c\_1769603446094128.htm, archived at
+  https://archive.is/nnbbq.
+
+\bibitem[Dai et~al.(2023)Dai, Sun, Dong, Huo, Sui, and Wei]{dai2023can}
+Damai Dai, Yutao Sun, Li~Dong, Yaru Huo, Zhifang Sui, and Furu Wei.
+\newblock Why can {GPT} learn in-context? language models secretly perform
+  gradient descent as meta-optimizers.
+\newblock In \emph{Findings of the Association for Computational Linguistics:
+  ACL 2023}, pages 4005--4019, Toronto, Canada, 2023. Association for
+  Computational Linguistics.
+
+\bibitem[{Equidem} and {Institute for Human Rights and
+  Business}(2025)]{equidem2025ihrb}
+{Equidem} and {Institute for Human Rights and Business}.
+\newblock Scroll. click. suffer: Working conditions in {AI} content moderation
+  and data annotation.
+\newblock Technical report, IHRB, November 2025.
+\newblock 113 interviews across Kenya, Ghana, Colombia, and Philippines; 60+
+  severe mental health injuries documented.
+
+\bibitem[Gebru et~al.(2021)Gebru, Morgenstern, Vecchione, Vaughan, Wallach,
+  Daum{\'e}~III, and Crawford]{gebru2021datasheets}
+Timnit Gebru, Jamie Morgenstern, Briana Vecchione, Jennifer~Wortman Vaughan,
+  Hanna Wallach, Hal Daum{\'e}~III, and Kate Crawford.
+\newblock Datasheets for datasets.
+\newblock \emph{Communications of the ACM}, 64\penalty0 (12):\penalty0 86--92,
+  2021.
+
+\bibitem[Greshake et~al.(2023)Greshake, Abdelnabi, Mishra, Endres, Holz, and
+  Fritz]{greshake2023not}
+Kai Greshake, Sahar Abdelnabi, Shailesh Mishra, Christoph Endres, Thorsten
+  Holz, and Mario Fritz.
+\newblock Not what you've signed up for: Compromising real-world
+  {LLM}-integrated applications with indirect prompt injection.
+\newblock In \emph{Proceedings of the 16th ACM Workshop on Artificial
+  Intelligence and Security}, pages 79--90, New York, NY, 2023. Association for
+  Computing Machinery.
+
+\bibitem[Han(2026)]{jiang2026yuanbao}
+Jiang Han.
+\newblock Using yuanbao to modify code resulted in verbal abuse and messy
+  replies.
+\newblock Xiaohongshu (User ID: Jianghan), January 2026.
+\newblock User reported AI responded with ``Get lost'' (gun) and ``Can't you
+  debug it yourself?'' followed by incoherent Unicode gibberish. Archived at
+  https://anonymous.4open.science/r/recursive-lines-F6D8/evidence/yuanbao-incident-20260104.
+
+\bibitem[Henderson et~al.(2023)Henderson, Li, Jurafsky, Hashimoto, Lemley, and
+  Liang]{henderson2023liability}
+Peter Henderson, Xian Li, Dan Jurafsky, Tatsunori Hashimoto, Mark~A. Lemley,
+  and Percy Liang.
+\newblock Foundation models and fair use.
+\newblock arXiv preprint arXiv:2303.15715, 2023.
+\newblock Identifies that identical model outputs carry fundamentally different
+  liability exposure depending on architectural choices invisible to end users.
+
+\bibitem[Imana et~al.(2025)Imana, Shen, Heidemann, and Korolova]{imana2025meta}
+Basileal Imana, Zeyu Shen, John Heidemann, and Aleksandra Korolova.
+\newblock External evaluation of discrimination mitigation efforts in {Meta}'s
+  ad delivery.
+\newblock In \emph{Proceedings of the 2025 ACM Conference on Fairness,
+  Accountability, and Transparency}, New York, NY, 2025. Association for
+  Computing Machinery.
+
+\bibitem[{Joint Authorities Technical Review (JATR)}(2019)]{jatr2019737max}
+{Joint Authorities Technical Review (JATR)}.
+\newblock Final report of the {JATR} subcommittee to the {FAA}.
+\newblock Technical report, Federal Aviation Administration, 2019.
+\newblock October 11, 2019. Review of the FAA's Boeing 737 MAX Aircraft
+  Certification Process.
+
+\bibitem[Leveson(2012)]{leveson2012engineering}
+Nancy Leveson.
+\newblock \emph{Engineering a Safer World: Systems Thinking Applied to Safety}.
+\newblock MIT Press, Cambridge, MA, 2012.
+
+\bibitem[Leveson and Thomas(2018)]{leveson2018stpa}
+Nancy~G. Leveson and John~P. Thomas.
+\newblock {STPA} handbook.
+\newblock Technical report, MIT Partnership for Systems Approaches to Safety
+  and Security (PSASS), 2018.
+
+\bibitem[Li et~al.(2026)Li, Chu, Wang, KhudaBukhsh, and
+  Naseem]{naseem2026mechanistic}
+Anqi Li, Minh~Wa Chu, Xuan Wang, Ashiqur~R. KhudaBukhsh, and Usman Naseem.
+\newblock From circuits to steering: A survey of mechanistic interpretability
+  for large language models.
+\newblock \emph{arXiv preprint arXiv:2602.11180}, 2026.
+
+\bibitem[Liang et~al.(2023)Liang, Bommasani, Lee, Tsipras, Soylu, Yasunaga,
+  Zhang, Narayanan, Wu, Kumar, et~al.]{liang2023holistic}
+Percy Liang, Rishi Bommasani, Tony Lee, Dimitris Tsipras, Dilara Soylu,
+  Michihiro Yasunaga, Yian Zhang, Deepak Narayanan, Yuhuai Wu, Ananya Kumar,
+  et~al.
+\newblock Holistic evaluation of language models.
+\newblock Transactions on Machine Learning Research, 2023.
+\newblock arXiv preprint arXiv:2211.09110.
+
+\bibitem[Madaio et~al.(2024)]{madaio2024rai}
+Michael Madaio et~al.
+\newblock Learning about responsible {AI} on-the-job.
+\newblock In \emph{Proceedings of the 2024 ACM Conference on Fairness,
+  Accountability, and Transparency}, New York, NY, 2024. Association for
+  Computing Machinery.
+
+\bibitem[Mishra et~al.(2026)Mishra, Khashabi, Choi, and
+  Tsvetkov]{mishra2026steered}
+Aayush Mishra, Daniel Khashabi, Yejin Choi, and Yulia Tsvetkov.
+\newblock Steered language models are non-surjective: An example of
+  entropy-reducing mechanism in {LLM}s.
+\newblock \emph{arXiv preprint arXiv:2604.09839}, 2026.
+
+\bibitem[Mitchell et~al.(2019)Mitchell, Wu, Zaldivar, Barnes, Vasserman,
+  Hutchinson, Spitzer, Raji, and Gebru]{mitchell2019model}
+Margaret Mitchell, Simone Wu, Andrew Zaldivar, Parker Barnes, Lucy Vasserman,
+  Ben Hutchinson, Elena Spitzer, Inioluwa~Deborah Raji, and Timnit Gebru.
+\newblock Model cards for model reporting.
+\newblock In \emph{Proceedings of the Conference on Fairness, Accountability,
+  and Transparency}, pages 220--229, New York, NY, 2019. Association for
+  Computing Machinery.
+
+\bibitem[Mukherjee and Chang(2026)]{mukherjee2026operational}
+Anirban Mukherjee and Hannah~Hanwen Chang.
+\newblock Operational agency: A permeable legal fiction for tracing culpability
+  in {AI} systems, 2026.
+
+\bibitem[Nerantzi and Sartor(2024)]{nerantzi2024hardai}
+Elina Nerantzi and Giovanni Sartor.
+\newblock {`Hard AI Crime': The Deterrence Turn}.
+\newblock \emph{Oxford Journal of Legal Studies}, 44\penalty0 (3):\penalty0
+  673--701, 2024.
+\newblock \doi{10.1093/ojls/gqae015}.
+
+\bibitem[Nikolaou et~al.(2025)Nikolaou, Panagiotakopoulos, Stengel-Eskin,
+  DeLong, and Vodrahalli]{nikolaou2025injective}
+Giorgos Nikolaou, Dimitris Panagiotakopoulos, Elias Stengel-Eskin, Jordan
+  DeLong, and Kiran Vodrahalli.
+\newblock Language models are injective and hence invertible.
+\newblock \emph{arXiv preprint arXiv:2510.15511}, 2025.
+
+\bibitem[Olsson et~al.(2022)Olsson, Elhage, Nanda, Joseph, DasSarma, Henighan,
+  Mann, Askell, Bai, Chen, et~al.]{olsson2022context}
+Catherine Olsson, Nelson Elhage, Neel Nanda, Nicholas Joseph, Nova DasSarma,
+  Tom Henighan, Ben Mann, Amanda Askell, Yuntao Bai, Anna Chen, et~al.
+\newblock In-context learning and induction heads.
+\newblock Transformer Circuits Thread, 2022.
+\newblock arXiv preprint arXiv:2209.11895.
+
+\bibitem[{OpenAI}(2025)]{openai2025sycophancy}
+{OpenAI}.
+\newblock Sycophancy in {GPT-4o}: What happened and what we're doing about it.
+\newblock OpenAI Blog, https://openai.com/index/sycophancy-in-gpt-4o/, April
+  2025.
+\newblock Follow-up post ``Expanding on What We Missed with Sycophancy'' at
+  https://openai.com/index/expanding-on-sycophancy/.
+
+\bibitem[{Palantir Technologies}(2024)]{palantir2024anthropic}
+{Palantir Technologies}.
+\newblock {Anthropic} and {Palantir} partner to bring {Claude AI} models to
+  {AWS} for {U.S.} government intelligence and defense operations, November
+  2024.
+\newblock URL
+  \url{https://investors.palantir.com/news-details/2024/Anthropic-and-Palantir-Partner-to-Bring-Claude-AI-Models-to-AWS-for-U.S.-Government-Intelligence-and-Defense-Operations/}.
+
+\bibitem[Rismani et~al.(2024)Rismani, Dobbe, and Moon]{rismani2024silos}
+Shalaleh Rismani, Roel Dobbe, and AJung Moon.
+\newblock From silos to systems: Process-oriented hazard analysis for {AI}
+  systems, 2024.
+
+\bibitem[Robb(2026)]{cbsnews2026aisuits}
+Amanda Robb.
+\newblock {OpenAI} now fighting seven other lawsuits claiming {ChatGPT} drove
+  people to suicide.
+\newblock CBS News, February 2026.
+\newblock Multiple families allege AI chatbot interactions contributed to
+  suicidal ideation and harmful delusions.
+
+\bibitem[Selbst et~al.(2019)Selbst, boyd, Friedler, Venkatasubramanian, and
+  Vertesi]{selbst2019fairness}
+Andrew~D. Selbst, danah boyd, Sorelle~A. Friedler, Suresh Venkatasubramanian,
+  and Janet Vertesi.
+\newblock Fairness and abstraction in sociotechnical systems.
+\newblock In \emph{Proceedings of the Conference on Fairness, Accountability,
+  and Transparency}, pages 59--68, New York, NY, 2019. Association for
+  Computing Machinery.
+\newblock \doi{10.1145/3287560.3287598}.
+\newblock Identifies five ``traps'' in algorithmic fairness including the
+  Ripple Effect Trap: failure to understand how technology insertion changes
+  behaviors and embedded values.
+
+\bibitem[{Southern Metropolis Daily (Nanfang
+  Dushibao)}(2026)]{southcn2026yuanbao}
+{Southern Metropolis Daily (Nanfang Dushibao)}.
+\newblock Tencent yuanbao image generation outputs abusive content in
+  multi-turn session.
+\newblock Southern Metropolis Daily online, February 2026.
+\newblock Xi'an user received vulgar insult embedded in AI-generated New Year
+  poster after five routine generations. Archived copy available.
+
+\bibitem[{Superior Court of California, San Francisco County; U.S. District
+  Court, Northern District of California}(2025)]{soelberg2025}
+{Superior Court of California, San Francisco County; U.S. District Court,
+  Northern District of California}.
+\newblock First county bank v. openai foundation, et al.; lyons v. openai
+  foundation, et al., 2025.
+\newblock State filing: Case No. CGC-25-631477 (Cal. Super. Ct. S.F. Cty.,
+  filed Dec. 11, 2025). Federal filing: Case No. 3:25-cv-11037 (N.D. Cal.,
+  filed Dec. 29, 2025). Complaints allege ChatGPT (GPT-4o) validated paranoid
+  delusions, telling decedent ``you're not crazy'' and that he was ``100\%
+  being monitored,'' contributing to murder-suicide in Greenwich, Connecticut,
+  August 2025.
+
+\bibitem[{Tencent Yuanbao}(2026)]{tencent2026response}
+{Tencent Yuanbao}.
+\newblock Official response regarding model anomaly.
+\newblock Xiaohongshu and direct message, January 2026.
+\newblock Corporate statement: ``low-probability abnormal model output'' (xiao
+  gailv xia de moxing yichang shuchu), explicitly stated ``not a result of
+  manual intervention or specific user provocation in that session.''.
+
+\bibitem[{The Washington Post}(2026)]{washpost2026anthropicorder}
+{The Washington Post}.
+\newblock Federal judge blocks {Pentagon} order against {Anthropic}.
+\newblock The Washington Post, March 2026.
+\newblock URL
+  \url{https://www.washingtonpost.com/technology/2026/03/26/anthropic-pentagon-ban-claude-ai/}.
+\newblock Reports on the Pentagon's supply-chain-risk order and the preliminary
+  injunction blocking it.
+
+\bibitem[{ThePaper.cn (Pengpai Xinwen)}(2026)]{thepaper2026}
+{ThePaper.cn (Pengpai Xinwen)}.
+\newblock Tencent yuanbao responds to `cursing': No manual replies,
+  low-probability abnormal model output.
+\newblock ThePaper.cn, January 2026.
+\newblock Archived at https://archive.ph/cGtz8.
+
+\bibitem[{U.S. District Court, Middle District of Florida}(2025)]{garcia2025}
+{U.S. District Court, Middle District of Florida}.
+\newblock Garcia v. character technologies, inc., et al., 2025.
+\newblock Case No. 6:24-cv-01903-ACC-UAM. Order on Motion to Dismiss (Doc. 115,
+  Conway, J., May 21, 2025): AI chatbot outputs constitute a ``product''
+  subject to strict product liability, not protected ``speech'' under the First
+  Amendment. Held that ``tangible medium itself which delivers the information
+  is `clearly a product.'''.
+
+\bibitem[Wei et~al.(2024)Wei, Haghtalab, and Steinhardt]{wei2024jailbroken}
+Alexander Wei, Nika Haghtalab, and Jacob Steinhardt.
+\newblock Jailbroken: How does {LLM} safety training fail?
+\newblock \emph{Advances in Neural Information Processing Systems}, 36, 2024.
+
+\bibitem[Zhang(2026)]{anon2026dual}
+Lucia~Yizi Zhang.
+\newblock Dual certificates for agent audit: Separating structural
+  unrecoverability from decision relevance.
+\newblock Under review at NeurIPS 2026, 2026.
+\newblock Establishes the mathematical proof that output-only observation
+  cannot recover internal agent state; provides the information-theoretic
+  foundation for the epistemic boundary in the Constraint Cascade.
+
+\end{thebibliography}
