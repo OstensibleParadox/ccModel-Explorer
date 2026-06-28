@@ -1,0 +1,44 @@
+# OS files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# LaTeX outputs
+*.aux
+*.log
+*.toc
+*.lof
+*.lot
+*.out
+*.synctex
+*.synctex(busy)
+*.synctex.gz
+*.pdfsync
+*.bbl
+*.blg
+*.bcf
+*.run.xml
+*.fdb_latexmk
+*.fls
+*.vrb
+*.nav
+*.snm
+*.idx
+*.ilg
+*.ind
+*.ist
+*.glo
+*.glg
+*.gls
+*.spl
+
+# Build directory
+paper/build/
+
+# Generated paper PDFs
+paper/main.pdf
+The_Constraint_Cascade_Model.pdf
