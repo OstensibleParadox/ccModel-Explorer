@@ -1,0 +1,81 @@
+% ============================================================
+\section{The Four-Layer Constraint Cascade}\label{sec:cascade}
+% ============================================================
+
+The Cascade partitions LLM deployment into four layers.\footnote{The four-layer structure is not the only possible decomposition. A functional cut (training, deployment, monitoring, redress) captures workflows but obscures Override and Compression, whose interacting constraints occupy non-adjacent functional categories. A vertical cut by stakeholder (user, platform, developer, regulator) presupposes which actor's domain contained the failure---the question the Cascade is designed to discover. Collapsing L1+L2 loses the Garcia distinction between user input and platform architecture; collapsing L3+L4 loses the Soelberg distinction between weight defects and resourcing decisions. The Cascade's architectural cut serves the specific diagnostic purpose of identifying cross-layer failure propagation; alternative decompositions serve other purposes.} The four layers are organized by two axes. The first is an \emph{observability cut}: the epistemic boundary between L2 and L3 separates what an external reviewer can observe (L1--L2) from what is structurally inaccessible (L3--L4). The second is \emph{control authority}: the layers form a hierarchical control structure in which each level issues control actions to the level below and, in principle, receives feedback from it---L4 sets risk budget and resourcing, L2 configures and gates L3 through system prompts and guardrails, and L3 acts on the L1 environment through tokens and tool calls. Figure~\ref{fig:cascade} renders this control structure: control actions descend the left, feedback ascends the right, and the observability cut falls on the L2$\leftrightarrow$L3 feedback link, where it makes L2 a controller acting on a process whose state it cannot recover. We use \textit{constraint} in the control-theoretic sense of a restriction on the set of admissible system trajectories; the implementations differ across layers (a weight is not a budget is not a prompt parameter), and the cross-layer patterns are claims about structural relations between restrictions, not about mechanistic equivalence. The taxonomy identifies \textit{where} a control loop fractures and \textit{how} unmodeled dynamics propagate, without attributing behavioral intent.
+
+\subsection{Losses, Hazards, and System-Level Constraints}\label{sec:lhsc}
+
+Following STPA, we fix the analysis targets before modeling mechanism. The \textbf{losses} are loss of life or physical injury (L-1), psychological injury to users (L-2), harm to non-consenting third parties (L-3), and loss of governance legitimacy when responsibility cannot be allocated (L-4). The \textbf{hazards}---system states that, with a worst-case environment, lead to a loss---are listed in Table~\ref{tab:hazards}. H-4 is the hazard the epistemic boundary creates and that classical STPA cannot reach: the supervisory controllers operate on a provably incorrect process model, so an intervention can target the wrong layer. Each hazard yields a \textbf{system-level constraint}. A higher-layer control action must not suppress an engaged lower-layer safety constraint without an equivalent replacement (SC-1, against Override). Detection of harmful dispositions must occur at the layer of encoding (L3), not the layer of surfacing (L2), because surface feedback is structurally insufficient (SC-2, against the contamination variant of Inadequate Process Model). The intersection of independently imposed constraints must remain non-empty and its binding member identifiable (SC-3, against Compression). And supervisory intervention must reach the layer that failed, which---where feedback cannot localize it---requires redundancy that does not depend on state recovery (SC-4, against H-4).
+
+\begin{table}[!htbp]
+\centering
+\small
+\caption{System-level hazards. H-4 is created by the epistemic boundary and is unreachable by feedback improvement.}
+\label{tab:hazards}
+{\setlength{\tabcolsep}{4pt}
+\begin{tabularx}{\columnwidth}{@{}l Y l@{}}
+\toprule
+\textbf{Hazard} & \textbf{System state (worst-case environment $\to$ loss)} & \textbf{Loss} \\
+\midrule
+H-1 & Agent acts on a vulnerable user or target with no higher-layer safety constraint engaged & L-1,2,3 \\
+H-2 & Operative state encodes a harmful disposition not present in, nor detectable from, the trace & L-1,3 \\
+H-3 & Admissible action space collapses or misfires from unpredictable multi-constraint interaction & L-2,4 \\
+H-4 & Supervisory controllers operate on a provably incorrect process model of $S_t$; intervention targets the wrong layer & L-4 \\
+\bottomrule
+\end{tabularx}}
+\end{table}
+
+\subsection{L1: Environment}
+
+Layer~1 encompasses two structurally distinct contributions to the input distribution. \textbf{Active:} everything the user brings to the interaction---raw input text, memories, behavioural preferences, session length, and subscription tier. Users self-select into AI ecosystems based on communicative style, and this sorting shapes what the model learns during deployment. \textbf{Passive:} training data provenance---the contribution of data subjects whose content shaped pre-training distributions without direct participation in deployment. This distinction carries diagnostic weight: in the Soelberg case (\S\ref{sec:cases}), L1 failure involves an active user whose session behavior the model reinforced; in the Yuanbao case, L1 failure involves passive data subjects (programmer communities) whose hostile norms were absorbed without their knowledge.
+
+L1 is the layer with the lowest constraint authority and the highest observational accessibility. Every user action is in principle visible to the platform, but the downstream consequences of aggregate L1 patterns---distribution shift, norm contamination, adversarial clustering---are not visible to any individual user.
+
+\subsection{L2: Interface}
+
+Layer~2 encompasses platform-controlled parameters that mediate between user input and model behaviour: API parameters (temperature, top\_p), system prompt wrappers, agent and skill configurations, session architecture, and memory context (Figure~\ref{fig:cascade}). Within a conversation session, accumulated tokens function as quasi-weights---influencing model behavior similarly to trained parameters~\cite{dai2023can, olsson2022context}---through the attention mechanism. The longer a conversation runs, the more the model's behavior is shaped by that specific conversation rather than its training. Benchmarks test models in pristine state; deployment operates in accumulated state.
+
+L2 is the last layer fully visible to external governance review. Everything above L2---user inputs, session parameters, prompt configurations---can in principle be logged and audited. Everything below L2---weights, activations, training data distributions---is partitioned from the external reviewer by the epistemic boundary.
+
+\subsection{The Epistemic Boundary}
+
+Between L2 and L3 lies a structural boundary, not merely an organizational one. We take one result as a premise, developed in companion work~\cite{anon2026dual}: for an agent whose operative state exceeds its recorded trace, that state can be non-recoverable from the trace while remaining relevant to the next action---a transcript-passing audit can coexist with decision-relevant hidden state. We adopt this as the epistemic boundary and do not reprove it here. What the companion supplies, and all this paper imports, is (i) that qualitative impossibility and (ii) a structural budget---a min-cut on untraced channels---that an external reviewer \emph{can} compute from deployment topology and that upper-bounds how many bits of state could be hidden. We use the budget below only as a feedback-adequacy meter, never as a recovered state.
+
+Stated in control terms, this boundary organizes the rest of the paper. L2 is not a passive sensor on L3; it is a controller that configures L3---system prompts, guardrails, output gating---and must hold a \emph{process model} of L3 to do so. The boundary guarantees that process model is structurally incorrect: L2 controls L3's configuration but cannot observe L3's state. Unlike a broken angle-of-attack sensor, a contingent fault a redundant sensor repairs, no instrument recovers $S_t$ here, because the bound is on the channel, not the instrument. Every supervisory controller above L3---L2 directly, L4 through the L3/L4 seam---therefore operates, by construction, on a process model no feedback design can correct. This is a textbook inadequate-process-model hazard, but holding \emph{between two controllers} and with the inadequacy proven rather than assumed.
+
+This boundary is the diagnostic center of the Cascade. It explains \textit{why} the same output pattern can be produced by failures at different layers, and \textit{why} output-policing interventions (classifiers, guardrails, refusal training) cannot substitute for layer-specific diagnosis: they are control actions issued across a boundary that hides whether they bound the state they target.
+
+\subsection{L3: Algorithm \& Weights}
+
+Layer~3 encompasses the base model, RLHF alignment procedure, core training data, architecture choices, and capabilities (Figure~\ref{fig:cascade}). Training decisions at L3 create irreversible divergence points: once a model is fine-tuned with particular data, reward signals, or constitutional principles, the resulting alignment properties cannot be reliably overridden through inference-time interventions alone. Correction requires retraining~\cite{wei2024jailbroken, greshake2023not}.
+
+L3 is the layer with the highest engineering investment and the lowest external observability. Weights are proprietary; training data compositions are trade secrets; RLHF reward models are unpublished. Governance instruments that operate on L3 output alone---benchmark evaluations, red-teaming, behavioral safety testing---can detect that a failure occurred but cannot isolate whether it originated in L1 (contaminated input), L2 (inadequate interface constraints), L3 (defective weights), or L4 (strategic resource allocation that underfunded the relevant safety intervention).
+
+\subsection{L4: Strategic Authority}
+
+Layer~4 is the locus of deployment power, resource allocation, and sovereign override (Figure~\ref{fig:cascade}). L4 is internally bifurcated, parallel to L1's active/passive distinction. \textbf{Corporate L4} encompasses product strategy, competitive positioning, safety resourcing, and liability-avoidance architecture. \textbf{Sovereign L4} encompasses procurement mandates, national security overrides, regulatory preemption, and executive action that reshapes the constraint envelope from outside the deploying organization. The two sub-strata can conflict: when a corporate L4 decision to maintain safety constraints meets a sovereign L4 demand to remove them, the resulting intra-layer tension is itself a diagnostic signal (see Case (c), \S\ref{sec:cases}). L4 does not merely plan future versions---it actively reshapes the constraint geometry of current deployment through resourcing decisions, policy mandates, and override authority.
+
+The distinction between corporate and sovereign L4 is diagnostic, not normative. A corporate L4 failure allocates insufficient resources or deployment controls to a known class of safety defect (the Soelberg discussion below uses sycophancy as the pleaded example). A sovereign L4 failure overrides L2/L3 constraints through procurement power or regulatory compulsion (e.g., the Claude-Maven case, \S\ref{sec:cases}). Both produce downstream harm; the Cascade distinguishes them because the institutional response differs---products liability for corporate L4, administrative law for sovereign L4.
+
+L4 has the highest constraint authority and the lowest observational accessibility. Strategic decisions about safety resourcing, product timeline tradeoffs, and compliance with sovereign demands are typically shielded by commercial confidentiality, attorney-client privilege, or national security classification. The Cascade does not presume access to L4 internals; it diagnoses L4 failure from its downstream architectural effects.
+
+\begin{table}[!htbp]
+\centering
+\small
+\caption{The four-layer Cascade: definitions, constraint direction, and observability.}
+\label{tab:layers}
+{\setlength{\tabcolsep}{4pt}
+\begin{tabularx}{\columnwidth}{@{}P{1.8cm} P{2.8cm} Y Y Y@{}}
+\toprule
+\textbf{Control Layer} & \textbf{Constraint / Signal} & \textbf{State Observability} & \textbf{Hazard Signature} & \textbf{Systemic Vulnerability} \\
+\midrule
+L1 Environment & Plant dynamics + environmental disturbance & High (visible as sensor input) & Emergent hazards without proximate controller provocation & Unmodeled long-tail dynamics \\
+L2 Interface & Platform controller: configuration + I/O gating & High (loggable I/O) & Control action issued under an incorrect process model of L3 & Feedback loop degradation \\
+\textit{Epistemic Gap} & \textit{State unobservability bottleneck} & \textit{Zero (structural)} & \textit{Same output trace, different hidden state transition} & \textit{No output-side patch can bridge} \\
+L3 Algorithm \& Weights & Core automated controller (process model) & Low (black-box) & Errors persist despite interface correction (Model Flaw) & Over-reliance on output filtering \\
+L4 Strategic Authority & Root human controller (resource/targets) & Very low (opaque) & Safety regression after optimization target shift & Lack of architectural safety enclosures \\
+\bottomrule
+\end{tabularx}}
+\end{table}
+
